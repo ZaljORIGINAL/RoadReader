@@ -20,6 +20,11 @@ public class DijkstraAlgorithms implements Algorithm {
         nodes = new HashMap<>();
     }
 
+    // https://www.baeldung.com/java-graphs
+    /*TODO Требуется работа с графом. Предоставлять пути и точки должен граф.
+    *  вызывать метод getEdges() из объекта графа. Проверить наличие пути К графу
+    *  и как такого присутствия в переданных точках. Так же сделать проверку на
+    *  получаемую конечную точку из пути: не является ли она стартовой.*/
     @Override
     public Route calculatePath(Map<Integer, Node> points, Node start, Node finish) {
         //Потготовка
@@ -52,6 +57,8 @@ public class DijkstraAlgorithms implements Algorithm {
         }
     }
 
+    /*TODO Необходимость в методе пропадет с применением TreeSet. Требуется что
+    *  бы класс Item наследовал интерфейс Comparable<Person>*/
     private Item getActualPoint() {
         Map.Entry<Integer, Item> entry = nodes.entrySet().iterator().next();
         Item minItem = entry.getValue();
