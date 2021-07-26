@@ -1,29 +1,29 @@
 package RoadManager.Algorithms.Dijkstra;
 
-import MapObjects.Point;
+import MapObjects.Node;
 
 /**Клас предоставляет ячейку для рабты в алгоритме Дейкстрора.
  * т.е. Суммарная длина до конкретного узла и последний предшествующий узел*/
 public class Item {
-    private final Point point;
+    private final Node node;
     private final int length;
-    private final Point lastPoint;
+    private final Node lastNode;
 
-    public Item(Point point, int length, Point lastPoint){
-        this.point = point;
+    public Item(Node node, int length, Node lastNode){
+        this.node = node;
         this.length = length;
-        this.lastPoint = lastPoint;
+        this.lastNode = lastNode;
     }
 
-    public Point getPoint() {
-        return point;
+    public Node getPoint() {
+        return node;
     }
 
     public int getLength() {
         return length;
     }
 
-    public Point getLastPoint() {
-        return lastPoint;
+    public Node getLastPoint() {
+        return lastNode;
     }
 }

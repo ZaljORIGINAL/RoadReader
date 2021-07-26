@@ -1,7 +1,7 @@
 package RoadManager.Algorithms.Dijkstra;
 
-import MapObjects.Distance;
-import MapObjects.Point;
+import MapObjects.Edge;
+import MapObjects.Node;
 import RoadManager.Algorithms.Algorithm;
 import RoadManager.Route;
 
@@ -12,40 +12,40 @@ import java.util.Stack;
 
 /**Класс представляет алгоритм Дейкстры (https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры)*/
 public class DijkstraAlgorithms implements Algorithm {
-    private HashMap<Integer, Item> constItems;
-    private HashMap<Integer, Item> items;
+    private HashMap<Integer, Item> visitedNodes;
+    private HashMap<Integer, Item> nodes;
 
     public DijkstraAlgorithms(){
-        constItems = new HashMap<>();
-        items = new HashMap<>();
+        visitedNodes = new HashMap<>();
+        nodes = new HashMap<>();
     }
 
     @Override
-    public Route calculatePath(Map<Integer, Point> points, Point start, Point finish) {
+    public Route calculatePath(Map<Integer, Node> points, Node start, Node finish) {
         //Потготовка
-        for (Map.Entry<Integer, Point> point : points.entrySet()) {
-            items.put(point.getKey(), new Item(point.getValue(), -1, point.getValue()));
+        for (Map.Entry<Integer, Node> point : points.entrySet()) {
+            nodes.put(point.getKey(), new Item(point.getValue(), -1, point.getValue()));
         }
         Item actualPoint = new Item(start, 0, start);
-        items.remove(start.getId());
-        constItems.put(start.getId(), actualPoint);
+        nodes.remove(start.getId());
+        visitedNodes.put(start.getId(), actualPoint);
 
         //Старт алгоритма
         while (true){
             var point = actualPoint.getPoint();
-            List<Distance> distances = point.getDistances();
-            for (Distance distance : distances) {
-                var item = items.get(distance.getFinish().getId());
+            List<Edge> edges = point.getEdges();
+            for (Edge edge : edges) {
+                var item = nodes.get(edge.getFinish().getId());
                 if (item != null){
-                    var newItem = new Item(distance.getFinish(), distance.getWeight() + actualPoint.getLength(), point);
+                    var newItem = new Item(edge.getFinish(), edge.getLength() + actualPoint.getLength(), point);
                     if (item.getLength() == -1 || newItem.getLength() < item.getLength())
-                        items.replace(distance.getFinish().getId(), newItem);
+                        nodes.replace(edge.getFinish().getId(), newItem);
                 }
             }
 
             actualPoint = getActualPoint();
-            constItems.put(actualPoint.getPoint().getId(), actualPoint);
-            items.remove(actualPoint.getPoint().getId());
+            visitedNodes.put(actualPoint.getPoint().getId(), actualPoint);
+            nodes.remove(actualPoint.getPoint().getId());
 
             if(actualPoint.getPoint().equals(finish))
                 return buildRoute(start, finish);
@@ -53,10 +53,10 @@ public class DijkstraAlgorithms implements Algorithm {
     }
 
     private Item getActualPoint() {
-        Map.Entry<Integer, Item> entry = items.entrySet().iterator().next();
+        Map.Entry<Integer, Item> entry = nodes.entrySet().iterator().next();
         Item minItem = entry.getValue();
 
-        for (Map.Entry<Integer, Item> itemEntry : items.entrySet()) {
+        for (Map.Entry<Integer, Item> itemEntry : nodes.entrySet()) {
             var item = itemEntry.getValue();
             if (item.getLength() < minItem.getLength() && item.getLength() != -1)
                 minItem = item;
@@ -65,15 +65,15 @@ public class DijkstraAlgorithms implements Algorithm {
         return minItem;
     }
 
-    private Route buildRoute(Point start, Point finish){
-        Stack<Point> pointStack = new Stack<>();
-        Item lastItem = constItems.get(finish.getId());
-        pointStack.push(lastItem.getPoint());
+    private Route buildRoute(Node start, Node finish){
+        Stack<Node> nodeStack = new Stack<>();
+        Item lastItem = visitedNodes.get(finish.getId());
+        nodeStack.push(lastItem.getPoint());
         while (!lastItem.getPoint().equals(start)){
-            lastItem = constItems.get(lastItem.getLastPoint().getId());
-            pointStack.push(lastItem.getPoint());
+            lastItem = visitedNodes.get(lastItem.getLastPoint().getId());
+            nodeStack.push(lastItem.getPoint());
         }
 
-        return new Route(pointStack, constItems.get(finish.getId()).getLength());
+        return new Route(nodeStack, visitedNodes.get(finish.getId()).getLength());
     }
 }

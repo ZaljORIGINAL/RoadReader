@@ -1,34 +1,32 @@
 package RoadManager;
 
-import MapObjects.Distance;
-import MapObjects.Point;
+import MapObjects.Edge;
+import MapObjects.Node;
 import RoadManager.Algorithms.Algorithm;
 import RoadManager.Algorithms.Dijkstra.DijkstraAlgorithms;
 
-import java.io.*;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 /**Класс предоставляет методы для действий и вычислений над географическими точками.*/
 public class RoadManager {
-    public static Map<Integer, Point> getPoints(){
-        Map<Integer, Point> points = new HashMap<>();
+    public static Map<Integer, Node> getPoints(){
+        Map<Integer, Node> points = new HashMap<>();
 
-        points.put(1, new Point(1, "Point1"));
-        points.put(2, new Point(2, "Point2"));
-        points.put(3, new Point(3, "Point3"));
-        points.put(4, new Point(4, "Point4"));
-        points.put(5, new Point(5, "Point5"));
-        points.put(6, new Point(6, "Point6"));
-        points.put(7, new Point(7, "Point7"));
-        points.put(8, new Point(8, "Point8"));
-        points.put(9, new Point(9, "Point9"));
+        points.put(1, new Node(1, "Point1"));
+        points.put(2, new Node(2, "Point2"));
+        points.put(3, new Node(3, "Point3"));
+        points.put(4, new Node(4, "Point4"));
+        points.put(5, new Node(5, "Point5"));
+        points.put(6, new Node(6, "Point6"));
+        points.put(7, new Node(7, "Point7"));
+        points.put(8, new Node(8, "Point8"));
+        points.put(9, new Node(9, "Point9"));
 
         return points;
     }
 
-    public static Map<Integer, Point> connectPoints(Map<Integer, Point> points) {
+    public static Map<Integer, Node> connectPoints(Map<Integer, Node> points) {
             String[] distances = new String[]{
                     "1 2 10",
                     "1 3 6",
@@ -57,19 +55,15 @@ public class RoadManager {
                 var startPoint = points.get(startId);
                 var finishPoint = points.get(finishId);
 
-                var distance = createDistance(startPoint, finishPoint, weight);
-                startPoint.addDistance(distance);
-                finishPoint.addDistance(distance);
+                var distance = new Edge(startPoint, finishPoint, weight);
+                startPoint.addEdge(distance);
+                finishPoint.addEdge(distance);
             }
 
         return points;
     }
 
-    public static Distance createDistance(Point start, Point finish, int length){
-        return new Distance(start, finish, length);
-    }
-
-    public static Route getShortestRoute(Map<Integer, Point> points, Point start, Point finish){
+    public static Route getShortestRoute(Map<Integer, Node> points, Node start, Node finish){
         Algorithm algorithm = new DijkstraAlgorithms();
         return algorithm.calculatePath(points, start, finish);
     }

@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**Класс представляет географическую точку на карте.*/
-public class Point {
+public class Node {
     private final int id;
     private String name;
     //private int coordinateX;
     //private int coordinateY;
-    private ArrayList<Distance> distances;
+    private ArrayList<Edge> edges;
 
-    public Point(int id, String name){
+    public Node(int id, String name){
         this.id = id;
         this.name = name;
 
-        distances = new ArrayList<>();
+        edges = new ArrayList<>();
     }
 
     public int getId() {
@@ -26,13 +26,13 @@ public class Point {
         return name;
     }
 
-    public List<Distance> getDistances(){
-        return distances;
+    public List<Edge> getEdges(){
+        return edges;
     }
 
     //TODO Создать методы возвращающие пути от точки и к точке (всего 2 метода)
 
-    public void addDistance(Distance distance){
-        distances.add(distance);
+    public void addEdge(Edge edge){
+        edges.add(edge);
     }
 }
