@@ -5,19 +5,16 @@ import MapObjects.Node;
 import RoadManager.Algorithms.Algorithm;
 import RoadManager.Route;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**Класс представляет алгоритм Дейкстры (https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры)*/
 public class DijkstraAlgorithms implements Algorithm {
-    private HashMap<Integer, Item> visitedNodes;
-    private HashMap<Integer, Item> nodes;
+    private List<TotalPath> visitedNodes;
+    private TreeSet<TotalPath> nodes;
 
     public DijkstraAlgorithms(){
-        visitedNodes = new HashMap<>();
-        nodes = new HashMap<>();
+        visitedNodes = new ArrayList<>();
+        nodes = new TreeSet<>();
     }
 
     // https://www.baeldung.com/java-graphs
@@ -26,12 +23,14 @@ public class DijkstraAlgorithms implements Algorithm {
     *  и как такого присутствия в переданных точках. Так же сделать проверку на
     *  получаемую конечную точку из пути: не является ли она стартовой.*/
     @Override
-    public Route calculatePath(Map<Integer, Node> points, Node start, Node finish) {
+    public Route calculatePath(Map<Node, List<Edge>> graph, Node start, Node finish) {
+
+
         //Потготовка
-        for (Map.Entry<Integer, Node> point : points.entrySet()) {
-            nodes.put(point.getKey(), new Item(point.getValue(), -1, point.getValue()));
+        for (Map.Entry<Node, List<Edge>> entry : graph.entrySet()) {
+            nodes.add(new TotalPath(entry.getKey(), -1, entry.getKey()));
         }
-        Item actualPoint = new Item(start, 0, start);
+        TotalPath actualPoint = new TotalPath(start, 0, start);
         nodes.remove(start.getId());
         visitedNodes.put(start.getId(), actualPoint);
 
@@ -42,7 +41,7 @@ public class DijkstraAlgorithms implements Algorithm {
             for (Edge edge : edges) {
                 var item = nodes.get(edge.getFinish().getId());
                 if (item != null){
-                    var newItem = new Item(edge.getFinish(), edge.getLength() + actualPoint.getLength(), point);
+                    var newItem = new TotalPath(edge.getFinish(), edge.getLength() + actualPoint.getLength(), point);
                     if (item.getLength() == -1 || newItem.getLength() < item.getLength())
                         nodes.replace(edge.getFinish().getId(), newItem);
                 }
@@ -59,26 +58,26 @@ public class DijkstraAlgorithms implements Algorithm {
 
     /*TODO Необходимость в методе пропадет с применением TreeSet. Требуется что
     *  бы класс Item наследовал интерфейс Comparable<Person>*/
-    private Item getActualPoint() {
-        Map.Entry<Integer, Item> entry = nodes.entrySet().iterator().next();
-        Item minItem = entry.getValue();
+    private TotalPath getActualPoint() {
+        Map.Entry<Integer, TotalPath> entry = nodes.entrySet().iterator().next();
+        TotalPath minTotalPath = entry.getValue();
 
-        for (Map.Entry<Integer, Item> itemEntry : nodes.entrySet()) {
+        for (Map.Entry<Integer, TotalPath> itemEntry : nodes.entrySet()) {
             var item = itemEntry.getValue();
-            if (item.getLength() < minItem.getLength() && item.getLength() != -1)
-                minItem = item;
+            if (item.getLength() < minTotalPath.getLength() && item.getLength() != -1)
+                minTotalPath = item;
         }
 
-        return minItem;
+        return minTotalPath;
     }
 
     private Route buildRoute(Node start, Node finish){
         Stack<Node> nodeStack = new Stack<>();
-        Item lastItem = visitedNodes.get(finish.getId());
-        nodeStack.push(lastItem.getPoint());
-        while (!lastItem.getPoint().equals(start)){
-            lastItem = visitedNodes.get(lastItem.getLastPoint().getId());
-            nodeStack.push(lastItem.getPoint());
+        TotalPath lastTotalPath = visitedNodes.get(finish.getId());
+        nodeStack.push(lastTotalPath.getPoint());
+        while (!lastTotalPath.getPoint().equals(start)){
+            lastTotalPath = visitedNodes.get(lastTotalPath.getLastPoint().getId());
+            nodeStack.push(lastTotalPath.getPoint());
         }
 
         return new Route(nodeStack, visitedNodes.get(finish.getId()).getLength());

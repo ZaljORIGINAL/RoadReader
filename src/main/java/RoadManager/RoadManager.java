@@ -5,28 +5,34 @@ import MapObjects.Node;
 import RoadManager.Algorithms.Algorithm;
 import RoadManager.Algorithms.Dijkstra.DijkstraAlgorithms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**Класс предоставляет методы для действий и вычислений над географическими точками.*/
 public class RoadManager {
-    public static Map<Integer, Node> getPoints(){
-        Map<Integer, Node> points = new HashMap<>();
+    public static List<Node> getPoints(){
+        List<Node> points = new ArrayList<>();
 
-        points.put(1, new Node(1, "Point1"));
-        points.put(2, new Node(2, "Point2"));
-        points.put(3, new Node(3, "Point3"));
-        points.put(4, new Node(4, "Point4"));
-        points.put(5, new Node(5, "Point5"));
-        points.put(6, new Node(6, "Point6"));
-        points.put(7, new Node(7, "Point7"));
-        points.put(8, new Node(8, "Point8"));
-        points.put(9, new Node(9, "Point9"));
+        points.add(new Node(1, "Point1"));
+        points.add(new Node(2, "Point2"));
+        points.add(new Node(3, "Point3"));
+        points.add(new Node(4, "Point4"));
+        points.add(new Node(5, "Point5"));
+        points.add(new Node(6, "Point6"));
+        points.add(new Node(7, "Point7"));
+        points.add(new Node(8, "Point8"));
+        points.add(new Node(9, "Point9"));
 
         return points;
     }
 
-    public static Map<Integer, Node> connectPoints(Map<Integer, Node> points) {
+    public static Map<Node, List<Edge>> generateGraph(List<Node> nodes) {
+        Map<Node, List<Edge>> graph = new HashMap<>();
+        for (Node node : nodes) {
+            graph.put(node, new ArrayList<Edge>());
+        }
             String[] distances = new String[]{
                     "1 2 10",
                     "1 3 6",
@@ -47,24 +53,37 @@ public class RoadManager {
                     "7 9 16",
                     "8 9 15"};
             for (String str : distances) {
-                var values = str.split(" ");
-                var startId = Integer.parseInt(values[0]);
-                var finishId = Integer.parseInt(values[1]);
-                var weight = Integer.parseInt(values[2]);
+                String[] values = str.split(" ");
+                int startId = Integer.parseInt(values[0]);
+                int finishId = Integer.parseInt(values[1]);
+                int weight = Integer.parseInt(values[2]);
 
-                var startPoint = points.get(startId);
-                var finishPoint = points.get(finishId);
+                Node startPoint = getNodeById(nodes, startId);
+                if (startPoint == null)
+                    break;
+                Node finishPoint = getNodeById(nodes, finishId);
+                if (finishPoint == null)
+                    break;
 
-                var distance = new Edge(startPoint, finishPoint, weight);
-                startPoint.addEdge(distance);
-                finishPoint.addEdge(distance);
+                Edge distance = new Edge(startPoint, finishPoint, weight);
+                graph.get(startPoint).add(distance);
+                graph.get(finishPoint).add(distance);
             }
 
-        return points;
+        return graph;
     }
 
-    public static Route getShortestRoute(Map<Integer, Node> points, Node start, Node finish){
+    public static Node getNodeById(List<Node> nodes, int id){
+        for (Node node : nodes) {
+            if (node.getId() == id)
+                return node;
+        }
+
+        return null;
+    }
+
+    public static Route getShortestRoute(Map<Node, List<Edge>> graph, Node start, Node finish){
         Algorithm algorithm = new DijkstraAlgorithms();
-        return algorithm.calculatePath(points, start, finish);
+        return algorithm.calculatePath(graph, start, finish);
     }
 }

@@ -9,13 +9,10 @@ public class Node {
     private String name;
     //private int coordinateX;
     //private int coordinateY;
-    private ArrayList<Edge> edges;
 
     public Node(int id, String name){
         this.id = id;
         this.name = name;
-
-        edges = new ArrayList<>();
     }
 
     public int getId() {
@@ -24,15 +21,5 @@ public class Node {
 
     public String getName() {
         return name;
-    }
-
-    public List<Edge> getEdges(){
-        return edges;
-    }
-
-    //TODO Создать методы возвращающие пути от точки и к точке (всего 2 метода)
-
-    public void addEdge(Edge edge){
-        edges.add(edge);
     }
 }
