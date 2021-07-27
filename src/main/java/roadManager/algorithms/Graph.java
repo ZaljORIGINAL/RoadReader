@@ -1,8 +1,8 @@
-package RoadManager.Algorithms;
+package roadManager.algorithms;
 
-import MapObjects.Edge;
-import MapObjects.Node;
-import RoadManager.RoadManager;
+import mapObjects.Edge;
+import mapObjects.Node;
+import roadManager.RoadManager;
 
 import java.util.ArrayList;
 import java.util.List;

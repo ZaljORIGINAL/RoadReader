@@ -1,11 +1,7 @@
-package RoadManager.Algorithms;
+package roadManager.algorithms;
 
-import MapObjects.Edge;
-import MapObjects.Node;
-import RoadManager.Route;
-
-import java.util.List;
-import java.util.Map;
+import mapObjects.Node;
+import roadManager.Route;
 
 /**Общий интерфейс алгоритмов поиска путей*/
 public interface Algorithm {

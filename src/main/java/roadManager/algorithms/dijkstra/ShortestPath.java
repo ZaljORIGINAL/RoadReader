@@ -1,7 +1,7 @@
-package RoadManager.Algorithms.Dijkstra;
+package roadManager.algorithms.dijkstra;
 
-import MapObjects.Edge;
-import MapObjects.Node;
+import mapObjects.Edge;
+import mapObjects.Node;
 
 /**Клас предоставляет ячейку для рабты в алгоритме Дейкстрора.
  * т.е. Суммарная длина до конкретного узла и последний предшествующий узел*/

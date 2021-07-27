@@ -1,7 +1,4 @@
-package MapObjects;
-
-import java.util.ArrayList;
-import java.util.List;
+package mapObjects;
 
 /**Класс представляет географическую точку на карте.*/
 public class Node {

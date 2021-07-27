@@ -1,4 +1,4 @@
-package MapObjects;
+package mapObjects;
 
 /**Класс представляет связь между двумя географическими точками (Point).*/
 public class Edge {

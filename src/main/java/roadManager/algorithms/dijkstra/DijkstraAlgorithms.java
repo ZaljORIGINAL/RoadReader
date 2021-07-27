@@ -1,10 +1,10 @@
-package RoadManager.Algorithms.Dijkstra;
+package roadManager.algorithms.dijkstra;
 
-import MapObjects.Edge;
-import MapObjects.Node;
-import RoadManager.Algorithms.Algorithm;
-import RoadManager.Algorithms.Graph;
-import RoadManager.Route;
+import mapObjects.Edge;
+import mapObjects.Node;
+import roadManager.algorithms.Algorithm;
+import roadManager.algorithms.Graph;
+import roadManager.Route;
 
 import java.util.*;
 

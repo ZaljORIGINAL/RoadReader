@@ -1,7 +1,6 @@
-package RoadManager;
+package roadManager;
 
-import MapObjects.Edge;
-import MapObjects.Node;
+import mapObjects.Edge;
 
 import java.util.Stack;
 
