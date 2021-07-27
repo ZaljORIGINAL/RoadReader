@@ -1,5 +1,6 @@
 import MapObjects.Edge;
 import MapObjects.Node;
+import RoadManager.Algorithms.Graph;
 import RoadManager.RoadManager;
 import RoadManager.Route;
 
@@ -9,9 +10,11 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
         List<Node> nodes = RoadManager.getPoints();
-        Map<Node, List<Edge>> graph = RoadManager.generateGraph(nodes);
+        String[] edgesDescriptions = RoadManager.getEdgesDescriptions();
 
-        Route route = RoadManager.getShortestRoute(graph, nodes.get(1), nodes.get(9));
+        Graph graph = new Graph(nodes, edgesDescriptions);
+
+        Route route = RoadManager.getShortestRoute(graph, nodes.get(0), nodes.get(8));
         System.out.println("Длина пути: " + route.getLength());
     }
 }

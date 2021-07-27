@@ -1,24 +1,25 @@
 package RoadManager;
 
+import MapObjects.Edge;
 import MapObjects.Node;
 
 import java.util.Stack;
 
 /**Класс представляет маршрут от стартовой точки до конечной*/
 public class Route {
-    private Stack<Node> nodes;
-    private int length;
+    private Stack<Edge> nodes;
+    private double length;
 
-    public Route(Stack<Node> nodes, int length){
+    public Route(Stack<Edge> nodes, double length){
         this.nodes = nodes;
         this.length = length;
     }
 
-    public Stack<Node> getNodes() {
+    public Stack<Edge> getNodes() {
         return nodes;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 }

@@ -9,5 +9,5 @@ import java.util.Map;
 
 /**Общий интерфейс алгоритмов поиска путей*/
 public interface Algorithm {
-    Route calculatePath(Map<Node, List<Edge>> graph, Node start, Node finish);
+    Route calculatePath(Node start, Node finish);
 }

@@ -3,18 +3,22 @@ package RoadManager.Algorithms.Dijkstra;
 import MapObjects.Edge;
 import MapObjects.Node;
 import RoadManager.Algorithms.Algorithm;
+import RoadManager.Algorithms.Graph;
 import RoadManager.Route;
 
 import java.util.*;
 
 /**Класс представляет алгоритм Дейкстры (https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры)*/
 public class DijkstraAlgorithms implements Algorithm {
-    private List<TotalPath> visitedNodes;
-    private TreeSet<TotalPath> nodes;
+    private Graph graph;
+    private Map<Integer, ShortestPath> shortestPathMap;
+    /*http://proglang.su/java/treeset-class*/
+    private TreeSet<ShortestPath> potentialPaths;
 
-    public DijkstraAlgorithms(){
-        visitedNodes = new ArrayList<>();
-        nodes = new TreeSet<>();
+    public DijkstraAlgorithms(Graph graph){
+        this.graph = graph;
+        shortestPathMap = new HashMap<>();
+        potentialPaths = new TreeSet<>();
     }
 
     // https://www.baeldung.com/java-graphs
@@ -23,63 +27,83 @@ public class DijkstraAlgorithms implements Algorithm {
     *  и как такого присутствия в переданных точках. Так же сделать проверку на
     *  получаемую конечную точку из пути: не является ли она стартовой.*/
     @Override
-    public Route calculatePath(Map<Node, List<Edge>> graph, Node start, Node finish) {
+    public Route calculatePath(Node start, Node finish) {
+        if (!graph.containsNode(start))
+            return null;
 
+        if (!graph.containsNode(finish))
+            return null;
 
-        //Потготовка
-        for (Map.Entry<Node, List<Edge>> entry : graph.entrySet()) {
-            nodes.add(new TotalPath(entry.getKey(), -1, entry.getKey()));
-        }
-        TotalPath actualPoint = new TotalPath(start, 0, start);
-        nodes.remove(start.getId());
-        visitedNodes.put(start.getId(), actualPoint);
+        //Проверка: имеет ли стартовая точка исходящие пути
+        if (!graph.hasOutputEdge(start))
+            return null;
+        //Проверка: имеет ли конечная точка входящие пути
+        if (!graph.hasInputEdge(finish))
+            return null;
 
         //Старт алгоритма
+        return search(start, finish);
+    }
+
+    private Route search(Node start, Node finish){
+        ShortestPath actualPath = new ShortestPath(start, 0, null);
+        shortestPathMap.put(start.getId() ,actualPath);
         while (true){
-            var point = actualPoint.getPoint();
-            List<Edge> edges = point.getEdges();
+            Node node = actualPath.getNode();
+            List<Edge> edges = graph.getEdgesByNode(node);
             for (Edge edge : edges) {
-                var item = nodes.get(edge.getFinish().getId());
-                if (item != null){
-                    var newItem = new TotalPath(edge.getFinish(), edge.getLength() + actualPoint.getLength(), point);
-                    if (item.getLength() == -1 || newItem.getLength() < item.getLength())
-                        nodes.replace(edge.getFinish().getId(), newItem);
+                //Проверка на исходящий путь
+                if (!edge.getFinish().equals(node)){
+                    ShortestPath path = new ShortestPath(edge.getFinish(), edge.getLength() + actualPath.getWeight(), edge);
+                    /*TODO Если ранее ранее рассматривался путь к данной точке получить значение, если нет то добавить.
+                    *  Если нынешний маршрут лучше заменить его.*/
+                    if (!potentialPaths.isEmpty()){
+                        ShortestPath alternativePath = getAlternativePath(path);
+                        if (alternativePath != null){
+                            if (path.getWeight() < alternativePath.getWeight()){
+                                potentialPaths.remove(alternativePath);
+                                potentialPaths.add(path);
+                            }
+                        }else
+                            potentialPaths.add(path);
+                    }else
+                        //Добавление первого предполагаемого пути
+                        potentialPaths.add(path);
                 }
             }
 
-            actualPoint = getActualPoint();
-            visitedNodes.put(actualPoint.getPoint().getId(), actualPoint);
-            nodes.remove(actualPoint.getPoint().getId());
+            actualPath = potentialPaths.first();
+            potentialPaths.remove(actualPath);
+            shortestPathMap.put(actualPath.getNode().getId(), actualPath);
 
-            if(actualPoint.getPoint().equals(finish))
+            if(actualPath.getNode().equals(finish))
                 return buildRoute(start, finish);
         }
     }
 
-    /*TODO Необходимость в методе пропадет с применением TreeSet. Требуется что
-    *  бы класс Item наследовал интерфейс Comparable<Person>*/
-    private TotalPath getActualPoint() {
-        Map.Entry<Integer, TotalPath> entry = nodes.entrySet().iterator().next();
-        TotalPath minTotalPath = entry.getValue();
-
-        for (Map.Entry<Integer, TotalPath> itemEntry : nodes.entrySet()) {
-            var item = itemEntry.getValue();
-            if (item.getLength() < minTotalPath.getLength() && item.getLength() != -1)
-                minTotalPath = item;
+    private Route buildRoute(Node start, Node finish){
+        Stack<Edge> nodeStack = new Stack<>();
+        ShortestPath shortestPath = shortestPathMap.get(finish.getId());
+        Edge edge = shortestPath.getIncomingEdge();
+        nodeStack.push(edge);
+        while (!edge.getStart().equals(start)){
+            shortestPath = shortestPathMap.get(edge.getStart().getId());
+            edge = shortestPath.getIncomingEdge();
+            nodeStack.push(edge);
         }
 
-        return minTotalPath;
+        return new Route(nodeStack, shortestPathMap.get(finish.getId()).getWeight());
     }
 
-    private Route buildRoute(Node start, Node finish){
-        Stack<Node> nodeStack = new Stack<>();
-        TotalPath lastTotalPath = visitedNodes.get(finish.getId());
-        nodeStack.push(lastTotalPath.getPoint());
-        while (!lastTotalPath.getPoint().equals(start)){
-            lastTotalPath = visitedNodes.get(lastTotalPath.getLastPoint().getId());
-            nodeStack.push(lastTotalPath.getPoint());
+    private ShortestPath getAlternativePath(ShortestPath path){
+        Iterator<ShortestPath> iterator = potentialPaths.iterator();
+        while (iterator.hasNext()) {
+            ShortestPath potentialPath = iterator.next();
+            if (potentialPath.getNode().getId() == path.getNode().getId()) {
+                return potentialPath;
+            }
         }
 
-        return new Route(nodeStack, visitedNodes.get(finish.getId()).getLength());
+        return shortestPathMap.get(path.getNode().getId());
     }
 }

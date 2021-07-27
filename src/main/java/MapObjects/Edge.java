@@ -4,7 +4,7 @@ package MapObjects;
 public class Edge {
     private final Node start;
     private final Node finish;
-    private int length;
+    private double length;
 
     public Edge(Node start, Node finish, int length){
         this.start = start;
@@ -21,7 +21,7 @@ public class Edge {
         return finish;
     }
 
-    public int getLength() {
+    public double getLength() {
         return length;
     }
 }
