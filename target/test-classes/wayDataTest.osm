@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="osmconvert 0.8.10" timestamp="2021-07-25T20:21:28Z">
+	<way id="42098172" version="8" timestamp="2021-06-08T14:13:39Z" changeset="0">
+		<nd ref="835753938"/>
+		<nd ref="523087351"/>
+		<nd ref="523087350"/>
+		<nd ref="523087309"/>
+		<nd ref="523087306"/>
+		<nd ref="634811289"/>
+		<nd ref="523087246"/>
+		<tag k="highway" v="service"/>
+		<tag k="living_street" v="yes"/>
+	</way>
+</osm>
