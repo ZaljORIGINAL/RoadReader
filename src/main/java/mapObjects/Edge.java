@@ -4,19 +4,19 @@ import java.util.List;
 
 /**Класс представляет связь между двумя географическими точками (Point).*/
 public class Edge {
-    private final int id;
+    private final long id;
     private final List<Long> idNodes;
-    private final int speed;
+    private final double speed;
     private double length;
 
-    public Edge(int id, List<Long> idNodes, int speed, double length) {
+    public Edge(long id, List<Long> idNodes, int speed, double length) {
         this.id = id;
         this.idNodes = idNodes;
         this.speed = speed;
         this.length = length;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Edge {
         return idNodes.get(idNodes.size() - 1);
     }
 
-    public int getSpeed(){
+    public double getSpeed(){
         return speed;
     }
 

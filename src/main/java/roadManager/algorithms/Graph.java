@@ -2,56 +2,59 @@ package roadManager.algorithms;
 
 import mapObjects.Edge;
 import mapObjects.Node;
+import mapObjects.Way;
 import roadManager.RoadManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.IntPredicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Graph {
-    private Map<Node, List<Edge>> nodes;
+    private Map<Long, Node> nodeMap;
+    private Map<Long, Edge> edgeMap;
+    private Map<Long, List<Long>> relations;
 
-    public Graph(List<Node> nodes, String[] edgesDescriptions){
-         this.nodes = RoadManager.generateGraph(nodes, edgesDescriptions);
+
+    public Graph(Set<Node> allNodes, Set<Long> towerNodes, Set<Way> ways){
+        nodeMap = allNodes.stream()
+                .collect(Collectors.toMap(Node::getId, n -> n));
+        edgeMap = ways.stream().flatMap(way -> way.getEdges(this, towerNodes).stream())
+                .collect(Collectors.toMap(Edge::getId, edge -> edge));
+
     }
 
-    public List<Node> getNodes(){
-        var keys = nodes.keySet();
-        List<Node> nodes = new ArrayList<>();
-        for (Node node : keys) {
-            nodes.add(node);
-        }
+    public Graph(List<Node> relations, String[] edgesDescriptions){
+//         this.relations = RoadManager.generateGraph(relations, edgesDescriptions);
+    }
 
-        return nodes;
+    public Map<Long, List<Long>> getRelations(){
+        return relations;
     }
 
     public List<Edge> getEdgesByNode(Node node){
-        return nodes.get(node);
+        long id = node.getId();
+        /* TODO Попробовать через streamAPI выдать требуемые Edge*/
+        return null;
     }
 
     /**Метод ответить содержит ли граф узел.*/
     public boolean containsNode(Node node){
-        return nodes.containsKey(node);
+        return relations.containsKey(node);
     }
 
     /**Метод ответить есть ли у точки входящие пути.*/
     public boolean hasInputEdge(Node node){
-        List<Edge> edges = nodes.get(node);
-        for (Edge edge : edges){
-/*            if (edge.getFinish().equals(node))
-                return true;*/
-        }
+        // TODO Реализовать.
 
         return false;
     }
 
     /**Метод ответить есть ли у точки исходящие пути.*/
     public boolean hasOutputEdge(Node node){
-        List<Edge> edges = nodes.get(node);
-        for (Edge edge : edges){
-/*            if (!edge.getFinish().equals(node))
-                return true;*/
-        }
+        // TODO Реализовать.
 
         return false;
     }

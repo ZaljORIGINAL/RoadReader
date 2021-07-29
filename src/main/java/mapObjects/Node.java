@@ -2,17 +2,17 @@ package mapObjects;
 
 /**Класс представляет географическую точку на карте.*/
 public class Node {
-    private final int id;
+    private final long id;
     private String name;
     //private int coordinateX;
     //private int coordinateY;
 
-    public Node(int id, String name){
+    public Node(long id, String name){
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

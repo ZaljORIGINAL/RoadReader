@@ -9,10 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OsmParser {
     private final Document document;
@@ -23,7 +20,7 @@ public class OsmParser {
         document = builder.parse(osmFile.toFile());
     }
 
-    public Map<Integer, Way> getWays(){
+    public Map<Integer, Way> getWays() {
         Map<Integer, Way> waysMap = new HashMap<>();
 
         NodeList waysElements = document.getDocumentElement().getElementsByTagName(ParseHelper.WAY_TAG);
@@ -77,8 +74,45 @@ public class OsmParser {
         return waysMap;
     }
 
+    public Set<Long> getTowerNodes(Map<Integer, Way> waysMap) {
+        Set<Long> encounteredNodes = new HashSet<>();
+        Set<Long> result = new HashSet<>();
+
+        for (Map.Entry<Integer, Way> entry : waysMap.entrySet()) {
+            Way way = entry.getValue();
+            List<Long> nodes = way.getNodes();
+            //Устанавливаем первую и последнюю точку как ключевые;
+            encounteredNodes.add(nodes.get(0));
+            encounteredNodes.add(nodes.get(nodes.size()-1));
+
+            //Обработка остальных точек //обычный for
+            for (long nodeId : nodes) {
+                if (encounteredNodes.contains(nodeId))
+                    result.add(nodeId);
+                else
+                    encounteredNodes.add(nodeId);
+            }
+        }
+
+        return result;
+    }
+
+    /* TODO Создать метод convertToWay.
+    *   @params Map<Long, Way> waysMap
+    *   @return Graph graph
+    *   -
+    *   @Description Метод должен на основе переданных дорог выстроить Graph
+    */
+
     private int getIdWayType(String namedItem) {
         List<String> wayTypes = ParseHelper.getWayTypes();
         return wayTypes.indexOf(namedItem);
     }
+
+    /* TODO Создать метод для парсинга точек
+    *   @params Set<Long> idNodes.
+    *   @return Set<Node> nodes.
+    *   -
+    *   @Description Метод должен считать из файла .osm данные для точки.
+    * */
 }
