@@ -48,9 +48,9 @@ public class RoadManager {
             if (finishPoint == null)
                 break;
 
-            Edge distance = new Edge(startPoint, finishPoint, weight);
+/*            Edge distance = new Edge(startPoint, finishPoint, weight);
             graph.get(startPoint).add(distance);
-            graph.get(finishPoint).add(distance);
+            graph.get(finishPoint).add(distance);*/
         }
 
         return graph;

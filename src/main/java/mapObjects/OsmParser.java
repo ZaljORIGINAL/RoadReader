@@ -31,58 +31,54 @@ public class OsmParser {
             Element wayElement = (Element) waysElements.item(wayIndex);
 
             NamedNodeMap wayAttributes = wayElement.getAttributes();
-            int id = Integer.parseInt(wayAttributes.getNamedItem(ParseHelper.ID_ATTRIBUTE).getNodeValue());
 
-            boolean isMotorRoad = true;
-            //По умолчанию считаем односторонне движение
-            byte wayDirection = 0;
+            //По умолчанию считаем, что это не автодорога
+            int wayType = -1;
+            //По умолчанию считаем, что макс скорость 60 км/ч
+            int maxSpeed = 60;
             NodeList objectFields = wayElement.getElementsByTagName(ParseHelper.OTHER_TAG);
             for (int fieldIndex = 0; fieldIndex < objectFields.getLength(); fieldIndex++){
                 Node field = objectFields.item(fieldIndex);
                 NamedNodeMap fieldAttrMap = field.getAttributes();
-                String fieldName = fieldAttrMap.getNamedItem(ParseHelper.KEY_ATTRIBUTE).getNodeValue();
+                String attrName = fieldAttrMap.getNamedItem(ParseHelper.KEY_ATTRIBUTE).getNodeValue();
                 //Проверка типа дороги
-                if (fieldName.equals(ParseHelper.HIGHWAY_FIELD)){
-                    if (!isMotorRoad(
-                            fieldAttrMap.getNamedItem(
-                                    ParseHelper.VALUE_ATTRIBUTE).getNodeValue())){
-                        isMotorRoad = false;
+                if (attrName.equals(ParseHelper.HIGHWAY_FIELD)){
+                    String value = fieldAttrMap.getNamedItem(
+                            ParseHelper.VALUE_ATTRIBUTE).getNodeValue();
+                    wayType = getIdWayType(value);
+                    if (wayType == -1){
                         break;
                     }
                 //Получение направления движения по дороге
-                }else if (fieldName.equals(ParseHelper.ONEWAY_FIELD)) {
-                    wayDirection = ParseHelper.getWayDirectionType(
-                            fieldAttrMap.getNamedItem(
-                                    ParseHelper.VALUE_ATTRIBUTE).getNodeValue());
+                }else if (attrName.equals(ParseHelper.MAX_SPEED_FIELD)){
+
                 }
             }
             //В случае если это не автодорога, то отменяем чтение
-            if (!isMotorRoad)
+            if (wayType == -1)
                 continue;
 
-            //Получение геометрии дороги
+            int id = Integer.parseInt(wayAttributes.getNamedItem(ParseHelper.ID_ATTRIBUTE).getNodeValue());
+
+            //Получение геометрии дороги (точки)
             NodeList nodesList = wayElement.getElementsByTagName(ParseHelper.LINK_TO_NODE_TAG);
-            List<Integer> nodeIdList = new ArrayList<>();
+            List<Long> nodeIdList = new ArrayList<>();
             for (int nodeIndex = 0; nodeIndex < nodesList.getLength(); nodeIndex++){
                 Node idNode = nodesList.item(nodeIndex);
                 Node idAttribute = idNode.getAttributes().getNamedItem(ParseHelper.REF_ATTRIBUTE);
-                int nodeId = Integer.parseInt(idAttribute.getNodeValue());
+                long nodeId = Long.parseLong(idAttribute.getNodeValue());
                 nodeIdList.add(nodeId);
             }
 
-            Way way = new Way(id, nodeIdList, wayDirection);
+            Way way = new Way(id, nodeIdList, wayType, maxSpeed);
             waysMap.put(way.getId(), way);
         }
 
         return waysMap;
     }
 
-    private boolean isMotorRoad(String namedItem) {
-        for (String type : ParseHelper.MOTOR_ROADS_LIST) {
-            if (type.equals(namedItem))
-                return true;
-        }
-
-        return false;
+    private int getIdWayType(String namedItem) {
+        List<String> wayTypes = ParseHelper.getWayTypes();
+        return wayTypes.indexOf(namedItem);
     }
 }

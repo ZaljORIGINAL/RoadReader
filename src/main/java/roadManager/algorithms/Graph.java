@@ -38,8 +38,8 @@ public class Graph {
     public boolean hasInputEdge(Node node){
         List<Edge> edges = nodes.get(node);
         for (Edge edge : edges){
-            if (edge.getFinish().equals(node))
-                return true;
+/*            if (edge.getFinish().equals(node))
+                return true;*/
         }
 
         return false;
@@ -49,8 +49,8 @@ public class Graph {
     public boolean hasOutputEdge(Node node){
         List<Edge> edges = nodes.get(node);
         for (Edge edge : edges){
-            if (!edge.getFinish().equals(node))
-                return true;
+/*            if (!edge.getFinish().equals(node))
+                return true;*/
         }
 
         return false;

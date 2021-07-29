@@ -1,5 +1,8 @@
 package mapObjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class ParseHelper {
     public static final String NODE_TAG = "node";
     public static final String WAY_TAG = "way";
@@ -17,41 +20,40 @@ public abstract class ParseHelper {
     public static final String ONEWAY_FIELD = "oneway";
     public static final String MAX_SPEED_FIELD = "maxspeed";
 
-    public static final String[] MOTOR_ROADS_LIST = {
-            "motorway", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dmotorway
-            "trunk", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dtrunk
-            "primary", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dprimary
-            "secondary", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dsecondary
-            "tertiary", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dtertiary
-            "unclassified", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dunclassified
-            "residential", //https://wiki.openstreetmap.org/wiki/Tag:highway%3Dresidential
-            "motorway_link", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dmotorway_link
-            "trunk_link", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dtrunk_link
-            "primary_link", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dprimary_link
-            "secondary_link", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dsecondary_link
-            "tertiary_link", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dtertiary_link
-            "living_street", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dliving_street
-            "service", //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dservice
-            "track" //https://wiki.openstreetmap.org/wiki/RU:Tag:highway%3Dtrack
-    };
+    public static final String MOTORWAY_TYPE = "motorway";
+    public static final String TRUNK_TYPE = "trunk";
+    public static final String PRIMARY_TYPE = "primary";
+    public static final String SECONDARY_TYPE = "secondary";
+    public static final String TERTIARY_TYPE = "tertiary";
+    public static final String UNCLASSIFIED_TYPE = "unclassified";
+    public static final String RESIDENTIAL_TYPE = "residential";
+    public static final String MOTORWAY_LINK_TYPE = "motorway_link";
+    public static final String TRUNK_LINK_TYPE = "trunk_link";
+    public static final String PRIMARY_LINK_TYPE = "primary_link";
+    public static final String SECONDARY_LINK_TYPE = "secondary_link";
+    public static final String TERTIARY_LINK_TYPE = "tertiary_link";
+    public static final String LIVING_STREET_TYPE = "living_street";
+    public static final String SERVICE_TYPE = "service";
+    public static final String TRACK_TYPE = "track";
 
-    public static final String[] WAY_DIRECTION = {
-            "yes",
-            "no",
-            "-1",
-            "reversible"
-    };
+    public static List<String> getWayTypes() {
+        List<String> waysTypes = new ArrayList<>();
+        waysTypes.add(MOTORWAY_TYPE);
+        waysTypes.add(TRUNK_TYPE);
+        waysTypes.add(PRIMARY_TYPE);
+        waysTypes.add(SECONDARY_TYPE);
+        waysTypes.add(TERTIARY_TYPE);
+        waysTypes.add(UNCLASSIFIED_TYPE);
+        waysTypes.add(RESIDENTIAL_TYPE);
+        waysTypes.add(MOTORWAY_LINK_TYPE);
+        waysTypes.add(TRUNK_LINK_TYPE);
+        waysTypes.add(PRIMARY_LINK_TYPE);
+        waysTypes.add(SECONDARY_LINK_TYPE);
+        waysTypes.add(TERTIARY_LINK_TYPE);
+        waysTypes.add(LIVING_STREET_TYPE);
+        waysTypes.add(SERVICE_TYPE);
+        waysTypes.add(TRACK_TYPE);
 
-    public static byte getWayDirectionType(String value){
-        if (value.equals(WAY_DIRECTION[0]))
-            return 0;
-        else if (value.equals(WAY_DIRECTION[1]))
-            return 1;
-        else if (value.equals(WAY_DIRECTION[2]))
-            return 2;
-        else if (value.equals(WAY_DIRECTION[3]))
-            return 3;
-
-        return -1;
+        return  waysTypes;
     }
 }

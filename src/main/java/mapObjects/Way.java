@@ -1,41 +1,34 @@
 package mapObjects;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Way {
     private final int id;
-    private final List<Integer> idNodes;
-    private final byte surface;
-    private int speed;
-    private byte direction; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
+    private final List<Long> idNodes;
+    private int wayType;
+    private int maxSpeed;
+    //private byte direction; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
 
-    public Way(int id, List<Integer> idNodes, byte direction){
+    public Way(int id, List<Long> idNodes, int wayType, int maxSpeed){
         this.id = id;
         this.idNodes = idNodes;
-        this.direction = direction;
-
-        surface = 0;//asphalt
-        speed = 60;
+        this.wayType = wayType;
+        this.maxSpeed = maxSpeed;
     }
 
     public int getId() {
         return id;
     }
 
-    public List<Integer> getNodes() {
+    public List<Long> getNodes() {
         return idNodes;
     }
 
-    public byte getSurface(){
-        return surface;
+    public int getWayType(){
+        return wayType;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
-
-    public byte getDirection() {
-        return direction;
+    public int getMaxSpeed() {
+        return maxSpeed;
     }
 }

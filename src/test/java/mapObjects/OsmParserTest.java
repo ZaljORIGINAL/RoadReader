@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -24,14 +25,25 @@ public class OsmParserTest {
         if (waysMap.size() != 1)
             fail();
 
-        Way way = waysMap.get(42098172);
+        Way way = waysMap.get(69920363);
+
         if (way == null)
             fail();
+
+        System.out.println("Id: " + way.getId());
+        System.out.println("Node count: " + way.getNodes().size());
+        System.out.println("Way type: " + ParseHelper.getWayTypes().get(way.getWayType()));
+        System.out.println("Max speed: " + way.getMaxSpeed());
 
         if (way.getNodes().size() != 7)
             fail();
 
-        if (way.getDirection() != 0)
+        List<String> wayTypes = ParseHelper.getWayTypes();
+        int primaryId = wayTypes.indexOf(ParseHelper.PRIMARY_TYPE);
+        if (way.getWayType() != primaryId)
+            fail();
+
+        if (way.getMaxSpeed() != 60)
             fail();
     }
 }
