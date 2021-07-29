@@ -5,20 +5,18 @@ import java.util.List;
 
 public class Way {
     private final int id;
-    private List<Integer> idNodes;
-    private byte wayDirection; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
+    private final List<Integer> idNodes;
+    private final byte surface;
+    private int speed;
+    private byte direction; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
 
-    public Way(int id, List<Integer> idNodes, byte wayDirection){
+    public Way(int id, List<Integer> idNodes, byte direction){
         this.id = id;
         this.idNodes = idNodes;
-        this.wayDirection = wayDirection;
-    }
+        this.direction = direction;
 
-    public Way(int id, byte wayDirection){
-        this.id = id;
-        this.wayDirection = wayDirection;
-
-        idNodes = new ArrayList<>();
+        surface = 0;//asphalt
+        speed = 60;
     }
 
     public int getId() {
@@ -29,15 +27,15 @@ public class Way {
         return idNodes;
     }
 
-    public byte getWayDirection() {
-        return wayDirection;
+    public byte getSurface(){
+        return surface;
     }
 
-    public void addNode(int nodeId) {
-        idNodes.add(nodeId);
+    public int getSpeed() {
+        return speed;
     }
 
-    public void removeNode(int nodeId) {
-        idNodes.remove(nodeId);
+    public byte getDirection() {
+        return direction;
     }
 }

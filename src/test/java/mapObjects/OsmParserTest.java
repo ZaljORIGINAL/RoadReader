@@ -31,9 +31,7 @@ public class OsmParserTest {
         if (way.getNodes().size() != 7)
             fail();
 
-        if (way.getWayDirection() != 0)
+        if (way.getDirection() != 0)
             fail();
-
-        System.out.println("Все классно...");
     }
 }
