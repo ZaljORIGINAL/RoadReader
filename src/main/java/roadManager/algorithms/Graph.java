@@ -18,31 +18,46 @@ public class Graph {
     private Map<Long, List<Long>> relations;
 
 
-    public Graph(Set<Node> allNodes, Set<Long> towerNodes, Set<Way> ways){
-        nodeMap = allNodes.stream()
-                .collect(Collectors.toMap(Node::getId, n -> n));
-        edgeMap = ways.stream().flatMap(way -> way.getEdges(this, towerNodes).stream())
+    public Graph(Map<Long, Node> allNodes, Set<Long> towerNodesId, Map<Long, Way> ways){
+        nodeMap = allNodes;
+        Collection<Way> waysCollection = ways.values();
+        edgeMap = waysCollection.stream().flatMap(way -> way.getEdges(this, towerNodesId).stream())
                 .collect(Collectors.toMap(Edge::getId, edge -> edge));
-
+        relations = getRelations(towerNodesId, edgeMap);
     }
 
-    public Graph(List<Node> relations, String[] edgesDescriptions){
-//         this.relations = RoadManager.generateGraph(relations, edgesDescriptions);
-    }
+    private Map<Long, List<Long>> getRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
+        Map<Long, List<Long>> relations = new HashMap<>();
 
-    public Map<Long, List<Long>> getRelations(){
+        for (Long towerId : towerNodesId) {
+            List<Long> dependentEdges = new ArrayList<>();
+            for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
+                Edge edge = entry.getValue();
+                if (edge.getStart() == towerId || edge.getFinish() == towerId)
+                    dependentEdges.add(edge.getId());
+            }
+
+            relations.put(towerId, dependentEdges);
+        }
+
         return relations;
     }
 
-    public List<Edge> getEdgesByNode(Node node){
-        long id = node.getId();
-        /* TODO Попробовать через streamAPI выдать требуемые Edge*/
-        return null;
+    public Node getNodeById(long nodeId) {
+        return nodeMap.get(nodeId);
+    }
+
+    public List<Edge> getEdgesByNodeId(long nodeId) {
+        List<Long> edgesId = relations.get(nodeId);
+
+        return edgesId.stream()
+                .map(edgeId -> edgeMap.get(edgeId))
+                .collect(Collectors.toList());
     }
 
     /**Метод ответить содержит ли граф узел.*/
-    public boolean containsNode(Node node){
-        return relations.containsKey(node);
+    public boolean containsNode(long nodeId){
+        return nodeMap.containsKey(nodeId);
     }
 
     /**Метод ответить есть ли у точки входящие пути.*/

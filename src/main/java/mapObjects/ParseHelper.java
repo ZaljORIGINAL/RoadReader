@@ -14,6 +14,8 @@ public abstract class ParseHelper {
     public static final String REF_ATTRIBUTE = "ref";
     public static final String KEY_ATTRIBUTE = "k";
     public static final String VALUE_ATTRIBUTE = "v";
+    public static final String LAT_ATTRIBUTE = "lat"; //Долгота (ось x)
+    public static final String LON_ATTRIBUTE = "lon"; //Широта (ось x)
 
     //Параметры объектов
     public static final String HIGHWAY_FIELD = "highway";

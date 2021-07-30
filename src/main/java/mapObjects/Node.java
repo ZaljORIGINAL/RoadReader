@@ -3,20 +3,24 @@ package mapObjects;
 /**Класс представляет географическую точку на карте.*/
 public class Node {
     private final long id;
-    private String name;
-    //private int coordinateX;
-    //private int coordinateY;
+    private final double lat;
+    private final double lon;
 
-    public Node(long id, String name){
+    public Node(long id, double lat, double lon){
         this.id = id;
-        this.name = name;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
     }
 }

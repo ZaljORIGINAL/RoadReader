@@ -9,7 +9,7 @@ public class Edge {
     private final double speed;
     private double length;
 
-    public Edge(long id, List<Long> idNodes, int speed, double length) {
+    public Edge(long id, List<Long> idNodes, double speed, double length) {
         this.id = id;
         this.idNodes = idNodes;
         this.speed = speed;

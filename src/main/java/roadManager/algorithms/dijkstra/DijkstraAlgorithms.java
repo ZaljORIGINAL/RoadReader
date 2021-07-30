@@ -28,10 +28,10 @@ public class DijkstraAlgorithms implements Algorithm {
     *  получаемую конечную точку из пути: не является ли она стартовой.*/
     @Override
     public Route calculatePath(Node start, Node finish) {
-        if (!graph.containsNode(start))
+        if (!graph.containsNode(start.getId()))
             return null;
 
-        if (!graph.containsNode(finish))
+        if (!graph.containsNode(finish.getId()))
             return null;
 
         //Проверка: имеет ли стартовая точка исходящие пути

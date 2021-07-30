@@ -3,6 +3,7 @@ package mapObjects;
 import org.w3c.dom.*;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import roadManager.algorithms.Graph;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OsmParser {
     private final Document document;
@@ -20,8 +22,8 @@ public class OsmParser {
         document = builder.parse(osmFile.toFile());
     }
 
-    public Map<Integer, Way> getWays() {
-        Map<Integer, Way> waysMap = new HashMap<>();
+    public Map<Long, Way> getWays() {
+        Map<Long, Way> waysMap = new HashMap<>();
 
         NodeList waysElements = document.getDocumentElement().getElementsByTagName(ParseHelper.WAY_TAG);
         for (int wayIndex = 0; wayIndex < waysElements.getLength(); wayIndex++) {
@@ -74,45 +76,83 @@ public class OsmParser {
         return waysMap;
     }
 
-    public Set<Long> getTowerNodes(Map<Integer, Way> waysMap) {
-        Set<Long> encounteredNodes = new HashSet<>();
-        Set<Long> result = new HashSet<>();
+    public Map<Long, mapObjects.Node> getNodes(Collection<Way> wayCollection){
+        Map<Long, mapObjects.Node> nodesObjectsMap = new HashMap<>();
 
-        for (Map.Entry<Integer, Way> entry : waysMap.entrySet()) {
-            Way way = entry.getValue();
-            List<Long> nodes = way.getNodes();
-            //Устанавливаем первую и последнюю точку как ключевые;
-            encounteredNodes.add(nodes.get(0));
-            encounteredNodes.add(nodes.get(nodes.size()-1));
+        NodeList waysElements = document.getDocumentElement().getElementsByTagName(ParseHelper.NODE_TAG);
+        for (int wayIndex = 0; wayIndex < waysElements.getLength(); wayIndex++) {
+            Element nodeElement = (Element) waysElements.item(wayIndex);
 
-            //Обработка остальных точек //обычный for
-            for (long nodeId : nodes) {
-                if (encounteredNodes.contains(nodeId))
-                    result.add(nodeId);
-                else
-                    encounteredNodes.add(nodeId);
+            NamedNodeMap fieldAttrMap = nodeElement.getAttributes();
+            long id;
+            double lat;
+            double lon;
+
+            //Получаем id
+            String idStr = fieldAttrMap.getNamedItem(ParseHelper.ID_ATTRIBUTE)
+                    .getNodeValue();
+            id = Long.parseLong(idStr);
+
+            boolean isWayNode = false;
+            for (Way way : wayCollection) {
+                List<Long> wayNodesId = way.getNodes();
+                for (Long wayNodeId : wayNodesId) {
+                    if (wayNodeId == id){
+                        isWayNode = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isWayNode){
+                //Получаем lat
+                String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lat = Double.parseDouble(latStr);
+
+                //Получаем lon
+                String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lon = Double.parseDouble(lonStr);
+
+                nodesObjectsMap.put(
+                        id,
+                        new mapObjects.Node(id, lat, lon)
+                );
             }
         }
 
-        return result;
+        return nodesObjectsMap;
     }
 
-    /* TODO Создать метод convertToWay.
-    *   @params Map<Long, Way> waysMap
-    *   @return Graph graph
-    *   -
-    *   @Description Метод должен на основе переданных дорог выстроить Graph
-    */
+    public Graph convertToGraph(Map<Long, Way> waysMap) {
+        Set<Long> waysNodesId = new HashSet<>();
+        Set<Long> towerNodesId = new HashSet<>();
+
+        for (Map.Entry<Long, Way> entry : waysMap.entrySet()) {
+            Way way = entry.getValue();
+            List<Long> nodes = way.getNodes();
+            //Устанавливаем первую и последнюю точку как ключевые;
+            waysNodesId.add(nodes.get(0));
+            waysNodesId.add(nodes.get(nodes.size()-1));
+
+            //Обработка остальных точек //обычный for
+            for (long nodeId : nodes) {
+                if (waysNodesId.contains(nodeId))
+                    towerNodesId.add(nodeId);
+                else
+                    waysNodesId.add(nodeId);
+            }
+        }
+
+        Map<Long, mapObjects.Node> wayNodesObject = getNodes(waysMap.values());
+        Graph graph = new Graph(wayNodesObject, towerNodesId, waysMap);
+
+        return graph;
+    }
 
     private int getIdWayType(String namedItem) {
         List<String> wayTypes = ParseHelper.getWayTypes();
         return wayTypes.indexOf(namedItem);
     }
-
-    /* TODO Создать метод для парсинга точек
-    *   @params Set<Long> idNodes.
-    *   @return Set<Node> nodes.
-    *   -
-    *   @Description Метод должен считать из файла .osm данные для точки.
-    * */
 }

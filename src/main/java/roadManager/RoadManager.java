@@ -13,22 +13,6 @@ import java.util.Map;
 
 /**Класс предоставляет методы для действий и вычислений над географическими точками.*/
 public class RoadManager {
-    public static List<Node> getPoints(){
-        List<Node> points = new ArrayList<>();
-
-        points.add(new Node(1, "Point1"));
-        points.add(new Node(2, "Point2"));
-        points.add(new Node(3, "Point3"));
-        points.add(new Node(4, "Point4"));
-        points.add(new Node(5, "Point5"));
-        points.add(new Node(6, "Point6"));
-        points.add(new Node(7, "Point7"));
-        points.add(new Node(8, "Point8"));
-        points.add(new Node(9, "Point9"));
-
-        return points;
-    }
-
     public static Map<Node, List<Edge>> generateGraph(List<Node> nodes, String[] edgesDescriptions) {
         Map<Node, List<Edge>> graph = new HashMap<>();
         for (Node node : nodes) {

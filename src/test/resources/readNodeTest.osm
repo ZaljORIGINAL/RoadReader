@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="osmconvert 0.8.10" timestamp="2021-07-25T20:21:28Z">
+	<node id="14" lat="55.7303635" lon="52.3894921"/>
+	<node id="41" lat="55.7303635" lon="52.3894921"/>
+	<node id="11" lat="55.7303635" lon="52.3894921"/>
+	<node id="07" lat="55.7303635" lon="52.3894921"/>
+	<node id="27" lat="55.7303635" lon="52.3894921"/>
+	<node id="31" lat="55.7303635" lon="52.3894921"/>
+	<node id="50" lat="55.7303635" lon="52.3894921"/>
+	<node id="73" lat="55.7303635" lon="52.3894921"/>
+	<way id="1">
+		<nd ref="11"/>
+		<nd ref="31"/>
+		<nd ref="27"/>
+		<nd ref="07"/>
+		<tag k="foot" v="no"/>
+		<tag k="highway" v="primary"/>
+		<tag k="lanes" v="3"/>
+		<tag k="lit" v="yes"/>
+		<tag k="maxspeed" v="60"/>
+		<tag k="name" v="проспект Мира"/>
+		<tag k="oneway" v="yes"/>
+		<tag k="surface" v="asphalt"/>
+		<tag k="wikidata" v="Q56546481"/>
+		<tag k="wikipedia" v="ru:Проспект Мира (Набережные Челны)"/>
+	</way>
+	<way id="2">
+		<nd ref="41"/>
+		<nd ref="27"/>
+		<nd ref="50"/>
+		<tag k="foot" v="no"/>
+		<tag k="highway" v="primary"/>
+		<tag k="lanes" v="3"/>
+		<tag k="lit" v="yes"/>
+		<tag k="maxspeed" v="60"/>
+		<tag k="name" v="проспект Мира"/>
+		<tag k="oneway" v="yes"/>
+		<tag k="surface" v="asphalt"/>
+		<tag k="wikidata" v="Q56546481"/>
+		<tag k="wikipedia" v="ru:Проспект Мира (Набережные Челны)"/>
+	</way>
+</osm>
