@@ -1,31 +1,31 @@
 package roadManager.algorithms.dijkstra;
 
 import mapObjects.Edge;
-import mapObjects.Node;
 
 /**Клас предоставляет ячейку для рабты в алгоритме Дейкстрора.
  * т.е. Суммарная длина до конкретного узла и последний предшествующий узел*/
 public class ShortestPath implements Comparable<ShortestPath>{
-    private final Node node;
+    private final long nodeId;
     private final double weight;
-    private final Edge incomingEdge;
+    private final long incomingEdgeId;
 
-    public ShortestPath(Node node, double weight, Edge incomingEdge){
-        this.node = node;
+    public ShortestPath(long nodeId, double weight, long incomingEdgeId){
+        this.nodeId = nodeId;
         this.weight = weight;
-        this.incomingEdge = incomingEdge;
+        this.incomingEdgeId = incomingEdgeId;
     }
 
-    public Node getNode() {
-        return node;
+    /**Вернет id точки от которой надо рассматривать следующие пути.*/
+    public long getNodeId() {
+        return nodeId;
     }
 
     public double getWeight() {
         return weight;
     }
 
-    public Edge getIncomingEdge() {
-        return incomingEdge;
+    public long getIncomingEdgeId() {
+        return incomingEdgeId;
     }
 
     @Override

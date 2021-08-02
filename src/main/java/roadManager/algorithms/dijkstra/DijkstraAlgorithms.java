@@ -15,7 +15,7 @@ public class DijkstraAlgorithms implements Algorithm {
     /*http://proglang.su/java/treeset-class*/
     private TreeSet<ShortestPath> potentialPaths;
 
-    public DijkstraAlgorithms(Graph graph){
+    public DijkstraAlgorithms(Graph graph) {
         this.graph = graph;
         shortestPathMap = new HashMap<>();
         potentialPaths = new TreeSet<>();
@@ -31,36 +31,37 @@ public class DijkstraAlgorithms implements Algorithm {
             return null;
 
         //Проверка: имеет ли стартовая точка исходящие пути
-        if (!graph.hasOutputEdge(start))
+        if (!graph.hasOutputEdge(start.getId()))
             return null;
         //Проверка: имеет ли конечная точка входящие пути
-        if (!graph.hasInputEdge(finish))
+        if (!graph.hasInputEdge(finish.getId()))
             return null;
 
         //Старт алгоритма
         return search(start, finish);
     }
 
-    private Route search(Node start, Node finish){
-        /*ShortestPath actualPath = new ShortestPath(start, 0, null);
-        shortestPathMap.put(start.getId() ,actualPath);
-        while (actualPath.getNode().equals(finish)){
-            Node node = actualPath.getNode();
-            List<Edge> edges = graph.getEdgesByNodeId(node.getId());
+    private Route search(Node start, Node finish) {
+        ShortestPath actualPath = new ShortestPath(start.getId(), 0, -1);
+        shortestPathMap.put(start.getId(), actualPath);
+
+        //Пока точка от которой будут рассматриваться следующие пути не равна конечной
+        while (actualPath.getNodeId() != finish.getId()) {
+            long nodeId = actualPath.getNodeId();
+            List<Edge> edges = graph.getEdgesByNodeId(nodeId);
             for (Edge edge : edges) {
-                ShortestPath path = new ShortestPath(edge.getFinish(), edge.getLength() + actualPath.getWeight(), edge);
-                    *//*TODO Если ранее ранее рассматривался путь к данной точке получить значение, если нет то добавить.
-                    *  Если нынешний маршрут лучше заменить его.*//*
-                    if (!potentialPaths.isEmpty()){
+                if (edge.getStartNodeId() == nodeId && edge.getFinishNodeId() != nodeId){
+                    ShortestPath path = new ShortestPath(edge.getFinishNodeId(), edge.getLength() + actualPath.getWeight(), edge.getId());
+                    if (!potentialPaths.isEmpty()) {
                         ShortestPath alternativePath = getAlternativePath(path);
-                        if (alternativePath != null){
-                            if (path.getWeight() < alternativePath.getWeight()){
+                        if (alternativePath != null) {
+                            if (path.getWeight() < alternativePath.getWeight()) {
                                 potentialPaths.remove(alternativePath);
                                 potentialPaths.add(path);
                             }
-                        }else
+                        } else
                             potentialPaths.add(path);
-                    }else
+                    } else
                         //Добавление первого предполагаемого пути
                         potentialPaths.add(path);
                 }
@@ -68,36 +69,39 @@ public class DijkstraAlgorithms implements Algorithm {
 
             actualPath = potentialPaths.first();
             potentialPaths.remove(actualPath);
-            shortestPathMap.put(actualPath.getNode().getId(), actualPath);
+            shortestPathMap.put(actualPath.getNodeId(), actualPath);
         }
-*/
+
         return buildRoute(start, finish);
     }
 
     private Route buildRoute(Node start, Node finish){
-/*        Stack<Edge> nodeStack = new Stack<>();
+        List<Edge> edgesList = new ArrayList<>();
         ShortestPath shortestPath = shortestPathMap.get(finish.getId());
-        Edge edge = shortestPath.getIncomingEdge();
-        nodeStack.push(edge);
-        while (!edge.getStart().equals(start)){
-            shortestPath = shortestPathMap.get(edge.getStart().getId());
-            edge = shortestPath.getIncomingEdge();
-            nodeStack.push(edge);
+        long edgeId = shortestPath.getIncomingEdgeId();
+        Edge edge = graph.getEdgeById(edgeId);
+        edgesList.add(edge);
+        while (edge.getStartNodeId() != start.getId()){
+            shortestPath = shortestPathMap.get(edge.getStartNodeId());
+            edgeId = shortestPath.getIncomingEdgeId();
+            edge = graph.getEdgeById(edgeId);
+            edgesList.add(edge);
         }
 
-        return new Route(nodeStack, shortestPathMap.get(finish.getId()).getWeight());*/
-        return null;
+        Collections.reverse(edgesList);
+
+        return new Route(edgesList, shortestPathMap.get(finish.getId()).getWeight(), 60);
     }
 
     private ShortestPath getAlternativePath(ShortestPath path){
         Iterator<ShortestPath> iterator = potentialPaths.iterator();
         while (iterator.hasNext()) {
             ShortestPath potentialPath = iterator.next();
-            if (potentialPath.getNode().getId() == path.getNode().getId()) {
+            if (potentialPath.getNodeId() == path.getNodeId()) {
                 return potentialPath;
             }
         }
 
-        return shortestPathMap.get(path.getNode().getId());
+        return shortestPathMap.get(path.getNodeId());
     }
 }

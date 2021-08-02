@@ -1,20 +1,17 @@
 package mapObjects;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**Класс представляет связь между двумя географическими точками (Point).*/
 public class Edge {
     private final long id;
-    private final List<Long> idNodes;
+    private final List<Node> nodes;
     private final double speed;
-    private double length;
+    private final double length;
 
     public Edge(long id, List<Node> nodes, double speed) {
         this.id = id;
-        idNodes = nodes.stream()
-                .map(Node::getId)
-                .collect(Collectors.toList());
+        this.nodes = nodes;
         this.speed = speed;
         this.length = calculateLength(nodes);
     }
@@ -23,12 +20,16 @@ public class Edge {
         return id;
     }
 
-    public long getStart() {
-        return idNodes.get(0);
+    public long getStartNodeId() {
+        return nodes.get(0).getId();
     }
 
-    public long getFinish() {
-        return idNodes.get(idNodes.size() - 1);
+    public long getFinishNodeId() {
+        return nodes.get(nodes.size() - 1).getId();
+    }
+
+    public List<Node> getNodes() {
+        return nodes;
     }
 
     public double getSpeed(){

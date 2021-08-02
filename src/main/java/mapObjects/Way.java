@@ -53,7 +53,7 @@ public class Way {
         for (int index = 1; index < nodes.size(); index++) {
             Node finishNode = nodes.get(index);
             if (towersNodeId.contains(finishNode.getId())){
-                List<Node> edgeNodes = nodes.subList(indexOfStartNode, index + 1);
+                List<Node> edgeNodes = new ArrayList<>(nodes.subList(indexOfStartNode, index + 1));
 
                 idEdgeOfWay++;
                 edgeToReturn.add(new Edge(

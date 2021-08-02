@@ -33,6 +33,9 @@ public class Graph {
         return nodeMap.get(nodeId);
     }
 
+    public Edge getEdgeById(long edgeId) {return edgeMap.get(edgeId);}
+
+    /**Вернет входящие и исходящие грани.*/
     public List<Edge> getEdgesByNodeId(long nodeId) {
         List<Long> edgesId = relations.get(nodeId);
 
@@ -47,23 +50,19 @@ public class Graph {
     }
 
     /**Метод ответить есть ли у точки входящие пути.*/
-    public boolean hasInputEdge(Node node){
-        long nodeId = node.getId();
-
+    public boolean hasInputEdge(long nodeId){
         Collection<Edge> edges = edgeMap.values();
 
         return edges.stream()
-                .anyMatch(edge -> edge.getFinish() == nodeId);
+                .anyMatch(edge -> edge.getFinishNodeId() == nodeId);
     }
 
     /**Метод ответить есть ли у точки исходящие пути.*/
-    public boolean hasOutputEdge(Node node){
-        long nodeId = node.getId();
-
+    public boolean hasOutputEdge(long nodeId){
         Collection<Edge> edges = edgeMap.values();
 
         return edges.stream()
-                .anyMatch(edge -> edge.getStart() == nodeId);
+                .anyMatch(edge -> edge.getStartNodeId() == nodeId);
     }
 
     private Map<Long, List<Long>> buildRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
@@ -73,7 +72,7 @@ public class Graph {
             List<Long> dependentEdges = new ArrayList<>();
             for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
                 Edge edge = entry.getValue();
-                if (edge.getStart() == towerId || edge.getFinish() == towerId)
+                if (edge.getStartNodeId() == towerId || edge.getFinishNodeId() == towerId)
                     dependentEdges.add(edge.getId());
             }
 
