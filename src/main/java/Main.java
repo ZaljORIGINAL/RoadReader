@@ -1,17 +1,12 @@
-import mapObjects.Node;
 import mapObjects.OsmParser;
 import mapObjects.Way;
 import org.xml.sax.SAXException;
-import roadManager.algorithms.Graph;
-import roadManager.RoadManager;
-import roadManager.Route;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Map;
 
 public class Main {

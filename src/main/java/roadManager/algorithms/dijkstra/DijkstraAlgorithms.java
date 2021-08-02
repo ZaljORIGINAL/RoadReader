@@ -11,7 +11,7 @@ import java.util.*;
 /**Класс представляет алгоритм Дейкстры (https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры)*/
 public class DijkstraAlgorithms implements Algorithm {
     private Graph graph;
-    private Map<Integer, ShortestPath> shortestPathMap;
+    private Map<Long, ShortestPath> shortestPathMap;
     /*http://proglang.su/java/treeset-class*/
     private TreeSet<ShortestPath> potentialPaths;
 
@@ -22,10 +22,6 @@ public class DijkstraAlgorithms implements Algorithm {
     }
 
     // https://www.baeldung.com/java-graphs
-    /*TODO Требуется работа с графом. Предоставлять пути и точки должен граф.
-    *  вызывать метод getEdges() из объекта графа. Проверить наличие пути К графу
-    *  и как такого присутствия в переданных точках. Так же сделать проверку на
-    *  получаемую конечную точку из пути: не является ли она стартовой.*/
     @Override
     public Route calculatePath(Node start, Node finish) {
         if (!graph.containsNode(start.getId()))
@@ -48,13 +44,11 @@ public class DijkstraAlgorithms implements Algorithm {
     private Route search(Node start, Node finish){
         /*ShortestPath actualPath = new ShortestPath(start, 0, null);
         shortestPathMap.put(start.getId() ,actualPath);
-        while (true){
+        while (actualPath.getNode().equals(finish)){
             Node node = actualPath.getNode();
-            List<Edge> edges = graph.getEdgesByNode(node);
+            List<Edge> edges = graph.getEdgesByNodeId(node.getId());
             for (Edge edge : edges) {
-                //Проверка на исходящий путь
-                if (!edge.getFinish().equals(node)){
-                    ShortestPath path = new ShortestPath(edge.getFinish(), edge.getLength() + actualPath.getWeight(), edge);
+                ShortestPath path = new ShortestPath(edge.getFinish(), edge.getLength() + actualPath.getWeight(), edge);
                     *//*TODO Если ранее ранее рассматривался путь к данной точке получить значение, если нет то добавить.
                     *  Если нынешний маршрут лучше заменить его.*//*
                     if (!potentialPaths.isEmpty()){
@@ -75,11 +69,9 @@ public class DijkstraAlgorithms implements Algorithm {
             actualPath = potentialPaths.first();
             potentialPaths.remove(actualPath);
             shortestPathMap.put(actualPath.getNode().getId(), actualPath);
-
-            if(actualPath.getNode().equals(finish))
-                return buildRoute(start, finish);
-        }*/
-        return null;
+        }
+*/
+        return buildRoute(start, finish);
     }
 
     private Route buildRoute(Node start, Node finish){

@@ -36,40 +36,45 @@ public class Way {
     }
 
     public Set<Edge> getEdges(Graph graph, Set<Long> towersNodeId) {
-        Set<Integer> indexIds = new HashSet<>();
+        Set<Edge> edgeToReturn = new HashSet<>();
 
-        /*Получаем индексы id тех точек дороги, что являются tower*/
-        for (int indexId = 0; indexId < idNodes.size(); indexId++) {
-            if (towersNodeId.contains(idNodes.get(indexId)))
-                indexIds.add(indexId);
+        //Получаем объекты точек данной дороги для последующего вычисления длины дороги
+        List<Node> nodes = new ArrayList<>();
+        for (Long nodeId : idNodes){
+            Node node = graph.getNodeById(nodeId);
+            nodes.add(node);
         }
 
-        int idGraphOfWay = 0;
-        for (int indexId = 0; indexId < indexIds.size() - 2; indexId++) {
-            List<Long> edgeNodesId = idNodes.subList(indexId, indexId + 1);
+        //Счетчик для id граней
+        int idEdgeOfWay = 0;
+        //Индекс точки начала грани
+        int indexOfStartNode = 0;
+        //Проходимся по остальным
+        for (int index = 1; index < nodes.size(); index++) {
+            Node finishNode = nodes.get(index);
+            if (towersNodeId.contains(finishNode.getId())){
+                List<Node> edgeNodes = nodes.subList(indexOfStartNode, index + 1);
 
-            double length = calculateLength(
-                    graph.getNodeById(edgeNodesId.get(0)),
-                    graph.getNodeById(edgeNodesId.get(edgeNodesId.size()-1)));
+                idEdgeOfWay++;
+                edgeToReturn.add(new Edge(
+                        id * 100 + idEdgeOfWay,
+                        new ArrayList<>(edgeNodes),
+                        speed
+                ));
 
-            idGraphOfWay++;
-            Edge edge = new Edge(
-                    id * 100 + idGraphOfWay,
-                    edgeNodesId,
-                    speed,
-                    length
-            );
+                //В случае свободного движения
+                Collections.reverse(edgeNodes);
+                idEdgeOfWay++;
+                edgeToReturn.add(new Edge(
+                        id * 100 + idEdgeOfWay,
+                        new ArrayList<>(edgeNodes),
+                        speed
+                ));
+                indexOfStartNode = index;
+            }
+
         }
 
-        return new HashSet<>();
-    }
-
-    private double calculateLength(Node start, Node finish){
-/*        double sinD = Math.sin(start.getLat()) * Math.sin(finish.getLat()) +
-                Math.cos(start.getLat()) * Math.cos(finish.getLat()) * Math.cos(start.getLon() - finish.getLon());
-
-        */
-
-        return 0;
+        return edgeToReturn;
     }
 }

@@ -25,7 +25,7 @@ public class OsmParserTest {
         if (waysMap.size() != 1)
             fail();
 
-        Way way = waysMap.get(69920363);
+        Way way = waysMap.get(69920363L);
 
         if (way == null)
             fail();
@@ -79,6 +79,7 @@ public class OsmParserTest {
         }
     }
 
+    @Test
     public void convertToGraphTest() throws ParserConfigurationException, IOException, SAXException {
         URL url = OsmParserTest.class.getResource("/readNodeTest.osm");
         Path path = Paths.get(url.getPath());
@@ -89,6 +90,10 @@ public class OsmParserTest {
         if (graph == null)
             fail();
 
+        if (graph.getAllNodes().size() != 6)
+            fail();
 
+        if (graph.getAllEdges().size() != 8)
+            fail();
     }
 }

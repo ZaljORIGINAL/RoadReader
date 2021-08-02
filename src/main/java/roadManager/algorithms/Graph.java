@@ -3,14 +3,9 @@ package roadManager.algorithms;
 import mapObjects.Edge;
 import mapObjects.Node;
 import mapObjects.Way;
-import roadManager.RoadManager;
 
 import java.util.*;
-import java.util.function.IntPredicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Graph {
     private Map<Long, Node> nodeMap;
@@ -23,24 +18,15 @@ public class Graph {
         Collection<Way> waysCollection = ways.values();
         edgeMap = waysCollection.stream().flatMap(way -> way.getEdges(this, towerNodesId).stream())
                 .collect(Collectors.toMap(Edge::getId, edge -> edge));
-        relations = getRelations(towerNodesId, edgeMap);
+        relations = buildRelations(towerNodesId, edgeMap);
     }
 
-    private Map<Long, List<Long>> getRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
-        Map<Long, List<Long>> relations = new HashMap<>();
+    public Map<Long, Node> getAllNodes(){
+        return nodeMap;
+    }
 
-        for (Long towerId : towerNodesId) {
-            List<Long> dependentEdges = new ArrayList<>();
-            for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
-                Edge edge = entry.getValue();
-                if (edge.getStart() == towerId || edge.getFinish() == towerId)
-                    dependentEdges.add(edge.getId());
-            }
-
-            relations.put(towerId, dependentEdges);
-        }
-
-        return relations;
+    public Map<Long, Edge> getAllEdges(){
+        return edgeMap;
     }
 
     public Node getNodeById(long nodeId) {
@@ -62,15 +48,39 @@ public class Graph {
 
     /**Метод ответить есть ли у точки входящие пути.*/
     public boolean hasInputEdge(Node node){
-        // TODO Реализовать.
+        long nodeId = node.getId();
 
-        return false;
+        Collection<Edge> edges = edgeMap.values();
+
+        return edges.stream()
+                .anyMatch(edge -> edge.getFinish() == nodeId);
     }
 
     /**Метод ответить есть ли у точки исходящие пути.*/
     public boolean hasOutputEdge(Node node){
-        // TODO Реализовать.
+        long nodeId = node.getId();
 
-        return false;
+        Collection<Edge> edges = edgeMap.values();
+
+        return edges.stream()
+                .anyMatch(edge -> edge.getStart() == nodeId);
     }
+
+    private Map<Long, List<Long>> buildRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
+        Map<Long, List<Long>> relations = new HashMap<>();
+
+        for (Long towerId : towerNodesId) {
+            List<Long> dependentEdges = new ArrayList<>();
+            for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
+                Edge edge = entry.getValue();
+                if (edge.getStart() == towerId || edge.getFinish() == towerId)
+                    dependentEdges.add(edge.getId());
+            }
+
+            relations.put(towerId, dependentEdges);
+        }
+
+        return relations;
+    }
+
 }
