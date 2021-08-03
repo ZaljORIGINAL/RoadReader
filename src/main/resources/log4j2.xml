@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://sematext.com/blog/log4j2-tutorial/#toc-log4j-2-configuration-1 -->
+<!-- PatternLayout symbol https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html -->
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5level %d{dd MMM yyyy HH:mm:ss,SSS}: Thread: %t [%C{1}]: %msg %n"/>
+        </Console>
+        <RollingFile name="File"
+                     fileName="appСache/logs/AppLog.log"
+                     filePattern="appСache/logs/$${dd MMM yyyy HH:mm:ss,SSS}-%i.log.gz" append="true">
+            <PatternLayout pattern="%-5level %d{dd MMM yyyy HH:mm:ss,SSS}: Thread: %t [%C{1}]: %msg %n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

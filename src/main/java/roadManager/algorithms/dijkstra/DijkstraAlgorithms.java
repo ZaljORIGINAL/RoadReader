@@ -90,7 +90,7 @@ public class DijkstraAlgorithms implements Algorithm {
 
         Collections.reverse(edgesList);
 
-        return new Route(edgesList, shortestPathMap.get(finish.getId()).getWeight(), 60);
+        return new Route(edgesList);
     }
 
     private ShortestPath getAlternativePath(ShortestPath path){

@@ -21,6 +21,28 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Статья о работе с SLF4J + LOG4J2: https://www.baeldung.com/slf4j-with-log4j2-logback -->
+        <!-- https://search.maven.org/classic/#search%7Cgav%7C1%7Cg%3A"org.apache.logging.log4j"%20AND%20a%3A"log4j-api" -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.14.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.14.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.32</version>
+        </dependency>
     </dependencies>
 
 </project>

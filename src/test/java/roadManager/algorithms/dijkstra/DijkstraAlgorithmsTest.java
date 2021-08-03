@@ -65,17 +65,6 @@ public class DijkstraAlgorithmsTest {
         expected.add(534108441L);
 
         Route route = algorithms.calculatePath(start, finish);
-
-        System.out.println("Расстояние: " + route.getLength());
-        System.out.println("Время на преодоление: " + route.getTime());
-        System.out.println("Двигайтесь по точкам: ");
-        Set<Node> nodes = route.getNodes();
-        nodes.stream()
-                .forEach(node -> System.out.println("\tid: " + node.getId()));
-
-        for (Node node : nodes) {
-            if (!expected.contains(node.getId()))
-                fail();
-        }
+        System.out.println(route.toString());
     }
 }
