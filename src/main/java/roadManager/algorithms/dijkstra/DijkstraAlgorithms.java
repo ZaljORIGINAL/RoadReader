@@ -40,13 +40,11 @@ public class DijkstraAlgorithms {
     /** Алгоритм поиска*/
     private Route search(WeightСalculator weightСalculator, Node start, Node finish) {
         Map<Long, ShortestPath> shortestPathMap = new HashMap<>();
-        /*http://proglang.su/java/treeset-class*/
         PriorityQueue<ShortestPath> queue = new PriorityQueue<>(); //
         double minWeightToEnd = Double.MAX_VALUE;
 
         queue.add(new ShortestPath(start.getId(), 0, -1, null));
 
-        //Пока точка от которой будут рассматриваться следующие пути не равна конечной
         ShortestPath currentPath;
         while (!queue.isEmpty()) {
             currentPath = queue.poll();
@@ -55,10 +53,9 @@ public class DijkstraAlgorithms {
 
             List<Edge> edges = graph.getEdgesByNodeId(currentPath.getNodeId());
 
-            //Проходимся по ИСХОДЯЩИМ граням
             for (Edge edge : edges) {
                 double summaryWeight = weightСalculator.calculate(edge) + currentPath.getWeight();
-                if (summaryWeight > summaryWeight)
+                if (summaryWeight > minWeightToEnd)
                     continue;
 
                 long endNodeId = edge.getEndNodeId(currentPath.getNodeId());
