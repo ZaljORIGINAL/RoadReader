@@ -6,25 +6,27 @@ import java.util.List;
 public class Edge {
     private final long id;
     private final List<Node> nodes;
+    private final boolean oneWay;
     private final double length;
-    private final double time;
+    private final double speed; //set speed
 
-    public Edge(long id, List<Node> nodes, double speed) {
+    public Edge(long id, List<Node> nodes, boolean oneWay, double speed) {
         this.id = id;
         this.nodes = nodes;
+        this.oneWay = oneWay;
         this.length = calculateLength(nodes);
-        this.time = length / (speed * 1000 /60);
+        this.speed = speed;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getStartNodeId() {
+    public long getFirstNodeId() {
         return nodes.get(0).getId();
     }
 
-    public long getFinishNodeId() {
+    public long getLastNodeId() {
         return nodes.get(nodes.size() - 1).getId();
     }
 
@@ -32,12 +34,28 @@ public class Edge {
         return nodes;
     }
 
-    public double getTime(){
-        return time;
+    public boolean isOneWay() {
+        return oneWay;
     }
 
     public double getLength() {
         return length;
+    }
+
+    public double getSpeed(){
+        return speed;
+    }
+
+    public double getTime() {
+        return length / (speed * 1000 / 60);
+    }
+
+    public long getEndNodeId(long nodeId){
+        Node node = nodes.get(0);
+        if (node.getId() == nodeId)
+            return nodes.get(nodes.size() - 1).getId();
+        else
+            return node.getId();
     }
 
     public static double calculateLength(List<Node> nodes){

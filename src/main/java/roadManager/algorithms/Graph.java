@@ -54,7 +54,7 @@ public class Graph {
         Collection<Edge> edges = edgeMap.values();
 
         return edges.stream()
-                .anyMatch(edge -> edge.getFinishNodeId() == nodeId);
+                .anyMatch(edge -> edge.getLastNodeId() == nodeId);
     }
 
     /**Метод ответить есть ли у точки исходящие пути.*/
@@ -62,7 +62,7 @@ public class Graph {
         Collection<Edge> edges = edgeMap.values();
 
         return edges.stream()
-                .anyMatch(edge -> edge.getStartNodeId() == nodeId);
+                .anyMatch(edge -> edge.getFirstNodeId() == nodeId);
     }
 
     private Map<Long, List<Long>> buildRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
@@ -72,7 +72,7 @@ public class Graph {
             List<Long> dependentEdges = new ArrayList<>();
             for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
                 Edge edge = entry.getValue();
-                if (edge.getStartNodeId() == towerId || edge.getFinishNodeId() == towerId)
+                if (edge.getFirstNodeId() == towerId || !edge.isOneWay())
                     dependentEdges.add(edge.getId());
             }
 

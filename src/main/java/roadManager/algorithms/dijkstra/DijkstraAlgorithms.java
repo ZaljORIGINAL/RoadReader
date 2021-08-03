@@ -19,7 +19,7 @@ public class DijkstraAlgorithms {
      * @param weight - служит для определения ключевого параметра, относительно которого будет искаться оптимальный путь.
      * @param start - Стартовая точка.
      * @param finish - Конечная точка.*/
-    public Route calculatePath(SelectedWeight weight, Node start, Node finish) {
+    public Route calculatePath(WeightСalculator weight, Node start, Node finish) {
         if (!graph.containsNode(start.getId()))
             return null;
 
@@ -38,74 +38,57 @@ public class DijkstraAlgorithms {
     }
 
     /** Алгоритм поиска*/
-    private Route search(SelectedWeight weight, Node start, Node finish) {
+    private Route search(WeightСalculator weightСalculator, Node start, Node finish) {
         Map<Long, ShortestPath> shortestPathMap = new HashMap<>();
         /*http://proglang.su/java/treeset-class*/
-        TreeSet<ShortestPath> potentialPaths = new TreeSet<>();
+        PriorityQueue<ShortestPath> queue = new PriorityQueue<>(); //
+        double minWeightToEnd = Double.MAX_VALUE;
 
-        ShortestPath actualPath = new ShortestPath(start.getId(), 0, -1);
-        shortestPathMap.put(start.getId(), actualPath);
+        queue.add(new ShortestPath(start.getId(), 0, -1, null));
 
         //Пока точка от которой будут рассматриваться следующие пути не равна конечной
-        while (actualPath.getNodeId() != finish.getId()) {
-            long nodeId = actualPath.getNodeId();
-            List<Edge> edges = graph.getEdgesByNodeId(nodeId);
+        ShortestPath currentPath;
+        while (!queue.isEmpty()) {
+            currentPath = queue.poll();
+            if (currentPath.getWeight() > minWeightToEnd)
+                break;
+
+            List<Edge> edges = graph.getEdgesByNodeId(currentPath.getNodeId());
+
+            //Проходимся по ИСХОДЯЩИМ граням
             for (Edge edge : edges) {
-                if (edge.getStartNodeId() == nodeId && edge.getFinishNodeId() != nodeId){
-                    ShortestPath path = new ShortestPath(edge.getFinishNodeId(), weight.getWeight(edge) + actualPath.getWeight(), edge.getId());
-                    if (!potentialPaths.isEmpty()) {
-                        ShortestPath alternativePath = getAlternativePath(shortestPathMap, potentialPaths, path);
-                        if (alternativePath != null) {
-                            if (path.getWeight() < alternativePath.getWeight()) {
-                                potentialPaths.remove(alternativePath);
-                                potentialPaths.add(path);
-                            }
-                        } else
-                            potentialPaths.add(path);
-                    } else
-                        //Добавление первого предполагаемого пути
-                        potentialPaths.add(path);
+                double summaryWeight = weightСalculator.calculate(edge) + currentPath.getWeight();
+                if (summaryWeight > summaryWeight)
+                    continue;
+
+                long endNodeId = edge.getEndNodeId(currentPath.getNodeId());
+                ShortestPath shortestPath = shortestPathMap.get(endNodeId);
+                if (shortestPath == null) {
+                    shortestPath = new ShortestPath(endNodeId, summaryWeight, edge.getId(), currentPath);
+                    shortestPathMap.put(endNodeId, shortestPath);
+                    queue.add(shortestPath);
+                } else if (shortestPath.getWeight() > summaryWeight) {
+                    queue.remove(shortestPath);
+                    shortestPath.setWeight(summaryWeight);
+                    shortestPath.setIncomingEdgeId(edge.getId());
+                    shortestPath.setShortestPath(currentPath);
+                    queue.add(shortestPath);
+                } else
+                    continue;
+
+
+                if (endNodeId == finish.getId() && summaryWeight < minWeightToEnd) {
+                    minWeightToEnd = summaryWeight;
                 }
             }
-
-            actualPath = potentialPaths.first();
-            potentialPaths.remove(actualPath);
-            shortestPathMap.put(actualPath.getNodeId(), actualPath);
         }
 
-        return buildRoute(shortestPathMap, start, finish);
+        return buildRoute(shortestPathMap);
     }
 
-    private Route buildRoute(Map<Long, ShortestPath> shortestPathMap , Node start, Node finish){
-        List<Edge> edgesList = new ArrayList<>();
-        ShortestPath shortestPath = shortestPathMap.get(finish.getId());
-        long edgeId = shortestPath.getIncomingEdgeId();
-        Edge edge = graph.getEdgeById(edgeId);
-        edgesList.add(edge);
-        while (edge.getStartNodeId() != start.getId()){
-            shortestPath = shortestPathMap.get(edge.getStartNodeId());
-            edgeId = shortestPath.getIncomingEdgeId();
-            edge = graph.getEdgeById(edgeId);
-            edgesList.add(edge);
-        }
+    private Route buildRoute(Map<Long, ShortestPath> shortestPathMap){
 
-        Collections.reverse(edgesList);
 
         return new Route(edgesList);
-    }
-
-    private ShortestPath getAlternativePath(
-            Map<Long, ShortestPath> shortestPathMap,
-            TreeSet<ShortestPath> potentialPaths,
-            ShortestPath path){
-        Iterator<ShortestPath> iterator = potentialPaths.iterator();
-        while (iterator.hasNext()) {
-            ShortestPath potentialPath = iterator.next();
-            if (potentialPath.getNodeId() == path.getNodeId()) {
-                return potentialPath;
-            }
-        }
-
-        return shortestPathMap.get(path.getNodeId());
     }
 }

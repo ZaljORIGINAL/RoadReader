@@ -93,7 +93,7 @@ public class OsmParserTest {
         if (graph.getAllNodes().size() != 6)
             fail();
 
-        if (graph.getAllEdges().size() != 8)
+        if (graph.getAllEdges().size() != 4)
             fail();
     }
 }

@@ -30,6 +30,7 @@ public class EdgeTest {
         Edge edge = new Edge(
                 1,
                 nodes,
+                true,
                 60
         );
 

@@ -2,13 +2,12 @@ package roadManager.algorithms.dijkstra;
 
 import mapObjects.Node;
 import mapObjects.OsmParser;
-import mapObjects.OsmParserTest;
 import mapObjects.Way;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 import roadManager.Route;
 import roadManager.algorithms.Graph;
-import roadManager.algorithms.dijkstra.WeightTypes.EdgeLength;
+import roadManager.algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -18,9 +17,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 public class DijkstraAlgorithmsTest {
 
@@ -65,7 +61,7 @@ public class DijkstraAlgorithmsTest {
         expected.add(7685119703L);
         expected.add(534108441L);
 
-        Route route = algorithms.calculatePath(new EdgeLength(), start, finish);
+        Route route = algorithms.calculatePath(new LengthWeightCalculator(), start, finish);
         System.out.println(route.toString());
     }
 }

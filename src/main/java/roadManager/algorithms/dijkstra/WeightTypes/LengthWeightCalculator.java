@@ -1,14 +1,14 @@
 package roadManager.algorithms.dijkstra.WeightTypes;
 
 import mapObjects.Edge;
-import roadManager.algorithms.dijkstra.SelectedWeight;
+import roadManager.algorithms.dijkstra.WeightСalculator;
 
 /** Класс служит для извлечения из графа параметра длины грани и выдачи ее как веса грани.*/
-public class EdgeLength extends SelectedWeight {
+public class LengthWeightCalculator extends WeightСalculator {
 
     /**Вернет длину грани, как вес грани.*/
     @Override
-    public double getWeight(Edge edge) {
+    public double calculate(Edge edge) {
         return edge.getLength();
     }
 }

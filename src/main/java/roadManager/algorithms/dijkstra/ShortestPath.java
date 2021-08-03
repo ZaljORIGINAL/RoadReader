@@ -6,13 +6,15 @@ import mapObjects.Edge;
  * т.е. Суммарная длина до конкретного узла и последний предшествующий узел*/
 public class ShortestPath implements Comparable<ShortestPath>{
     private final long nodeId;
-    private final double weight;
-    private final long incomingEdgeId;
+    private double weight;
+    private long incomingEdgeId;
+    private ShortestPath shortestPath;
 
-    public ShortestPath(long nodeId, double weight, long incomingEdgeId){
+    public ShortestPath(long nodeId, double weight, long incomingEdgeId, ShortestPath shortestPath){
         this.nodeId = nodeId;
         this.weight = weight;
         this.incomingEdgeId = incomingEdgeId;
+        this.shortestPath = shortestPath;
     }
 
     /**Вернет id точки от которой надо рассматривать следующие пути.*/
@@ -26,6 +28,18 @@ public class ShortestPath implements Comparable<ShortestPath>{
 
     public long getIncomingEdgeId() {
         return incomingEdgeId;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void setIncomingEdgeId(long incomingEdgeId) {
+        this.incomingEdgeId = incomingEdgeId;
+    }
+
+    public void setShortestPath(ShortestPath shortestPath) {
+        this.shortestPath = shortestPath;
     }
 
     @Override

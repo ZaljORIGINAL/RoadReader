@@ -35,6 +35,8 @@ public class OsmParser {
             int wayType = -1;
             //По умолчанию считаем, что макс скорость 60 км/ч
             int maxSpeed = 60;
+            //По умолчанию считаем, что двухстороннее движение
+            boolean oneWay = false;
             NodeList objectFields = wayElement.getElementsByTagName(ParseHelper.OTHER_TAG);
             for (int fieldIndex = 0; fieldIndex < objectFields.getLength(); fieldIndex++){
                 Node field = objectFields.item(fieldIndex);
@@ -49,8 +51,11 @@ public class OsmParser {
                         break;
                     }
                 //Получение направления движения по дороге
-                }else if (attrName.equals(ParseHelper.MAX_SPEED_FIELD)){
-
+                }else if (attrName.equals(ParseHelper.ONEWAY_FIELD)){
+                    String value = fieldAttrMap.getNamedItem(
+                            ParseHelper.VALUE_ATTRIBUTE).getNodeValue();
+                    if (value.equals("yes"))
+                        oneWay = true;
                 }
             }
             //В случае если это не автодорога, то отменяем чтение
@@ -69,7 +74,7 @@ public class OsmParser {
                 nodeIdList.add(nodeId);
             }
 
-            Way way = new Way(id, nodeIdList, wayType, maxSpeed);
+            Way way = new Way(id, nodeIdList, wayType, maxSpeed, oneWay);
             waysMap.put(way.getId(), way);
         }
 
@@ -146,9 +151,8 @@ public class OsmParser {
         }
 
         Map<Long, mapObjects.Node> wayNodesObject = getNodes(waysMap.values());
-        Graph graph = new Graph(wayNodesObject, towerNodesId, waysMap);
 
-        return graph;
+        return new Graph(wayNodesObject, towerNodesId, waysMap);
     }
 
     private int getIdWayType(String namedItem) {

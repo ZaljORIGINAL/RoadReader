@@ -26,7 +26,7 @@ public class WayTest {
         Graph graph = osmParser.convertToGraph(ways);
         Map<Long, Edge> edgeMap = graph.getAllEdges();
 
-        if (edgeMap.size() != 8)
+        if (edgeMap.size() != 4)
             fail();
     }
 }

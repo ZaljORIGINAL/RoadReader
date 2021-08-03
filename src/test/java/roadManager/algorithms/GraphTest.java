@@ -30,7 +30,7 @@ public class GraphTest {
         //Точка 27, должна содержать 8 граней.
         List<Edge> edges = graph.getEdgesByNodeId(27);
 
-        if (edges.size() != 8)
+        if (edges.size() != 3)
             fail();
     }
 

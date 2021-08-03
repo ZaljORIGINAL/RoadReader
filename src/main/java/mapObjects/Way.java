@@ -8,15 +8,17 @@ import java.util.stream.Collectors;
 public class Way {
     private final long id;
     private final List<Long> idNodes;
-    private int wayType;
-    private double speed;
+    private final int wayType;
+    private final double speed;
     //private byte direction; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
+    private final boolean oneWay;
 
-    public Way(long id, List<Long> idNodes, int wayType, int speed){
+    public Way(long id, List<Long> idNodes, int wayType, int speed, boolean oneWay){
         this.id = id;
         this.idNodes = idNodes;
         this.wayType = wayType;
         this.speed = speed;
+        this.oneWay = oneWay;
     }
 
     public long getId() {
@@ -33,6 +35,10 @@ public class Way {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public boolean getOneWay(){
+        return oneWay;
     }
 
     public Set<Edge> getEdges(Graph graph, Set<Long> towersNodeId) {
@@ -58,21 +64,13 @@ public class Way {
                 idEdgeOfWay++;
                 edgeToReturn.add(new Edge(
                         id * 100 + idEdgeOfWay,
-                        new ArrayList<>(edgeNodes),
+                        edgeNodes,
+                        oneWay,
                         speed
                 ));
 
-                //В случае свободного движения
-                Collections.reverse(edgeNodes);
-                idEdgeOfWay++;
-                edgeToReturn.add(new Edge(
-                        id * 100 + idEdgeOfWay,
-                        new ArrayList<>(edgeNodes),
-                        speed
-                ));
                 indexOfStartNode = index;
             }
-
         }
 
         return edgeToReturn;

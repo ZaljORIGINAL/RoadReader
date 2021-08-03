@@ -1,14 +1,14 @@
 package roadManager.algorithms.dijkstra.WeightTypes;
 
 import mapObjects.Edge;
-import roadManager.algorithms.dijkstra.SelectedWeight;
+import roadManager.algorithms.dijkstra.WeightСalculator;
 
 /**Класс служит для извлечения из графа параметра времени на преодоление грани и выдачи ее как веса грани.*/
-public class EdgeTime extends SelectedWeight {
+public class TimeWeightCalculator extends WeightСalculator {
 
     /**Вернет время затрачиваемое на преодоление грани, как вес грани.*/
     @Override
-    public double getWeight(Edge edge) {
-        return edge.getTime();
+    public double calculate(Edge edge) {
+        return edge.getSpeed();
     }
 }
