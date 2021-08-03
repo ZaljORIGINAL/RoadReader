@@ -6,14 +6,14 @@ import java.util.List;
 public class Edge {
     private final long id;
     private final List<Node> nodes;
-    private final double speed;
     private final double length;
+    private final double time;
 
     public Edge(long id, List<Node> nodes, double speed) {
         this.id = id;
         this.nodes = nodes;
-        this.speed = speed;
         this.length = calculateLength(nodes);
+        this.time = length / (speed * 1000 /60);
     }
 
     public long getId() {
@@ -32,8 +32,8 @@ public class Edge {
         return nodes;
     }
 
-    public double getSpeed(){
-        return speed;
+    public double getTime(){
+        return time;
     }
 
     public double getLength() {

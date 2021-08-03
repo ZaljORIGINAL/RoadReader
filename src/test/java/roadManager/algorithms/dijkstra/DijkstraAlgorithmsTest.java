@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import roadManager.Route;
 import roadManager.algorithms.Graph;
+import roadManager.algorithms.dijkstra.WeightTypes.EdgeLength;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class DijkstraAlgorithmsTest {
         expected.add(7685119703L);
         expected.add(534108441L);
 
-        Route route = algorithms.calculatePath(start, finish);
+        Route route = algorithms.calculatePath(new EdgeLength(), start, finish);
         System.out.println(route.toString());
     }
 }

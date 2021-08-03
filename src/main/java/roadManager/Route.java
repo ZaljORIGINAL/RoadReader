@@ -9,11 +9,11 @@ import java.util.Set;
 
 /**Класс представляет маршрут от стартовой точки до конечной*/
 public class Route {
-    private Set<Node> nodes;
+    private final Set<Node> nodes;
     //Длина измеряется в метрах.
-    private double length;
+    private final double length;
     //Время измеряется в минутах.
-    private double time;
+    private final double time;
 
     public Route(List<Edge> edges){
         nodes = new HashSet<>();
@@ -23,25 +23,29 @@ public class Route {
             List<Node> nodes = edge.getNodes();
             this.nodes.addAll(nodes);
             length += edge.getLength();
-            time += edge.getLength() / (edge.getSpeed() * 1000 /60);
+            time += edge.getTime();
         }
 
         this.length = length;
         this.time = time;
     }
 
+    /**Возвращает список последовательных точек маршрута.*/
     public Set<Node> getNodes() {
         return nodes;
     }
 
+    /**Возвращает длину маршрута.*/
     public double getLength() {
         return length;
     }
 
+    /**Возвращает предполагаемое время на преодоление маршрута.*/
     public double getTime() {
         return time;
     }
 
+    /**Получение информации по маршруту: Длина маршрута, время на преодоление, список последовательных точек.*/
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();

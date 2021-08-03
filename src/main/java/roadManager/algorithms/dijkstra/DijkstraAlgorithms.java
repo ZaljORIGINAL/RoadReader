@@ -2,28 +2,24 @@ package roadManager.algorithms.dijkstra;
 
 import mapObjects.Edge;
 import mapObjects.Node;
-import roadManager.algorithms.Algorithm;
 import roadManager.algorithms.Graph;
 import roadManager.Route;
 
 import java.util.*;
 
 /**Класс представляет алгоритм Дейкстры (https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры)*/
-public class DijkstraAlgorithms implements Algorithm {
+public class DijkstraAlgorithms {
     private Graph graph;
-    private Map<Long, ShortestPath> shortestPathMap;
-    /*http://proglang.su/java/treeset-class*/
-    private TreeSet<ShortestPath> potentialPaths;
 
     public DijkstraAlgorithms(Graph graph) {
         this.graph = graph;
-        shortestPathMap = new HashMap<>();
-        potentialPaths = new TreeSet<>();
     }
 
-    // https://www.baeldung.com/java-graphs
-    @Override
-    public Route calculatePath(Node start, Node finish) {
+    /**Вычисление маршрута в зависимости от ключевого параметра: длина, скорость, оптимальность.
+     * @param weight - служит для определения ключевого параметра, относительно которого будет искаться оптимальный путь.
+     * @param start - Стартовая точка.
+     * @param finish - Конечная точка.*/
+    public Route calculatePath(SelectedWeight weight, Node start, Node finish) {
         if (!graph.containsNode(start.getId()))
             return null;
 
@@ -38,10 +34,15 @@ public class DijkstraAlgorithms implements Algorithm {
             return null;
 
         //Старт алгоритма
-        return search(start, finish);
+        return search(weight, start, finish);
     }
 
-    private Route search(Node start, Node finish) {
+    /** Алгоритм поиска*/
+    private Route search(SelectedWeight weight, Node start, Node finish) {
+        Map<Long, ShortestPath> shortestPathMap = new HashMap<>();
+        /*http://proglang.su/java/treeset-class*/
+        TreeSet<ShortestPath> potentialPaths = new TreeSet<>();
+
         ShortestPath actualPath = new ShortestPath(start.getId(), 0, -1);
         shortestPathMap.put(start.getId(), actualPath);
 
@@ -51,9 +52,9 @@ public class DijkstraAlgorithms implements Algorithm {
             List<Edge> edges = graph.getEdgesByNodeId(nodeId);
             for (Edge edge : edges) {
                 if (edge.getStartNodeId() == nodeId && edge.getFinishNodeId() != nodeId){
-                    ShortestPath path = new ShortestPath(edge.getFinishNodeId(), edge.getLength() + actualPath.getWeight(), edge.getId());
+                    ShortestPath path = new ShortestPath(edge.getFinishNodeId(), weight.getWeight(edge) + actualPath.getWeight(), edge.getId());
                     if (!potentialPaths.isEmpty()) {
-                        ShortestPath alternativePath = getAlternativePath(path);
+                        ShortestPath alternativePath = getAlternativePath(shortestPathMap, potentialPaths, path);
                         if (alternativePath != null) {
                             if (path.getWeight() < alternativePath.getWeight()) {
                                 potentialPaths.remove(alternativePath);
@@ -72,10 +73,10 @@ public class DijkstraAlgorithms implements Algorithm {
             shortestPathMap.put(actualPath.getNodeId(), actualPath);
         }
 
-        return buildRoute(start, finish);
+        return buildRoute(shortestPathMap, start, finish);
     }
 
-    private Route buildRoute(Node start, Node finish){
+    private Route buildRoute(Map<Long, ShortestPath> shortestPathMap , Node start, Node finish){
         List<Edge> edgesList = new ArrayList<>();
         ShortestPath shortestPath = shortestPathMap.get(finish.getId());
         long edgeId = shortestPath.getIncomingEdgeId();
@@ -93,7 +94,10 @@ public class DijkstraAlgorithms implements Algorithm {
         return new Route(edgesList);
     }
 
-    private ShortestPath getAlternativePath(ShortestPath path){
+    private ShortestPath getAlternativePath(
+            Map<Long, ShortestPath> shortestPathMap,
+            TreeSet<ShortestPath> potentialPaths,
+            ShortestPath path){
         Iterator<ShortestPath> iterator = potentialPaths.iterator();
         while (iterator.hasNext()) {
             ShortestPath potentialPath = iterator.next();
