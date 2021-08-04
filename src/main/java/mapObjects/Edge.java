@@ -1,6 +1,10 @@
 package mapObjects;
 
+import roadManager.algorithms.GeographicPoint;
+
 import java.util.List;
+
+import static roadManager.algorithms.GeometryUtils.calculatePointToPointDistance;
 
 /**Класс представляет связь между двумя географическими точками (Point).*/
 public class Edge {
@@ -42,7 +46,7 @@ public class Edge {
         return length;
     }
 
-    public double getSpeed(){
+    public double getSpeed() {
         return speed;
     }
 
@@ -50,7 +54,7 @@ public class Edge {
         return length / (speed * 1000 / 60);
     }
 
-    public long getEndNodeId(long nodeId){
+    public long getEndNodeId(long nodeId) {
         Node node = nodes.get(0);
         if (node.getId() == nodeId)
             return nodes.get(nodes.size() - 1).getId();
@@ -58,32 +62,16 @@ public class Edge {
             return node.getId();
     }
 
-    public static double calculateLength(List<Node> nodes){
+    public static double calculateLength(List<Node> nodes) {
         double length = 0;
-        for (int index = 0; index < nodes.size() - 1; index++){
+        for (int index = 0; index < nodes.size() - 1; index++) {
             double distance = calculatePointToPointDistance(
-                    nodes.get(index),
-                    nodes.get(index + 1));
+                    new GeographicPoint(nodes.get(index)),
+                    new GeographicPoint(nodes.get(index + 1)));
 
-            length+= distance;
+            length += distance;
         }
 
         return length;
-    }
-
-    public static double calculatePointToPointDistance(Node node1, Node node2){
-        double R = 6378137;
-        double C = Math.PI/180;
-
-        double X1 = Math.cos(C * node1.getLat()) * Math.cos(C * node1.getLon());
-        double X2 = Math.cos(C * node2.getLat()) * Math.cos(C * node2.getLon());
-
-        double Y1 = Math.cos(C * node1.getLat()) * Math.sin(C * node1.getLon());
-        double Y2 = Math.cos(C * node2.getLat()) * Math.sin(C * node2.getLon());
-
-        double Z1 = Math.sin(C * node1.getLat());
-        double Z2 = Math.sin(C * node2.getLat());
-
-        return R * Math.acos(X1 * X2 + Y1 * Y2 + Z1 * Z2);
     }
 }

@@ -1,11 +1,12 @@
 package mapObjects;
 
 import org.junit.Test;
+import roadManager.algorithms.GeographicPoint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static roadManager.algorithms.GeometryUtils.calculatePointToPointDistance;
 import static org.junit.Assert.*;
 
 public class EdgeTest {
@@ -52,7 +53,9 @@ public class EdgeTest {
         Node node1 = new Node(529157935L, 55.7517270, 52.4063369);
         Node node2 = new Node(529157927,  55.7565519, 52.3981278);
 
-        double distance = Edge.calculatePointToPointDistance(node1, node2);
+        double distance = calculatePointToPointDistance(
+                new GeographicPoint(node1),
+                new GeographicPoint(node2));
 
         //Ранее вычислимый результат 743.5996738753779
         System.out.println("Дистанция: " + distance);

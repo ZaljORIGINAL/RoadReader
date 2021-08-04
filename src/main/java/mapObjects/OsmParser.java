@@ -113,7 +113,7 @@ public class OsmParser {
             lat = Double.parseDouble(latStr);
 
             //Получаем lon
-            String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+            String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LON_ATTRIBUTE)
                     .getNodeValue();
             lon = Double.parseDouble(lonStr);
 

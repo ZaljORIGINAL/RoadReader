@@ -21,7 +21,7 @@ public class OsmParserTest {
     @Test
     public void getWaysTest() throws URISyntaxException, ParserConfigurationException, IOException, SAXException {
         URL url = OsmParserTest.class.getResource("/wayDataTest.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         if (waysMap.size() != 1)
@@ -82,9 +82,9 @@ public class OsmParserTest {
     }*/
 
     @Test
-    public void convertToGraphTest() throws ParserConfigurationException, IOException, SAXException {
+    public void convertToGraphTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = OsmParserTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         Graph graph = parser.convertToGraph(waysMap);

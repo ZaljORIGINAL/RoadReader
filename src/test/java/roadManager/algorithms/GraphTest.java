@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,9 +21,9 @@ import static org.junit.Assert.*;
 public class GraphTest {
 
     @Test
-    public void getEdgesByNodeIdTest() throws ParserConfigurationException, IOException, SAXException {
+    public void getEdgesByNodeIdTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = GraphTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         Graph graph = parser.convertToGraph(waysMap);
@@ -35,9 +36,9 @@ public class GraphTest {
     }
 
     @Test
-    public void containsNodeTest() throws ParserConfigurationException, IOException, SAXException {
+    public void containsNodeTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = GraphTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         Graph graph = parser.convertToGraph(waysMap);
@@ -47,9 +48,9 @@ public class GraphTest {
     }
 
     @Test
-    public void hasInputEdgeTest() throws ParserConfigurationException, IOException, SAXException {
+    public void hasInputEdgeTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = GraphTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         Graph graph = parser.convertToGraph(waysMap);
@@ -59,9 +60,9 @@ public class GraphTest {
     }
 
     @Test
-    public void hasOutputEdgeTest() throws ParserConfigurationException, IOException, SAXException {
+    public void hasOutputEdgeTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = GraphTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         Graph graph = parser.convertToGraph(waysMap);
