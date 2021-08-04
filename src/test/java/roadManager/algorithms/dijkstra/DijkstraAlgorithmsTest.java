@@ -10,7 +10,9 @@ import roadManager.algorithms.Graph;
 import roadManager.algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,9 +23,9 @@ import java.util.Map;
 public class DijkstraAlgorithmsTest {
 
     @Test
-    public void findingShortestRoute() throws ParserConfigurationException, IOException, SAXException {
+    public void findingShortestRoute() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = DijkstraAlgorithmsTest.class.getResource("/toParseSmal.osm");
-        Path path = Paths.get(url.getPath());
+        Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
         Graph graph = parser.convertToGraph(waysMap);

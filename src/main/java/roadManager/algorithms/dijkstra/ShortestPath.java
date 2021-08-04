@@ -30,6 +30,10 @@ public class ShortestPath implements Comparable<ShortestPath>{
         return incomingEdgeId;
     }
 
+    public ShortestPath getShortestPath() {
+        return shortestPath;
+    }
+
     public void setWeight(double weight) {
         this.weight = weight;
     }

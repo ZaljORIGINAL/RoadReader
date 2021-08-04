@@ -1,5 +1,7 @@
 package mapObjects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -14,6 +16,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class OsmParser {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OsmParser.class);
+
     private final Document document;
 
     public OsmParser(Path osmFile) throws ParserConfigurationException, IOException, SAXException {
@@ -149,6 +153,7 @@ public class OsmParser {
                     waysNodesId.add(nodeId);
             }
         }
+        LOGGER.info("Количество ключевых точек: " + towerNodesId.size());
 
         Map<Long, mapObjects.Node> wayNodesObject = getNodes(waysMap.values());
 

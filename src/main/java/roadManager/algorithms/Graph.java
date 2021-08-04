@@ -3,11 +3,15 @@ package roadManager.algorithms;
 import mapObjects.Edge;
 import mapObjects.Node;
 import mapObjects.Way;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Graph {
+    private static final Logger logger = LoggerFactory.getLogger(Graph.class);
+
     private Map<Long, Node> nodeMap;
     private Map<Long, Edge> edgeMap;
     private Map<Long, List<Long>> relations;
@@ -18,7 +22,9 @@ public class Graph {
         Collection<Way> waysCollection = ways.values();
         edgeMap = waysCollection.stream().flatMap(way -> way.getEdges(this, towerNodesId).stream())
                 .collect(Collectors.toMap(Edge::getId, edge -> edge));
+        logger.info("Количество граней: " + edgeMap.size());
         relations = buildRelations(towerNodesId, edgeMap);
+        logger.info("Зависимости выстроены: " + relations.size());
     }
 
     public Map<Long, Node> getAllNodes(){
@@ -72,7 +78,9 @@ public class Graph {
             List<Long> dependentEdges = new ArrayList<>();
             for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
                 Edge edge = entry.getValue();
-                if (edge.getFirstNodeId() == towerId || !edge.isOneWay())
+                if (edge.getFirstNodeId() == towerId)
+                    dependentEdges.add(edge.getId());
+                else if (edge.getLastNodeId() == towerId && !edge.isOneWay())
                     dependentEdges.add(edge.getId());
             }
 

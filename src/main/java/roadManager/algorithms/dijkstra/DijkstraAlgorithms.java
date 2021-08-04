@@ -48,6 +48,9 @@ public class DijkstraAlgorithms {
         ShortestPath currentPath;
         while (!queue.isEmpty()) {
             currentPath = queue.poll();
+
+            if (currentPath.getNodeId() == finish.getId())
+                return buildRoute(currentPath);
             if (currentPath.getWeight() > minWeightToEnd)
                 break;
 
@@ -73,19 +76,22 @@ public class DijkstraAlgorithms {
                 } else
                     continue;
 
-
                 if (endNodeId == finish.getId() && summaryWeight < minWeightToEnd) {
                     minWeightToEnd = summaryWeight;
                 }
             }
         }
 
-        return buildRoute(shortestPathMap);
+        return null;
     }
 
-    private Route buildRoute(Map<Long, ShortestPath> shortestPathMap){
+    private Route buildRoute(ShortestPath shortestPath){
+        List<Edge> edges = new ArrayList<>();
+        do {
+            edges.add(graph.getEdgeById(shortestPath.getIncomingEdgeId()));
+            shortestPath = shortestPath.getShortestPath();
+        }while (shortestPath.getIncomingEdgeId() != -1);
 
-
-        return new Route(edgesList);
+        return new Route(edges);
     }
 }
