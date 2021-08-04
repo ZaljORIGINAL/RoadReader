@@ -1,6 +1,8 @@
 package mapObjects;
 
 import org.junit.Test;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 import roadManager.algorithms.Graph;
 
@@ -47,7 +49,7 @@ public class OsmParserTest {
             fail();
     }
 
-    @Test
+/*    @Test
     public void getNodesTest() throws ParserConfigurationException, IOException, SAXException {
         URL url = OsmParserTest.class.getResource("/readNodeTest.osm");
         Path path = Paths.get(url.getPath());
@@ -77,7 +79,7 @@ public class OsmParserTest {
             if (node != null)
                 fail();
         }
-    }
+    }*/
 
     @Test
     public void convertToGraphTest() throws ParserConfigurationException, IOException, SAXException {
@@ -96,4 +98,152 @@ public class OsmParserTest {
         if (graph.getAllEdges().size() != 4)
             fail();
     }
+
+/*    public void hhh(){
+        int nodesIdsListLength = nodesElements.getLength();
+        int countElementsToOneThread = nodesIdsListLength/4;
+        Thread thread1 = new Thread(() -> {
+            for (int index = 0; index < countElementsToOneThread; index++){
+                LOGGER.info("Обрабатывается " + index + 1 +" из " + nodesElements.getLength());
+                Element nodeElement = (Element) nodesElements.item(index);
+
+                NamedNodeMap fieldAttrMap = nodeElement.getAttributes();
+                long id;
+                double lat;
+                double lon;
+
+                //Получаем id
+                String idStr = fieldAttrMap.getNamedItem(ParseHelper.ID_ATTRIBUTE)
+                        .getNodeValue();
+                id = Long.parseLong(idStr);
+
+                if (!nodesIds.contains(id))
+                    continue;
+
+                //Получаем lat
+                String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lat = Double.parseDouble(latStr);
+
+                //Получаем lon
+                String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lon = Double.parseDouble(lonStr);
+
+                nodesObjectsMap.put(
+                        id,
+                        new mapObjects.Node(id, lat, lon)
+                );
+            }
+        });
+        thread1.start();
+
+        Thread thread2 = new Thread(() -> {
+            for (int index = countElementsToOneThread; index < countElementsToOneThread * 2; index++){
+                LOGGER.info("Обрабатывается " + index + 1 +" из " + nodesElements.getLength());
+                Element nodeElement = (Element) nodesElements.item(index);
+
+                NamedNodeMap fieldAttrMap = nodeElement.getAttributes();
+                long id;
+                double lat;
+                double lon;
+
+                //Получаем id
+                String idStr = fieldAttrMap.getNamedItem(ParseHelper.ID_ATTRIBUTE)
+                        .getNodeValue();
+                id = Long.parseLong(idStr);
+
+                if (!nodesIds.contains(id))
+                    continue;
+
+                //Получаем lat
+                String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lat = Double.parseDouble(latStr);
+
+                //Получаем lon
+                String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lon = Double.parseDouble(lonStr);
+
+                nodesObjectsMap.put(
+                        id,
+                        new mapObjects.Node(id, lat, lon)
+                );
+            }
+        });
+        thread2.start();
+
+        Thread thread3 = new Thread(() -> {
+            for (int index = countElementsToOneThread * 2; index < countElementsToOneThread * 3; index++){
+                LOGGER.info("Обрабатывается " + index + 1 +" из " + nodesElements.getLength());
+                Element nodeElement = (Element) nodesElements.item(index);
+
+                NamedNodeMap fieldAttrMap = nodeElement.getAttributes();
+                long id;
+                double lat;
+                double lon;
+
+                //Получаем id
+                String idStr = fieldAttrMap.getNamedItem(ParseHelper.ID_ATTRIBUTE)
+                        .getNodeValue();
+                id = Long.parseLong(idStr);
+
+                if (!nodesIds.contains(id))
+                    continue;
+
+                //Получаем lat
+                String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lat = Double.parseDouble(latStr);
+
+                //Получаем lon
+                String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lon = Double.parseDouble(lonStr);
+
+                nodesObjectsMap.put(
+                        id,
+                        new mapObjects.Node(id, lat, lon)
+                );
+            }
+        });
+        thread3.start();
+
+        Thread thread4 = new Thread(() -> {
+            for (int index = countElementsToOneThread * 3; index < nodesElements.getLength(); index++){
+                LOGGER.info("Обрабатывается " + index + 1 +" из " + nodesElements.getLength());
+                Element nodeElement = (Element) nodesElements.item(index);
+
+                NamedNodeMap fieldAttrMap = nodeElement.getAttributes();
+                long id;
+                double lat;
+                double lon;
+
+                //Получаем id
+                String idStr = fieldAttrMap.getNamedItem(ParseHelper.ID_ATTRIBUTE)
+                        .getNodeValue();
+                id = Long.parseLong(idStr);
+
+                if (!nodesIds.contains(id))
+                    continue;
+
+                //Получаем lat
+                String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lat = Double.parseDouble(latStr);
+
+                //Получаем lon
+                String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                        .getNodeValue();
+                lon = Double.parseDouble(lonStr);
+
+                nodesObjectsMap.put(
+                        id,
+                        new mapObjects.Node(id, lat, lon)
+                );
+            }
+        });
+        thread4.start();
+    }*/
 }

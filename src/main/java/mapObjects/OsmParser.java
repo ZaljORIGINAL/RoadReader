@@ -85,12 +85,14 @@ public class OsmParser {
         return waysMap;
     }
 
-    public Map<Long, mapObjects.Node> getNodes(Collection<Way> wayCollection){
+    public Map<Long, mapObjects.Node> getNodes(Set<Long> nodesIds){
         Map<Long, mapObjects.Node> nodesObjectsMap = new HashMap<>();
 
-        NodeList waysElements = document.getDocumentElement().getElementsByTagName(ParseHelper.NODE_TAG);
-        for (int wayIndex = 0; wayIndex < waysElements.getLength(); wayIndex++) {
-            Element nodeElement = (Element) waysElements.item(wayIndex);
+        NodeList nodesElements = document.getDocumentElement().getElementsByTagName(ParseHelper.NODE_TAG);
+
+        for (int nodeIndex = 0; nodeIndex < nodesElements.getLength(); nodeIndex++) {
+            LOGGER.info("Обрабатывается " + nodeIndex +" из " + nodesElements.getLength());
+            Element nodeElement = (Element) nodesElements.item(nodeIndex);
 
             NamedNodeMap fieldAttrMap = nodeElement.getAttributes();
             long id;
@@ -102,33 +104,23 @@ public class OsmParser {
                     .getNodeValue();
             id = Long.parseLong(idStr);
 
-            boolean isWayNode = false;
-            for (Way way : wayCollection) {
-                List<Long> wayNodesId = way.getNodes();
-                for (Long wayNodeId : wayNodesId) {
-                    if (wayNodeId == id){
-                        isWayNode = true;
-                        break;
-                    }
-                }
-            }
+            if (!nodesIds.contains(id))
+                continue;
 
-            if (isWayNode){
-                //Получаем lat
-                String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
-                        .getNodeValue();
-                lat = Double.parseDouble(latStr);
+            //Получаем lat
+            String latStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                    .getNodeValue();
+            lat = Double.parseDouble(latStr);
 
-                //Получаем lon
-                String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
-                        .getNodeValue();
-                lon = Double.parseDouble(lonStr);
+            //Получаем lon
+            String lonStr = fieldAttrMap.getNamedItem(ParseHelper.LAT_ATTRIBUTE)
+                    .getNodeValue();
+            lon = Double.parseDouble(lonStr);
 
-                nodesObjectsMap.put(
-                        id,
-                        new mapObjects.Node(id, lat, lon)
-                );
-            }
+            nodesObjectsMap.put(
+                    id,
+                    new mapObjects.Node(id, lat, lon)
+            );
         }
 
         return nodesObjectsMap;
@@ -155,7 +147,8 @@ public class OsmParser {
         }
         LOGGER.info("Количество ключевых точек: " + towerNodesId.size());
 
-        Map<Long, mapObjects.Node> wayNodesObject = getNodes(waysMap.values());
+        Map<Long, mapObjects.Node> wayNodesObject = getNodes(waysNodesId);
+        LOGGER.info("Количество полученных объектов точек: " + wayNodesObject.size());
 
         return new Graph(wayNodesObject, towerNodesId, waysMap);
     }

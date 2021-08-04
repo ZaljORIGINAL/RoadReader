@@ -21,7 +21,7 @@ public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
-        URL url = Main.class.getResource("/toParse.osm");
+        URL url = Main.class.getResource("/toParseSmall.osm");
         Path path = Paths.get(url.toURI());
         OsmParser parser = new OsmParser(path);
         Map<Long, Way> waysMap = parser.getWays();
@@ -31,8 +31,8 @@ public class Main {
 
         //Поиск кратчайшего пути
         DijkstraAlgorithms algorithm = new DijkstraAlgorithms(graph);
-        Node start = new Node(676981532L, 55.7413989, 52.4110127);
-        Node finish = new Node(506657926L,   55.7492786, 52.4191182);
+        Node start = new Node(667759139L, 55.7382326, 52.3858329);
+        Node finish = new Node(516329569L, 55.7392678, 52.3792657);
 
         Route route = algorithm.calculatePath(new LengthWeightCalculator(), start, finish);
         System.out.println(route.toString());

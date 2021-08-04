@@ -92,6 +92,7 @@ public class DijkstraAlgorithms {
             shortestPath = shortestPath.getShortestPath();
         }while (shortestPath.getIncomingEdgeId() != -1);
 
-        return new Route(edges);
+        Collections.reverse(edges);
+        return new Route(edges, shortestPath.getNodeId());
     }
 }
