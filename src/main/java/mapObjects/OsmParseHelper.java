@@ -3,7 +3,7 @@ package mapObjects;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ParseHelper {
+public abstract class OsmParseHelper {
     public static final String NODE_TAG = "node";
     public static final String WAY_TAG = "way";
     public static final String LINK_TO_NODE_TAG = "nd";

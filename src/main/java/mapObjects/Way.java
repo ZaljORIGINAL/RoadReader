@@ -13,7 +13,7 @@ public class Way {
     //private byte direction; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
     private final boolean oneWay;
 
-    public Way(long id, List<Long> idNodes, int wayType, int speed, boolean oneWay){
+    public Way(long id, List<Long> idNodes, int wayType, double speed, boolean oneWay){
         this.id = id;
         this.idNodes = idNodes;
         this.wayType = wayType;

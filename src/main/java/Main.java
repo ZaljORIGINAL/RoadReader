@@ -1,5 +1,6 @@
 import mapObjects.Node;
 import mapObjects.OsmParser;
+import mapObjects.ParseConfigurations.MaxSpeedConfiguration;
 import mapObjects.Way;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,17 @@ public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
-        URL url = Main.class.getResource("/toParseSmall.osm");
-        Path path = Paths.get(url.toURI());
-        OsmParser parser = new OsmParser(path);
+        URL urlToMap = Main.class.getResource("/toParseSmall.osm");
+        Path map = Paths.get(urlToMap.toURI());
+        OsmParser parser = new OsmParser(map);
+
+        URL urlToMaxSpeedConfig = Main.class.getResource("/MaxSpeedConfig.xml");
+        Path maxSpeedConfigFile = Paths.get(urlToMaxSpeedConfig.toURI());
+        MaxSpeedConfiguration maxSpeedConfiguration = new
+                MaxSpeedConfiguration(maxSpeedConfigFile);
+
+        parser.setMaxSpeedConfiguration(maxSpeedConfiguration);
+
         Map<Long, Way> waysMap = parser.getWays();
         LOGGER.info("Количество полученных путей: " + waysMap.size());
         Graph graph = parser.convertToGraph(waysMap);

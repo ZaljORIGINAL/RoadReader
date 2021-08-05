@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<max_speed_config>
+    <param key="service" value="20.0" />
+    <param key="tertiary" value="45.0" />
+    <param key="tertiary_link" value="35.0" />
+    <param key="residential" value="55.0" />
+</max_speed_config>

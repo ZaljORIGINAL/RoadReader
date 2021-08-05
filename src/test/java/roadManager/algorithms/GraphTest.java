@@ -46,28 +46,4 @@ public class GraphTest {
         if (!graph.containsNode(41))
             fail();
     }
-
-    @Test
-    public void hasInputEdgeTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
-        URL url = GraphTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.toURI());
-        OsmParser parser = new OsmParser(path);
-        Map<Long, Way> waysMap = parser.getWays();
-        Graph graph = parser.convertToGraph(waysMap);
-
-        if (!graph.hasInputEdge(7))
-            fail();
-    }
-
-    @Test
-    public void hasOutputEdgeTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
-        URL url = GraphTest.class.getResource("/readNodeTest.osm");
-        Path path = Paths.get(url.toURI());
-        OsmParser parser = new OsmParser(path);
-        Map<Long, Way> waysMap = parser.getWays();
-        Graph graph = parser.convertToGraph(waysMap);
-
-        if (!graph.hasOutputEdge(41))
-            fail();
-    }
 }
