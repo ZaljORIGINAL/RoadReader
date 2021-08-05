@@ -35,6 +35,12 @@ public class Graph {
         return edgeMap;
     }
 
+    public Map<Long, Node> getTowerNodes(){
+        Set<Long> towerNodesId = relations.keySet();
+        return towerNodesId.stream()
+                .collect(Collectors.toMap(nodeId -> nodeId, nodeId -> nodeMap.get(nodeId)));
+    }
+
     public Node getNodeById(long nodeId) {
         return nodeMap.get(nodeId);
     }

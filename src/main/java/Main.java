@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import roadManager.Route;
+import roadManager.algorithms.GeographicPoint;
 import roadManager.algorithms.Graph;
+import roadManager.algorithms.closestPointCalculator.ClosestPointCalculator;
 import roadManager.algorithms.dijkstra.DijkstraAlgorithms;
 import roadManager.algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 
@@ -16,6 +18,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -29,12 +32,24 @@ public class Main {
         Graph graph = parser.convertToGraph(waysMap);
         LOGGER.info("Граф выстроен...");
 
-        //Поиск кратчайшего пути
+        //Алгоритм для поиска кратчайшего пути.
         DijkstraAlgorithms algorithm = new DijkstraAlgorithms(graph);
-        Node start = new Node(667759139L, 55.7382326, 52.3858329);
-        Node finish = new Node(516329569L, 55.7392678, 52.3792657);
 
-        Route route = algorithm.calculatePath(new LengthWeightCalculator(), start, finish);
+        //Географические точки
+        //Точка: 1822701199
+        GeographicPoint start = new GeographicPoint( 55.7424095, 52.3885373);
+        //Точка: 5663181804
+        GeographicPoint finish = new GeographicPoint( 55.7442759, 52.3763780);
+
+        //Поиск для географических точек ближайшие tower точки.
+        ClosestPointCalculator calculator = new ClosestPointCalculator(graph.getTowerNodes());
+        Map<GeographicPoint, Node> closestNodes = calculator.calculate(Stream.of(start, finish).toList());
+
+        Route route = algorithm.calculatePath(
+                new LengthWeightCalculator(),
+                closestNodes.get(start),
+                closestNodes.get(finish));
+
         System.out.println(route.toString());
     }
 }

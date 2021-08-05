@@ -7,7 +7,7 @@ public abstract class ParseHelper {
     public static final String NODE_TAG = "node";
     public static final String WAY_TAG = "way";
     public static final String LINK_TO_NODE_TAG = "nd";
-    public static final String OTHER_TAG = "tag"; //TODO Подумать над этим наименованием
+    public static final String OTHER_TAG = "tag";
 
     //Атрибуты объектов
     public static final String ID_ATTRIBUTE = "id";

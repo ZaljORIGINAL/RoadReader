@@ -18,7 +18,6 @@ public class Route {
         double length = 0;
         double time = 0;
 
-        //TODO Точки должны идти в порядке маршрута от старта до финиша.
         for (int index = 0; index < edges.size(); index++){
             Edge edge = edges.get(index);
             List<Node> nodes = new ArrayList<>(edge.getNodes());
