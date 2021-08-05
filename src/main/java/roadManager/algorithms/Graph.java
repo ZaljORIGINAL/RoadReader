@@ -47,7 +47,7 @@ public class Graph {
 
     public Edge getEdgeById(long edgeId) {return edgeMap.get(edgeId);}
 
-    /**Вернет входящие и исходящие грани.*/
+    /**Выдаст исходящие грани из tower точки.*/
     public List<Edge> getEdgesByNodeId(long nodeId) {
         List<Long> edgesId = relations.get(nodeId);
 
@@ -61,7 +61,7 @@ public class Graph {
         return nodeMap.containsKey(nodeId);
     }
 
-    /**Метод ответить есть ли у точки входящие пути.*/
+/*    *//**Метод ответить есть ли у точки входящие пути.*//*
     public boolean hasInputEdge(long nodeId){
         Collection<Edge> edges = edgeMap.values();
 
@@ -69,13 +69,13 @@ public class Graph {
                 .anyMatch(edge -> edge.getLastNodeId() == nodeId);
     }
 
-    /**Метод ответить есть ли у точки исходящие пути.*/
+    *//**Метод ответить есть ли у точки исходящие пути.*//*
     public boolean hasOutputEdge(long nodeId){
         Collection<Edge> edges = edgeMap.values();
 
         return edges.stream()
                 .anyMatch(edge -> edge.getFirstNodeId() == nodeId);
-    }
+    }*/
 
     private Map<Long, List<Long>> buildRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
         Map<Long, List<Long>> relations = new HashMap<>();
@@ -95,5 +95,4 @@ public class Graph {
 
         return relations;
     }
-
 }

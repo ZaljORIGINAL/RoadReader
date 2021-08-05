@@ -26,6 +26,8 @@ public class OsmParser {
         document = builder.parse(osmFile.toFile());
     }
 
+    /**Метод считает из документа все автомобильные дороги
+     * @return Map дорог, в качестве ключа id дороги, в качестве значения объект дороги.*/
     public Map<Long, Way> getWays() {
         Map<Long, Way> waysMap = new HashMap<>();
 
@@ -85,6 +87,9 @@ public class OsmParser {
         return waysMap;
     }
 
+    /**Метод считает из документа параметры точек и вернет в качестве объекта точки
+     * @param nodesIds - список точек, по которым требуется получить их объекты
+     * @return Map точек, в качестве ключа id точки, в качестве значения объект точки.*/
     public Map<Long, mapObjects.Node> getNodes(Set<Long> nodesIds){
         Map<Long, mapObjects.Node> nodesObjectsMap = new HashMap<>();
 
@@ -126,6 +131,9 @@ public class OsmParser {
         return nodesObjectsMap;
     }
 
+    /** Метод преобразует переданные дороги в граф, для последующего его использования в алгоритмах.
+     * @param waysMap , в качестве ключа id дороги, в качестве значения объект дороги.
+     * @return объект графа.*/
     public Graph convertToGraph(Map<Long, Way> waysMap) {
         Set<Long> waysNodesId = new HashSet<>();
         Set<Long> towerNodesId = new HashSet<>();

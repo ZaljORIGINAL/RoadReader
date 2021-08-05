@@ -2,8 +2,11 @@ package roadManager.algorithms;
 
 import mapObjects.Node;
 
+/**Класс предоставляет static методы для проведения геометрических измерений над точками.*/
 public class GeometryUtils {
-    public static double calculatePointToPointDistance(GeographicPoint node1, GeographicPoint node2){
+
+        /**Вычисление расстояния между двумя точками на поверхности*/
+        public static double calculatePointToPointDistance(GeographicPoint node1, GeographicPoint node2){
             double R = 6378137;
             double C = Math.PI/180;
 

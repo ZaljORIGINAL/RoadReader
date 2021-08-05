@@ -26,12 +26,14 @@ public class DijkstraAlgorithms {
         if (!graph.containsNode(finish.getId()))
             return null;
 
+/*
         //Проверка: имеет ли стартовая точка исходящие пути
         if (!graph.hasOutputEdge(start.getId()))
             return null;
         //Проверка: имеет ли конечная точка входящие пути
         if (!graph.hasInputEdge(finish.getId()))
             return null;
+*/
 
         //Старт алгоритма
         return search(weight, start, finish);
