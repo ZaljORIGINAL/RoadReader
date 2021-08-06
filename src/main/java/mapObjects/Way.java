@@ -8,15 +8,13 @@ import java.util.stream.Collectors;
 public class Way {
     private final long id;
     private final List<Long> idNodes;
-    private final int wayType;
     private final double speed;
     //private byte direction; //https://wiki.openstreetmap.org/wiki/RU:Key:oneway?uselang=ru
     private final boolean oneWay;
 
-    public Way(long id, List<Long> idNodes, int wayType, double speed, boolean oneWay){
+    public Way(long id, List<Long> idNodes, double speed, boolean oneWay){
         this.id = id;
         this.idNodes = idNodes;
-        this.wayType = wayType;
         this.speed = speed;
         this.oneWay = oneWay;
     }
@@ -27,10 +25,6 @@ public class Way {
 
     public List<Long> getNodes() {
         return idNodes;
-    }
-
-    public int getWayType(){
-        return wayType;
     }
 
     public double getSpeed() {

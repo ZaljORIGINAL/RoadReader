@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class DijkstraAlgorithmsTest {
 
-    @Test
+/*    @Test
     public void findingShortestRoute() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = DijkstraAlgorithmsTest.class.getResource("/toParseSmal.osm");
         Path path = Paths.get(url.toURI());
@@ -65,5 +65,5 @@ public class DijkstraAlgorithmsTest {
 
         Route route = algorithms.calculatePath(new LengthWeightCalculator(), start, finish);
         System.out.println(route.toString());
-    }
+    }*/
 }

@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class GraphTest {
-
+/*
     @Test
     public void getEdgesByNodeIdTest() throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
         URL url = GraphTest.class.getResource("/readNodeTest.osm");
@@ -45,5 +45,5 @@ public class GraphTest {
 
         if (!graph.containsNode(41))
             fail();
-    }
+    }*/
 }

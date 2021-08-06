@@ -1,13 +1,16 @@
 package mapObjects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public abstract class OsmParseHelper {
     public static final String NODE_TAG = "node";
     public static final String WAY_TAG = "way";
     public static final String LINK_TO_NODE_TAG = "nd";
-    public static final String OTHER_TAG = "tag";
+    public static final String TAG = "tag";
 
     //Атрибуты объектов
     public static final String ID_ATTRIBUTE = "id";
@@ -38,24 +41,5 @@ public abstract class OsmParseHelper {
     public static final String SERVICE_TYPE = "service";
     public static final String TRACK_TYPE = "track";
 
-    public static List<String> getWayTypes() {
-        List<String> waysTypes = new ArrayList<>();
-        waysTypes.add(MOTORWAY_TYPE);
-        waysTypes.add(TRUNK_TYPE);
-        waysTypes.add(PRIMARY_TYPE);
-        waysTypes.add(SECONDARY_TYPE);
-        waysTypes.add(TERTIARY_TYPE);
-        waysTypes.add(UNCLASSIFIED_TYPE);
-        waysTypes.add(RESIDENTIAL_TYPE);
-        waysTypes.add(MOTORWAY_LINK_TYPE);
-        waysTypes.add(TRUNK_LINK_TYPE);
-        waysTypes.add(PRIMARY_LINK_TYPE);
-        waysTypes.add(SECONDARY_LINK_TYPE);
-        waysTypes.add(TERTIARY_LINK_TYPE);
-        waysTypes.add(LIVING_STREET_TYPE);
-        waysTypes.add(SERVICE_TYPE);
-        waysTypes.add(TRACK_TYPE);
-
-        return  waysTypes;
-    }
+    public static final double NO_ROAD_SPEED = -1;
 }

@@ -12,18 +12,18 @@ import java.util.stream.Collectors;
 public class Graph {
     private static final Logger logger = LoggerFactory.getLogger(Graph.class);
 
-    private Map<Long, Node> nodeMap;
-    private Map<Long, Edge> edgeMap;
-    private Map<Long, List<Long>> relations;
+    private final Map<Long, Node> nodeMap;
+    private final Map<Long, Edge> edgeMap;
+    private final Map<Long, List<Long>> relations = new HashMap<>();
 
-
-    public Graph(Map<Long, Node> allNodes, Set<Long> towerNodesId, Map<Long, Way> ways){
-        nodeMap = allNodes;
-        Collection<Way> waysCollection = ways.values();
-        edgeMap = waysCollection.stream().flatMap(way -> way.getEdges(this, towerNodesId).stream())
+    public Graph(Set<Node> allNodes, Set<Long> towerNodesId, Set<Way> ways){
+        nodeMap = allNodes.stream()
+                .collect(Collectors.toMap(Node::getId, node -> node));
+        edgeMap = ways.stream()
+                .flatMap(way -> way.getEdges(this, towerNodesId).stream())
                 .collect(Collectors.toMap(Edge::getId, edge -> edge));
         logger.info("Количество граней: " + edgeMap.size());
-        relations = buildRelations(towerNodesId, edgeMap);
+        fillRelations(edgeMap.values());
         logger.info("Зависимости выстроены: " + relations.size());
     }
 
@@ -35,10 +35,10 @@ public class Graph {
         return edgeMap;
     }
 
-    public Map<Long, Node> getTowerNodes(){
-        Set<Long> towerNodesId = relations.keySet();
-        return towerNodesId.stream()
-                .collect(Collectors.toMap(nodeId -> nodeId, nodeId -> nodeMap.get(nodeId)));
+    public Set<Node> getTowerNodes(){
+        return relations.keySet().stream()
+                .map(nodeMap::get)
+                .collect(Collectors.toSet());
     }
 
     public Node getNodeById(long nodeId) {
@@ -49,10 +49,8 @@ public class Graph {
 
     /**Выдаст исходящие грани из tower точки.*/
     public List<Edge> getEdgesByNodeId(long nodeId) {
-        List<Long> edgesId = relations.get(nodeId);
-
-        return edgesId.stream()
-                .map(edgeId -> edgeMap.get(edgeId))
+        return relations.get(nodeId).stream()
+                .map(edgeMap::get)
                 .collect(Collectors.toList());
     }
 
@@ -77,22 +75,19 @@ public class Graph {
                 .anyMatch(edge -> edge.getFirstNodeId() == nodeId);
     }*/
 
-    private Map<Long, List<Long>> buildRelations(Set<Long> towerNodesId, Map<Long, Edge> edgeMap) {
-        Map<Long, List<Long>> relations = new HashMap<>();
+    private void fillRelations(Collection<Edge> edges) {
+        for (Edge edge : edges) {
+            long node = edge.getFirstNodeId();
+            List<Long> nodeEdges = relations.getOrDefault(node, new ArrayList<>());
+            nodeEdges.add(edge.getId());
+            relations.put(node, nodeEdges);
 
-        for (Long towerId : towerNodesId) {
-            List<Long> dependentEdges = new ArrayList<>();
-            for (Map.Entry<Long, Edge> entry : edgeMap.entrySet()) {
-                Edge edge = entry.getValue();
-                if (edge.getFirstNodeId() == towerId)
-                    dependentEdges.add(edge.getId());
-                else if (edge.getLastNodeId() == towerId && !edge.isOneWay())
-                    dependentEdges.add(edge.getId());
+            node = edge.getLastNodeId();
+            nodeEdges = relations.getOrDefault(node, new ArrayList<>());
+            if (!edge.isOneWay()){
+                nodeEdges.add(edge.getId());
             }
-
-            relations.put(towerId, dependentEdges);
+            relations.put(node, nodeEdges);
         }
-
-        return relations;
     }
 }

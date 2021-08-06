@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class MaxSpeedConfigurationTest {
 
-    @Test
+/*    @Test
     public void maxSpeedConfigTest() throws URISyntaxException, ParserConfigurationException, IOException, SAXException {
         URL urlToMap = MaxSpeedConfigurationTest.class.getResource("/SpeedConfigTest.osm");
         Path map = Paths.get(urlToMap.toURI());
@@ -49,5 +49,5 @@ public class MaxSpeedConfigurationTest {
 
         if (waysMap.get(58528987L).getSpeed() != 60)
             fail();
-    }
+    }*/
 }

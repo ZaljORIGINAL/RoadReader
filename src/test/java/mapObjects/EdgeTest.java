@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class EdgeTest {
 
-    @Test
+/*    @Test
     public void calculateLengthTest(){
         //Точки собраны с дороги: 42098194
         List<Node> nodes = new ArrayList<>();
@@ -45,8 +45,8 @@ public class EdgeTest {
     public void calculatePointToPointDistanceTest(){
         //Дорога, id 56054390
         //Расстояние: 77 метров
-        /*Node node1 = new Node(703583137L, 55.7533889, 52.4035223);
-        Node node2 = new Node(703583265L, 55.7529123, 52.4026438);*/
+        *//*Node node1 = new Node(703583137L, 55.7533889, 52.4035223);
+        Node node2 = new Node(703583265L, 55.7529123, 52.4026438);*//*
 
         //Бульвар Бердаха, id 42392235
         //Расстояние: 750
@@ -61,5 +61,5 @@ public class EdgeTest {
         System.out.println("Дистанция: " + distance);
         if (distance < 740 || distance > 750)
             fail();
-    }
+    }*/
 }

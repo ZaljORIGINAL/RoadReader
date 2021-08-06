@@ -1,26 +1,17 @@
 package mapObjects;
 
+import roadManager.algorithms.GeographicPoint;
+
 /**Класс представляет географическую точку на карте.*/
-public class Node {
+public class Node extends GeographicPoint {
     private final long id;
-    private final double lat;
-    private final double lon;
 
     public Node(long id, double lat, double lon){
+        super(lat, lon);
         this.id = id;
-        this.lat = lat;
-        this.lon = lon;
     }
 
     public long getId() {
         return id;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
     }
 }

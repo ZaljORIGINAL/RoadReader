@@ -66,8 +66,8 @@ public class Edge {
         double length = 0;
         for (int index = 0; index < nodes.size() - 1; index++) {
             double distance = calculatePointToPointDistance(
-                    new GeographicPoint(nodes.get(index)),
-                    new GeographicPoint(nodes.get(index + 1)));
+                    nodes.get(index),
+                    nodes.get(index + 1));
 
             length += distance;
         }

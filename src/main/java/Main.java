@@ -1,4 +1,3 @@
-import mapObjects.Node;
 import mapObjects.OsmParser;
 import mapObjects.ParseConfigurations.MaxSpeedConfiguration;
 import mapObjects.Way;
@@ -8,7 +7,7 @@ import org.xml.sax.SAXException;
 import roadManager.Route;
 import roadManager.algorithms.GeographicPoint;
 import roadManager.algorithms.Graph;
-import roadManager.algorithms.closestPointCalculator.ClosestPointCalculator;
+import roadManager.algorithms.closestPointCalculator.QuadTree;
 import roadManager.algorithms.dijkstra.DijkstraAlgorithms;
 import roadManager.algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 
@@ -18,14 +17,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.stream.Stream;
+import java.util.Set;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
-        URL urlToMap = Main.class.getResource("/toParseSmall.osm");
+        URL urlToMap = Main.class.getResource("/toParse.osm");
         Path map = Paths.get(urlToMap.toURI());
         OsmParser parser = new OsmParser(map);
 
@@ -36,9 +34,9 @@ public class Main {
 
         parser.setMaxSpeedConfiguration(maxSpeedConfiguration);
 
-        Map<Long, Way> waysMap = parser.getWays();
-        LOGGER.info("Количество полученных путей: " + waysMap.size());
-        Graph graph = parser.convertToGraph(waysMap);
+        Set<Way> ways = parser.getWays();
+        LOGGER.info("Количество полученных путей: " + ways.size());
+        Graph graph = parser.convertToGraph(ways);
         LOGGER.info("Граф выстроен...");
 
         //Алгоритм для поиска кратчайшего пути.
@@ -51,13 +49,13 @@ public class Main {
         GeographicPoint finish = new GeographicPoint( 55.7442759, 52.3763780);
 
         //Поиск для географических точек ближайшие tower точки.
-        ClosestPointCalculator calculator = new ClosestPointCalculator(graph.getTowerNodes());
-        Map<GeographicPoint, Node> closestNodes = calculator.calculate(Stream.of(start, finish).toList());
+        QuadTree quadTree = new QuadTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 6);
+        graph.getTowerNodes().forEach(quadTree::add);
 
         Route route = algorithm.calculatePath(
                 new LengthWeightCalculator(),
-                closestNodes.get(start),
-                closestNodes.get(finish));
+                quadTree.findClosest(start),
+                quadTree.findClosest(finish));
 
         System.out.println(route.toString());
     }

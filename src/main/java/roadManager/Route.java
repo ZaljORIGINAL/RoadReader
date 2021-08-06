@@ -4,6 +4,7 @@ import mapObjects.Edge;
 import mapObjects.Node;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**Класс представляет маршрут от стартовой точки до конечной*/
 public class Route {
@@ -57,12 +58,15 @@ public class Route {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("Расстояние: " + getLength() + "\n");
-        str.append("Время на преодоление: " + getTime() + "\n");
-        str.append("Двигайтесь по точкам: \n");
-        nodes.stream()
-                .forEach(node -> str.append("\tid: " + node.getId() + "\n"));
-
+        str.append("Расстояние: ").append(getLength()).append("\n");
+        str.append("Время на преодоление: ").append(getTime()).append("\n");
+        str.append("WKT пути: \n");
+        str.append("LINESTRING(");
+        String coordinates = nodes.stream()
+                .map(Node::toWktString)
+                .collect(Collectors.joining(","));
+        str.append(coordinates);
+        str.append(")");
         return str.toString();
     }
 }

@@ -15,9 +15,11 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import static mapObjects.OsmParseHelper.*;
+
 /**Класс выступает в качестве конфигураций к выставлению максимальной скорости для определенного типа дороги*/
 public class MaxSpeedConfiguration {
-    private final Map<String, Double> speedsMap = new HashMap<>();
+    private final Map<String, Double> speedsMap = getDefaultSpeedMap();
 
     public MaxSpeedConfiguration(){}
 
@@ -43,11 +45,27 @@ public class MaxSpeedConfiguration {
         }
     }
 
-    public double getMaxSpeed(String wayType){
-        Double speed = speedsMap.get(wayType);
-        if (speed == null)
-            return 60;
+    public double getSpeed(String wayType) {
+        return speedsMap.getOrDefault(wayType, NO_ROAD_SPEED);
+    }
 
-        return speed;
+    private static Map<String, Double> getDefaultSpeedMap() {
+        Map<String, Double> waysTypes = new HashMap<>();
+        waysTypes.put(MOTORWAY_TYPE, 60.0);
+        waysTypes.put(TRUNK_TYPE, 60.0);
+        waysTypes.put(PRIMARY_TYPE, 60.0);
+        waysTypes.put(SECONDARY_TYPE, 60.0);
+        waysTypes.put(TERTIARY_TYPE, 60.0);
+        waysTypes.put(UNCLASSIFIED_TYPE, 60.0);
+        waysTypes.put(RESIDENTIAL_TYPE, 60.0);
+        waysTypes.put(MOTORWAY_LINK_TYPE, 60.0);
+        waysTypes.put(TRUNK_LINK_TYPE, 60.0);
+        waysTypes.put(PRIMARY_LINK_TYPE, 60.0);
+        waysTypes.put(SECONDARY_LINK_TYPE, 60.0);
+        waysTypes.put(TERTIARY_LINK_TYPE, 60.0);
+        waysTypes.put(LIVING_STREET_TYPE, 60.0);
+        waysTypes.put(SERVICE_TYPE, 60.0);
+        waysTypes.put(TRACK_TYPE, 60.0);
+        return  waysTypes;
     }
 }

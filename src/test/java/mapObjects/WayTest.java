@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class WayTest {
 
-    @Test
+/*    @Test
     public void getEdges() throws URISyntaxException, ParserConfigurationException, IOException, SAXException {
         URL url = WayTest.class.getResource("/readNodeTest.osm");
         Path path = Paths.get(url.toURI());
@@ -28,5 +28,5 @@ public class WayTest {
 
         if (edgeMap.size() != 4)
             fail();
-    }
+    }*/
 }
