@@ -1,9 +1,6 @@
 package mapObjects.parseConfigurations;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,10 +24,11 @@ public class MaxSpeedConfiguration {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(configFile.toFile());
 
-        NodeList paramElements = document.getDocumentElement().getElementsByTagName(
-                ConfigFileParse.PARAM_TAG);
+        NodeList paramElements = document.getChildNodes();
         for (int paramIndex = 0; paramIndex < paramElements.getLength(); paramIndex++){
-            Element param = (Element) paramElements.item(paramIndex);
+            Node param = paramElements.item(paramIndex);
+            if (param.getNodeType() != org.w3c.dom.Node.ELEMENT_NODE || param.getNodeName().equals("bounds"))
+                continue;
 
             NamedNodeMap paramAttributes = param.getAttributes();
             String wayType;

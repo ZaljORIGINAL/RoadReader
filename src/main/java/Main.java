@@ -1,11 +1,9 @@
-import mapObjects.OsmParser;
-import mapObjects.Route;
+import algorithms.closestPointCalculator.ClosestPointFinderTree;
+import mapObjects.*;
 import mapObjects.parseConfigurations.MaxSpeedConfiguration;
-import mapObjects.Way;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-import mapObjects.GeographicPoint;
 import algorithms.Graph;
 import algorithms.closestPointCalculator.QuadTree;
 import algorithms.dijkstra.DijkstraAlgorithms;
@@ -49,13 +47,16 @@ public class Main {
         GeographicPoint finish = new GeographicPoint( 55.7442759, 52.3763780);
 
         //Поиск для географических точек ближайшие tower точки.
-        QuadTree quadTree = new QuadTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 6);
+        QuadTree quadTree = new ClosestPointFinderTree(
+                55.63213647883612, 52.201261423294824,
+                55.81003367465946, 52.605008981888574,
+                6);
         graph.getTowerNodes().forEach(quadTree::add);
 
         Route route = algorithm.calculatePath(
                 new LengthWeightCalculator(),
-                quadTree.findClosest(start),
-                quadTree.findClosest(finish));
+                (Node) quadTree.find(start),
+                (Node) quadTree.find(finish));
 
         System.out.println(route.toString());
     }

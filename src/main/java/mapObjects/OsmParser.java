@@ -1,5 +1,6 @@
 package mapObjects;
 
+import mapObjects.parseConfigurations.BlockedPointConfiguration;
 import mapObjects.parseConfigurations.MaxSpeedConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class OsmParser {
 
     private final Document document;
     private MaxSpeedConfiguration maxSpeedConfiguration;
+    private BlockedPointConfiguration blockedPointConfiguration;
 
     public OsmParser(Path osmFile) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -29,6 +31,7 @@ public class OsmParser {
         document = builder.parse(osmFile.toFile());
 
         maxSpeedConfiguration = new MaxSpeedConfiguration();
+        blockedPointConfiguration = new BlockedPointConfiguration();
     }
 
     /**Метод считает из документа все автомобильные дороги
@@ -102,7 +105,7 @@ public class OsmParser {
     /**Метод считает из документа параметры точек и вернет в качестве объекта точки
      * @param nodesIds - список точек, по которым требуется получить их объекты
      * @return Map точек, в качестве ключа id точки, в качестве значения объект точки.*/
-    public Set<mapObjects.Node> getNodes(Set<Long> nodesIds){
+    public Set<mapObjects.Node> getNodes(Set<Long> nodesIds) {
         Set<mapObjects.Node> nodesObjectsMap = new HashSet<>();
         NodeList nodesElements = document.getDocumentElement().getChildNodes();
         int counter = 0;
@@ -140,8 +143,12 @@ public class OsmParser {
         return nodesObjectsMap;
     }
 
-    public void setMaxSpeedConfiguration(MaxSpeedConfiguration configuration){
+    public void setMaxSpeedConfiguration(MaxSpeedConfiguration configuration) {
         maxSpeedConfiguration = configuration;
+    }
+
+    public void setBlockedPointConfiguration(BlockedPointConfiguration configuration) {
+        this.blockedPointConfiguration = configuration;
     }
 
     /** Метод преобразует переданные дороги в граф, для последующего его использования в алгоритмах.

@@ -1,6 +1,5 @@
 package algorithms.closestPointCalculator;
 
-import mapObjects.Node;
 import mapObjects.GeographicPoint;
 
 import java.util.ArrayList;
@@ -10,16 +9,17 @@ import java.util.Set;
 
 import static algorithms.GeometryUtils.calculatePointToPointDistance;
 
-public class QuadTree {
-    private final double minLat;
-    private final double minLon;
-    private final double maxLat;
-    private final double maxLon;
-    private final double averageLat;
-    private final double averageLon;
-    private final List<QuadTree> childrens;
-    private final Set<Node> nodes;
-    private final int level;
+public abstract class QuadTree {
+    protected static int pointsCount = 0;
+    protected final double minLat;
+    protected final double minLon;
+    protected final double maxLat;
+    protected final double maxLon;
+    protected final double averageLat;
+    protected final double averageLon;
+    protected List<QuadTree> childrens;
+    protected Set<GeographicPoint> nodes;
+    protected int level;
 
     public QuadTree(double minLat, double minLon, double maxLat, double maxLon, int level) {
         this.minLat = minLat;
@@ -32,61 +32,28 @@ public class QuadTree {
         averageLon = (maxLon - minLon) / 2 + minLon;
 
         if (level != 0) {
-            //Ходим по часовой, начинаем с левого нижнего, заканчиваем правым нижним.
-            childrens = new ArrayList<>();
-            nodes = null;
-            childrens.add(new QuadTree(
-                    averageLat, minLon,
-                    maxLat, averageLon,
-                    level -1));
-
-            childrens.add(new QuadTree(
-                    averageLat, averageLon,
-                    maxLat, maxLon,
-                    level - 1));
-
-            childrens.add(new QuadTree(
-                    minLat, minLon,
-                    averageLat, averageLon,
-                    level -1));
-
-            childrens.add(new QuadTree(
-                    minLat, averageLon,
-                    averageLat, maxLon,
-                    level - 1));
+            generateChildrens();
         } else {
             childrens = null;
             nodes = new HashSet<>();
         }
+
     }
 
-    public void add(Node node) {
+    public void add(GeographicPoint point) {
         if (level != 0)
-            childrens.get(getChildIndex(node)).add(node);
-        else
-            nodes.add(node);
-    }
-
-    public Node findClosest(GeographicPoint point) {
-        if (level != 0)
-            return childrens.get(getChildIndex(point)).findClosest(point);
+            childrens.get(getChildIndex(point)).add(point);
         else{
-            double minDistance = Double.MAX_VALUE;
-            Node closestNode = null;
-            for (Node node : nodes) {
-                double distance = calculatePointToPointDistance(node, point);
-                if (distance == 0) {
-                    return node;
-                } else if (distance < minDistance) {
-                    minDistance = distance;
-                    closestNode = node;
-                }
-            }
-            return closestNode;
+            nodes.add(point);
+            pointsCount++;
         }
     }
 
-    private int getChildIndex(GeographicPoint point) {
+    public abstract GeographicPoint find(GeographicPoint point);
+
+    protected int getChildIndex(GeographicPoint point) {
         return (point.getLat() > averageLat ? 0 : 2) + (point.getLon() > averageLon ? 1 : 0);
     }
+
+    protected abstract void generateChildrens();
 }
