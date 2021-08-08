@@ -1,7 +1,5 @@
 package mapObjects;
 
-import roadManager.algorithms.GeographicPoint;
-
 /**Класс представляет географическую точку на карте.*/
 public class Node extends GeographicPoint {
     private final long id;

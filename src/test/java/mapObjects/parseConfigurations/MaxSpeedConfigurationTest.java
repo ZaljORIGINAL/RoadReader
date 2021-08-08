@@ -1,19 +1,4 @@
-package mapObjects.ParseConfigurations;
-
-import mapObjects.OsmParser;
-import mapObjects.Way;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-
-import static org.junit.Assert.*;
+package mapObjects.parseConfigurations;
 
 public class MaxSpeedConfigurationTest {
 

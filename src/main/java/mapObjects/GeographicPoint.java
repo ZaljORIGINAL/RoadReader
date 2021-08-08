@@ -1,4 +1,4 @@
-package roadManager.algorithms;
+package mapObjects;
 
 import mapObjects.Node;
 

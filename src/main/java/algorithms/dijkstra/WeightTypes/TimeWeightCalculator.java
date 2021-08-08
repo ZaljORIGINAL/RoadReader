@@ -1,7 +1,7 @@
-package roadManager.algorithms.dijkstra.WeightTypes;
+package algorithms.dijkstra.WeightTypes;
 
 import mapObjects.Edge;
-import roadManager.algorithms.dijkstra.WeightСalculator;
+import algorithms.dijkstra.WeightСalculator;
 
 /**Класс служит для извлечения из графа параметра времени на преодоление грани и выдачи ее как веса грани.*/
 public class TimeWeightCalculator extends WeightСalculator {

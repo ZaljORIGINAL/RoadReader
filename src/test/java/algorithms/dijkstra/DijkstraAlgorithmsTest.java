@@ -1,24 +1,4 @@
-package roadManager.algorithms.dijkstra;
-
-import mapObjects.Node;
-import mapObjects.OsmParser;
-import mapObjects.Way;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-import roadManager.Route;
-import roadManager.algorithms.Graph;
-import roadManager.algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+package algorithms.dijkstra;
 
 public class DijkstraAlgorithmsTest {
 
@@ -63,7 +43,7 @@ public class DijkstraAlgorithmsTest {
         expected.add(7685119703L);
         expected.add(534108441L);
 
-        Route route = algorithms.calculatePath(new LengthWeightCalculator(), start, finish);
+        mapObjects.Route route = algorithms.calculatePath(new LengthWeightCalculator(), start, finish);
         System.out.println(route.toString());
     }*/
 }

@@ -1,9 +1,8 @@
 package mapObjects;
 
-import roadManager.algorithms.Graph;
+import algorithms.Graph;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Way {
     private final long id;

@@ -1,25 +1,4 @@
-package roadManager.algorithms.closestPointCalculator;
-
-import mapObjects.Node;
-import mapObjects.OsmParser;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-import roadManager.algorithms.GeographicPoint;
-import roadManager.algorithms.dijkstra.DijkstraAlgorithmsTest;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
+package algorithms.closestPointCalculator;
 
 public class ClosestPointCalculatorTest {
 

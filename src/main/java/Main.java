@@ -1,15 +1,15 @@
 import mapObjects.OsmParser;
-import mapObjects.ParseConfigurations.MaxSpeedConfiguration;
+import mapObjects.Route;
+import mapObjects.parseConfigurations.MaxSpeedConfiguration;
 import mapObjects.Way;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-import roadManager.Route;
-import roadManager.algorithms.GeographicPoint;
-import roadManager.algorithms.Graph;
-import roadManager.algorithms.closestPointCalculator.QuadTree;
-import roadManager.algorithms.dijkstra.DijkstraAlgorithms;
-import roadManager.algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
+import mapObjects.GeographicPoint;
+import algorithms.Graph;
+import algorithms.closestPointCalculator.QuadTree;
+import algorithms.dijkstra.DijkstraAlgorithms;
+import algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;

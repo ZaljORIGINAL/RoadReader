@@ -1,12 +1,12 @@
 package mapObjects;
 
-import mapObjects.ParseConfigurations.MaxSpeedConfiguration;
+import mapObjects.parseConfigurations.MaxSpeedConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import roadManager.algorithms.Graph;
+import algorithms.Graph;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -88,6 +88,7 @@ public class OsmParser {
                 continue;
 
             int id = Integer.parseInt(wayElement.getAttributes().getNamedItem(ID_ATTRIBUTE).getNodeValue());
+            Collections.reverse(nodeIdList);
             Way way = new Way(id, nodeIdList, speed, oneWay);
             ways.add(way);
             counter++;

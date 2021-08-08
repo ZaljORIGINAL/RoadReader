@@ -1,10 +1,8 @@
 package mapObjects;
 
-import roadManager.algorithms.GeographicPoint;
-
 import java.util.List;
 
-import static roadManager.algorithms.GeometryUtils.calculatePointToPointDistance;
+import static algorithms.GeometryUtils.calculatePointToPointDistance;
 
 /**Класс представляет связь между двумя географическими точками (Point).*/
 public class Edge {

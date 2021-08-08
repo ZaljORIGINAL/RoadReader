@@ -1,4 +1,4 @@
-package roadManager.algorithms.dijkstra;
+package algorithms.dijkstra;
 
 import mapObjects.Edge;
 

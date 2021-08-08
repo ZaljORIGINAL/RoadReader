@@ -1,14 +1,14 @@
-package roadManager.algorithms.closestPointCalculator;
+package algorithms.closestPointCalculator;
 
 import mapObjects.Node;
-import roadManager.algorithms.GeographicPoint;
+import mapObjects.GeographicPoint;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static roadManager.algorithms.GeometryUtils.calculatePointToPointDistance;
+import static algorithms.GeometryUtils.calculatePointToPointDistance;
 
 public class QuadTree {
     private final double minLat;

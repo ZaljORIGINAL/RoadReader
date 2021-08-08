@@ -1,7 +1,7 @@
-package mapObjects.ParseConfigurations;
+package mapObjects.parseConfigurations;
 
+import mapObjects.GeographicPoint;
 import mapObjects.Node;
-import roadManager.algorithms.GeographicPoint;
 
 import java.nio.file.Path;
 import java.util.List;

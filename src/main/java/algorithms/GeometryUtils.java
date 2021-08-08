@@ -1,6 +1,6 @@
-package roadManager.algorithms;
+package algorithms;
 
-import mapObjects.Node;
+import mapObjects.GeographicPoint;
 
 /**Класс предоставляет static методы для проведения геометрических измерений над точками.*/
 public class GeometryUtils {

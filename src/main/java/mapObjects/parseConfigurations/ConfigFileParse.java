@@ -1,4 +1,4 @@
-package mapObjects.ParseConfigurations;
+package mapObjects.parseConfigurations;
 
 public abstract class ConfigFileParse {
     public static final String PARAM_TAG = "param";

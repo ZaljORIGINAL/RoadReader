@@ -1,4 +1,4 @@
-package roadManager.algorithms;
+package algorithms;
 
 import mapObjects.Edge;
 import mapObjects.Node;
@@ -76,18 +76,21 @@ public class Graph {
     }*/
 
     private void fillRelations(Collection<Edge> edges) {
-        for (Edge edge : edges) {
-            long node = edge.getFirstNodeId();
-            List<Long> nodeEdges = relations.getOrDefault(node, new ArrayList<>());
-            nodeEdges.add(edge.getId());
-            relations.put(node, nodeEdges);
+        long nodeId;
+        List<Long> nodeEdges;
 
-            node = edge.getLastNodeId();
-            nodeEdges = relations.getOrDefault(node, new ArrayList<>());
+        for (Edge edge : edges) {
+            nodeId = edge.getFirstNodeId();
+            nodeEdges = relations.getOrDefault(nodeId, new ArrayList<>());
+            nodeEdges.add(edge.getId());
+            relations.put(nodeId, nodeEdges);
+
+            nodeId = edge.getLastNodeId();
+            nodeEdges = relations.getOrDefault(nodeId, new ArrayList<>());
             if (!edge.isOneWay()){
                 nodeEdges.add(edge.getId());
             }
-            relations.put(node, nodeEdges);
+            relations.put(nodeId, nodeEdges);
         }
     }
 }

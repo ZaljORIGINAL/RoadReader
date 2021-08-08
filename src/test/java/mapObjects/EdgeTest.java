@@ -1,14 +1,5 @@
 package mapObjects;
 
-import org.junit.Test;
-import roadManager.algorithms.GeographicPoint;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static roadManager.algorithms.GeometryUtils.calculatePointToPointDistance;
-import static org.junit.Assert.*;
-
 public class EdgeTest {
 
 /*    @Test

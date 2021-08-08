@@ -1,22 +1,4 @@
-package roadManager.algorithms;
-
-import mapObjects.Edge;
-import mapObjects.OsmParser;
-import mapObjects.OsmParserTest;
-import mapObjects.Way;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
+package algorithms;
 
 public class GraphTest {
 /*
