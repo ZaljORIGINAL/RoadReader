@@ -1,6 +1,7 @@
 import algorithms.closestPointCalculator.ClosestPointFinderTree;
 import mapObjects.*;
-import mapObjects.parseConfigurations.MaxSpeedConfiguration;
+import mapObjects.parseConfigurations.BlockedPointConfiguration;
+import mapObjects.parseConfigurations.SpeedConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -15,27 +16,35 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Set;
 
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
+        //Фаил карты
         URL urlToMap = Main.class.getResource("/toParse.osm");
         Path map = Paths.get(urlToMap.toURI());
         OsmParser parser = new OsmParser(map);
 
-        URL urlToMaxSpeedConfig = Main.class.getResource("/MaxSpeedConfig.xml");
+        //Фаил конфигурации скорости на дороге
+        URL urlToMaxSpeedConfig = Main.class.getResource("/SpeedConfig.xml");
         Path maxSpeedConfigFile = Paths.get(urlToMaxSpeedConfig.toURI());
-        MaxSpeedConfiguration maxSpeedConfiguration = new
-                MaxSpeedConfiguration(maxSpeedConfigFile);
+        SpeedConfiguration speedConfiguration = new
+                SpeedConfiguration(maxSpeedConfigFile);
 
-        parser.setMaxSpeedConfiguration(maxSpeedConfiguration);
+        //Фаил конфигурации заблокированных точек
+        URL urlToBlockedPointConfig = Main.class.getResource("/BlockedPointConfigurations.xml");
+        Path blockedPointConfig = Paths.get(urlToBlockedPointConfig.toURI());
+        BlockedPointConfiguration blockedPointConfiguration = new
+                BlockedPointConfiguration(blockedPointConfig);
 
-        Set<Way> ways = parser.getWays();
-        LOGGER.info("Количество полученных путей: " + ways.size());
-        Graph graph = parser.convertToGraph(ways);
-        LOGGER.info("Граф выстроен...");
+        //Задаем парсеру модули конфигурации
+        parser.setMaxSpeedConfiguration(speedConfiguration);
+        parser.setBlockedPointConfiguration(blockedPointConfiguration);
+
+        //Строим граф
+        MapData mapData = parser.extract();
+        Graph graph = new Graph(mapData.getNodes(), mapData.getEdges());
 
         //Алгоритм для поиска кратчайшего пути.
         DijkstraAlgorithms algorithm = new DijkstraAlgorithms(graph);
@@ -51,7 +60,8 @@ public class Main {
                 55.63213647883612, 52.201261423294824,
                 55.81003367465946, 52.605008981888574,
                 6);
-        graph.getTowerNodes().forEach(quadTree::add);
+        mapData.getTowerNodes()
+                .forEach(quadTree::add);
 
         Route route = algorithm.calculatePath(
                 new LengthWeightCalculator(),

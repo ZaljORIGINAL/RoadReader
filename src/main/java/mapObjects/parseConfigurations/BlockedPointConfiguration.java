@@ -21,13 +21,14 @@ public class BlockedPointConfiguration {
     public BlockedPointConfiguration(){
         tree = new PointFinderTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 0);
     }
+
     public BlockedPointConfiguration(Path configFile) throws ParserConfigurationException, IOException, SAXException {
         tree = new PointFinderTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 6);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(configFile.toFile());
 
-        NodeList params = document.getChildNodes();
+        NodeList params = document.getDocumentElement().getChildNodes();
 
         for (int paramIndex = 0; paramIndex < params.getLength(); paramIndex++){
             Node param = params.item(paramIndex);
@@ -46,11 +47,7 @@ public class BlockedPointConfiguration {
         }
     }
 
-    public boolean check(List<mapObjects.Node> nodes){
-        for (mapObjects.Node node : nodes) {
-            if (tree.find(node) != null)
-                return true;
-        }
-        return false;
+    public boolean check(mapObjects.Node node){
+        return tree.find(node) != null;
     }
 }

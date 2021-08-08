@@ -16,29 +16,14 @@ public class Graph {
     private final Map<Long, Edge> edgeMap;
     private final Map<Long, List<Long>> relations = new HashMap<>();
 
-    public Graph(Set<Node> allNodes, Set<Long> towerNodesId, Set<Way> ways){
+    public Graph(Set<Node> allNodes, Set<Edge> edges){
         nodeMap = allNodes.stream()
                 .collect(Collectors.toMap(Node::getId, node -> node));
-        edgeMap = ways.stream()
-                .flatMap(way -> way.getEdges(this, towerNodesId).stream())
+        edgeMap = edges.stream()
                 .collect(Collectors.toMap(Edge::getId, edge -> edge));
         logger.info("Количество граней: " + edgeMap.size());
         fillRelations(edgeMap.values());
         logger.info("Зависимости выстроены: " + relations.size());
-    }
-
-    public Map<Long, Node> getAllNodes(){
-        return nodeMap;
-    }
-
-    public Map<Long, Edge> getAllEdges(){
-        return edgeMap;
-    }
-
-    public Set<Node> getTowerNodes(){
-        return relations.keySet().stream()
-                .map(nodeMap::get)
-                .collect(Collectors.toSet());
     }
 
     public Node getNodeById(long nodeId) {
@@ -58,22 +43,6 @@ public class Graph {
     public boolean containsNode(long nodeId){
         return nodeMap.containsKey(nodeId);
     }
-
-/*    *//**Метод ответить есть ли у точки входящие пути.*//*
-    public boolean hasInputEdge(long nodeId){
-        Collection<Edge> edges = edgeMap.values();
-
-        return edges.stream()
-                .anyMatch(edge -> edge.getLastNodeId() == nodeId);
-    }
-
-    *//**Метод ответить есть ли у точки исходящие пути.*//*
-    public boolean hasOutputEdge(long nodeId){
-        Collection<Edge> edges = edgeMap.values();
-
-        return edges.stream()
-                .anyMatch(edge -> edge.getFirstNodeId() == nodeId);
-    }*/
 
     private void fillRelations(Collection<Edge> edges) {
         long nodeId;

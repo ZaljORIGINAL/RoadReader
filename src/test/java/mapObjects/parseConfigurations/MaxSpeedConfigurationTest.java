@@ -8,7 +8,7 @@ public class MaxSpeedConfigurationTest {
         Path map = Paths.get(urlToMap.toURI());
         OsmParser parser = new OsmParser(map);
 
-        URL urlToMaxSpeedConfig = MaxSpeedConfigurationTest.class.getResource("/MaxSpeedConfig.xml");
+        URL urlToMaxSpeedConfig = MaxSpeedConfigurationTest.class.getResource("/SpeedConfig.xml");
         Path maxSpeedConfigFile = Paths.get(urlToMaxSpeedConfig.toURI());
         MaxSpeedConfiguration maxSpeedConfiguration = new
                 MaxSpeedConfiguration(maxSpeedConfigFile);

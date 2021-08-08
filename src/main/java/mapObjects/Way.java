@@ -34,13 +34,13 @@ public class Way {
         return oneWay;
     }
 
-    public Set<Edge> getEdges(Graph graph, Set<Long> towersNodeId) {
+    public Set<Edge> getEdges(Map<Long, Node> nodeMap, Set<Long> towerNodesId, Set<Long> blockedNodes) {
         Set<Edge> edgeToReturn = new HashSet<>();
 
         //Получаем объекты точек данной дороги для последующего вычисления длины дороги
         List<Node> nodes = new ArrayList<>();
         for (Long nodeId : idNodes){
-            Node node = graph.getNodeById(nodeId);
+            Node node = nodeMap.get(nodeId);
             nodes.add(node);
         }
 
@@ -51,16 +51,25 @@ public class Way {
         //Проходимся по остальным
         for (int index = 1; index < nodes.size(); index++) {
             Node finishNode = nodes.get(index);
-            if (towersNodeId.contains(finishNode.getId())){
+            if (towerNodesId.contains(finishNode.getId())){
                 List<Node> edgeNodes = new ArrayList<>(nodes.subList(indexOfStartNode, index + 1));
+                boolean isBlocked = false;
+                for (Node node : edgeNodes) {
+                    if (blockedNodes.contains(node.getId())){
+                        isBlocked = true;
+                        break;
+                    }
+                }
 
-                idEdgeOfWay++;
-                edgeToReturn.add(new Edge(
-                        id * 100 + idEdgeOfWay,
-                        edgeNodes,
-                        oneWay,
-                        speed
-                ));
+                if (!isBlocked){
+                    idEdgeOfWay++;
+                    edgeToReturn.add(new Edge(
+                            id * 100 + idEdgeOfWay,
+                            edgeNodes,
+                            oneWay,
+                            speed
+                    ));
+                }
 
                 indexOfStartNode = index;
             }

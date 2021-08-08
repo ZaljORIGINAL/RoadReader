@@ -1,20 +1,22 @@
 package mapObjects;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MapData {
     private final Set<Node> nodes;
     private final Set<Way> ways;
     private final Set<Long> towerNodesId;
     private final Set<Long> blockedNodes;
-    private final Set<Long> blockedWays;
+    private final Set<Edge> edges;
 
-    public MapData(Set<Node> nodes, Set<Way> ways, Set<Long> towerNodesId, Set<Long> blockedNodes, Set<Long> blockedWays) {
+    public MapData(Set<Node> nodes, Set<Way> ways, Set<Long> towerNodesId, Set<Long> blockedNodes, Set<Edge> edges) {
         this.nodes = nodes;
         this.ways = ways;
         this.towerNodesId = towerNodesId;
         this.blockedNodes = blockedNodes;
-        this.blockedWays = blockedWays;
+        this.edges = edges;
     }
 
     public Set<Node> getNodes() {
@@ -29,11 +31,20 @@ public class MapData {
         return towerNodesId;
     }
 
-    public Set<Long> getBlockedNodes() {
+    public Set<Node> getTowerNodes() {
+        Map<Long, Node> nodeMap = nodes.stream()
+                .collect(Collectors.toMap(Node::getId, node -> node));
+
+        return getTowerNodesId().stream()
+                .map(nodeMap::get)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Long> getBlockedNodesId() {
         return blockedNodes;
     }
 
-    public Set<Long> getBlockedWays() {
-        return blockedWays;
+    public Set<Edge> getEdges() {
+        return edges;
     }
 }

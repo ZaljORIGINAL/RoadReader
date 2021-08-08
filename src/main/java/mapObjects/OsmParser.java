@@ -1,13 +1,12 @@
 package mapObjects;
 
 import mapObjects.parseConfigurations.BlockedPointConfiguration;
-import mapObjects.parseConfigurations.MaxSpeedConfiguration;
+import mapObjects.parseConfigurations.SpeedConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import algorithms.Graph;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,7 +21,7 @@ public class OsmParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(OsmParser.class);
 
     private final Document document;
-    private MaxSpeedConfiguration maxSpeedConfiguration;
+    private SpeedConfiguration speedConfiguration;
     private BlockedPointConfiguration blockedPointConfiguration;
 
     public OsmParser(Path osmFile) throws ParserConfigurationException, IOException, SAXException {
@@ -30,13 +29,20 @@ public class OsmParser {
         DocumentBuilder builder = factory.newDocumentBuilder();
         document = builder.parse(osmFile.toFile());
 
-        maxSpeedConfiguration = new MaxSpeedConfiguration();
+        speedConfiguration = new SpeedConfiguration();
         blockedPointConfiguration = new BlockedPointConfiguration();
+    }
+
+    public MapData extract(){
+        MapDataBuilder builder = new MapDataBuilder();
+        extractWays(builder);
+        extractNodes(builder);
+        return builder.build();
     }
 
     /**Метод считает из документа все автомобильные дороги
      * @return Map дорог, в качестве ключа id дороги, в качестве значения объект дороги.*/
-    public Set<Way> getWays() {
+    public void extractWays(MapDataBuilder builder) {
         Set<Way> ways = new HashSet<>();
         int counter = 0;
         NodeList waysElements = document.getDocumentElement().getChildNodes();
@@ -71,7 +77,7 @@ public class OsmParser {
                     //Проверка типа дороги
                     if (attrName.equals(HIGHWAY_FIELD)){
                         String value = fieldAttrMap.getNamedItem(VALUE_ATTRIBUTE).getNodeValue();
-                        speed = maxSpeedConfiguration.getSpeed(value);
+                        speed = speedConfiguration.getSpeed(value);
                         if (speed == NO_ROAD_SPEED)
                             break;
 
@@ -99,14 +105,36 @@ public class OsmParser {
                 LOGGER.info("Обработано " + counter +" дорог");
         }
 
-        return ways;
+        builder.setWays(ways);
+    }
+
+    public void extractNodes(MapDataBuilder builder) {
+        Set<Long> waysNodesId = new HashSet<>();
+        Set<Long> towerNodesId = new HashSet<>();
+        for (Way way : builder.getWays()) {
+            List<Long> nodes = way.getNodes();
+            //Устанавливаем первую и последнюю точку как ключевые;
+            waysNodesId.add(nodes.get(0));
+            waysNodesId.add(nodes.get(nodes.size()-1));
+
+            //Обработка остальных точек //обычный for
+            for (long nodeId : nodes) {
+                if (waysNodesId.contains(nodeId))
+                    towerNodesId.add(nodeId);
+                else
+                    waysNodesId.add(nodeId);
+            }
+        }
+        builder.setNodes(getNodes(waysNodesId, builder));
+        builder.setTowerNodesId(towerNodesId);
     }
 
     /**Метод считает из документа параметры точек и вернет в качестве объекта точки
      * @param nodesIds - список точек, по которым требуется получить их объекты
      * @return Map точек, в качестве ключа id точки, в качестве значения объект точки.*/
-    public Set<mapObjects.Node> getNodes(Set<Long> nodesIds) {
+    public Set<mapObjects.Node> getNodes(Set<Long> nodesIds, MapDataBuilder builder) {
         Set<mapObjects.Node> nodesObjectsMap = new HashSet<>();
+        Set<Long> blockedNodesId = new HashSet<>();
         NodeList nodesElements = document.getDocumentElement().getChildNodes();
         int counter = 0;
         for (int nodeIndex = 0; nodeIndex < nodesElements.getLength(); nodeIndex++) {
@@ -130,53 +158,26 @@ public class OsmParser {
 
             //Получаем lat
             lat = Double.parseDouble(attributes.getNamedItem(LAT_ATTRIBUTE).getNodeValue());
-
             //Получаем lon
             lon = Double.parseDouble(attributes.getNamedItem(LON_ATTRIBUTE).getNodeValue());
-
-            nodesObjectsMap.add(new mapObjects.Node(id, lat, lon));
+            mapObjects.Node node = new mapObjects.Node(id, lat, lon);
+            nodesObjectsMap.add(node);
+            if (blockedPointConfiguration.check(node))
+                blockedNodesId.add(node.getId());
             counter++;
             if (counter % 10_000 == 0 || counter == nodesIds.size())
                 LOGGER.info("Обработано " + counter +" из " + nodesIds.size());
         }
 
+        builder.setBlockedNodesId(blockedNodesId);
         return nodesObjectsMap;
     }
 
-    public void setMaxSpeedConfiguration(MaxSpeedConfiguration configuration) {
-        maxSpeedConfiguration = configuration;
+    public void setMaxSpeedConfiguration(SpeedConfiguration configuration) {
+        speedConfiguration = configuration;
     }
 
     public void setBlockedPointConfiguration(BlockedPointConfiguration configuration) {
         this.blockedPointConfiguration = configuration;
-    }
-
-    /** Метод преобразует переданные дороги в граф, для последующего его использования в алгоритмах.
-     * @param ways , в качестве ключа id дороги, в качестве значения объект дороги.
-     * @return объект графа.*/
-    public Graph convertToGraph(Set<Way> ways) {
-        Set<Long> waysNodesId = new HashSet<>();
-        Set<Long> towerNodesId = new HashSet<>();
-
-        for (Way way : ways) {
-            List<Long> nodes = way.getNodes();
-            //Устанавливаем первую и последнюю точку как ключевые;
-            waysNodesId.add(nodes.get(0));
-            waysNodesId.add(nodes.get(nodes.size()-1));
-
-            //Обработка остальных точек //обычный for
-            for (long nodeId : nodes) {
-                if (waysNodesId.contains(nodeId))
-                    towerNodesId.add(nodeId);
-                else
-                    waysNodesId.add(nodeId);
-            }
-        }
-        LOGGER.info("Количество ключевых точек: " + towerNodesId.size());
-
-        Set<mapObjects.Node> wayNodesObject = getNodes(waysNodesId);
-        LOGGER.info("Количество полученных объектов точек: " + wayNodesObject.size());
-
-        return new Graph(wayNodesObject, towerNodesId, ways);
     }
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <blocked_point_configurations>
-    <!--Дорога id 41659084-->
-    <param lat="55.7434567" lon="52.3884837" /> <!--id 672093211-->
+    <param lat="55.7405616" lon="52.3870175" /> <!--id 672092856-->
+    <param lat="55.7398828" lon="52.3866738" /> <!--id 672093116-->
 
-    <!--Дорога id 78973477-->
-    <param lat="55.7386455" lon="52.3906591" /> <!--id 7941685680-->
+    <param lat="55.7384906" lon="52.3915784" /> <!--id 871667586-->
     <param lat="55.7390309" lon="52.3883722" /> <!--id 672093081-->
 </blocked_point_configurations>

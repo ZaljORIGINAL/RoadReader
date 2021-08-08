@@ -14,17 +14,17 @@ import java.util.Map;
 import static mapObjects.OsmParseHelper.*;
 
 /**Класс выступает в качестве конфигураций к выставлению максимальной скорости для определенного типа дороги*/
-public class MaxSpeedConfiguration {
+public class SpeedConfiguration {
     private final Map<String, Double> speedsMap = getDefaultSpeedMap();
 
-    public MaxSpeedConfiguration(){}
+    public SpeedConfiguration(){}
 
-    public MaxSpeedConfiguration(Path configFile) throws ParserConfigurationException, IOException, SAXException {
+    public SpeedConfiguration(Path configFile) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(configFile.toFile());
 
-        NodeList paramElements = document.getChildNodes();
+        NodeList paramElements = document.getDocumentElement().getChildNodes();
         for (int paramIndex = 0; paramIndex < paramElements.getLength(); paramIndex++){
             Node param = paramElements.item(paramIndex);
             if (param.getNodeType() != org.w3c.dom.Node.ELEMENT_NODE || param.getNodeName().equals("bounds"))
