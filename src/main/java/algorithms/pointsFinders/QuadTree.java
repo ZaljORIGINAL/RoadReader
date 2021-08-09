@@ -2,11 +2,12 @@ package algorithms.pointsFinders;
 
 import mapObjects.GeographicPoint;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class QuadTree {
+public abstract class QuadTree<T extends QuadTree> {
     protected static int pointsCount = 0;
     protected final double minLat;
     protected final double minLon;
@@ -14,7 +15,7 @@ public abstract class QuadTree {
     protected final double maxLon;
     protected final double averageLat;
     protected final double averageLon;
-    protected List<QuadTree> childrens;
+    protected List<T> childrens;
     protected Set<GeographicPoint> nodes;
     protected int level;
 
@@ -29,7 +30,27 @@ public abstract class QuadTree {
         averageLon = (maxLon - minLon) / 2 + minLon;
 
         if (level != 0) {
-            generateChildrens();
+            childrens = new ArrayList<>();
+            nodes = null;
+            childrens.add(getChildren(
+                    averageLat, minLon,
+                    maxLat, averageLon,
+                    level - 1));
+
+            childrens.add(getChildren(
+                    averageLat, averageLon,
+                    maxLat, maxLon,
+                    level - 1));
+
+            childrens.add(getChildren(
+                    minLat, minLon,
+                    averageLat, averageLon,
+                    level - 1));
+
+            childrens.add(getChildren(
+                    minLat, averageLon,
+                    averageLat, maxLon,
+                    level - 1));
         } else {
             childrens = null;
             nodes = new HashSet<>();
@@ -40,7 +61,7 @@ public abstract class QuadTree {
     public void add(GeographicPoint point) {
         if (level != 0)
             childrens.get(getChildIndex(point)).add(point);
-        else{
+        else {
             nodes.add(point);
             pointsCount++;
         }
@@ -52,5 +73,5 @@ public abstract class QuadTree {
         return (point.getLat() > averageLat ? 0 : 2) + (point.getLon() > averageLon ? 1 : 0);
     }
 
-    protected abstract void generateChildrens();
+    protected abstract T getChildren(double minLat, double minLon, double maxLat, double maxLon, int level);
 }

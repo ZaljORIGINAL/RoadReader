@@ -4,7 +4,7 @@ import mapObjects.GeographicPoint;
 
 import java.util.ArrayList;
 
-public class PointFinderTree extends QuadTree{
+public class PointFinderTree extends QuadTree<PointFinderTree>{
     public PointFinderTree(double minLat, double minLon, double maxLat, double maxLon, int level) {
         super(minLat, minLon, maxLat, maxLon, level);
     }
@@ -25,27 +25,7 @@ public class PointFinderTree extends QuadTree{
     }
 
     @Override
-    protected void generateChildrens() {
-        childrens = new ArrayList<>();
-        nodes = null;
-        childrens.add(new PointFinderTree(
-                averageLat, minLon,
-                maxLat, averageLon,
-                level -1));
-
-        childrens.add(new PointFinderTree(
-                averageLat, averageLon,
-                maxLat, maxLon,
-                level - 1));
-
-        childrens.add(new PointFinderTree(
-                minLat, minLon,
-                averageLat, averageLon,
-                level -1));
-
-        childrens.add(new PointFinderTree(
-                minLat, averageLon,
-                averageLat, maxLon,
-                level - 1));
+    protected PointFinderTree getChildren(double minLat, double minLon, double maxLat, double maxLon, int level) {
+        return new PointFinderTree(minLat, minLon, maxLat, maxLon, level);
     }
 }
