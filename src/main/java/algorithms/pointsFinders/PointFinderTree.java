@@ -1,13 +1,11 @@
-package algorithms.closestPointCalculator;
+package algorithms.pointsFinders;
 
 import mapObjects.GeographicPoint;
 
 import java.util.ArrayList;
 
-import static algorithms.GeometryUtils.calculatePointToPointDistance;
-
-public class ClosestPointFinderTree extends QuadTree{
-    public ClosestPointFinderTree(double minLat, double minLon, double maxLat, double maxLon, int level) {
+public class PointFinderTree extends QuadTree{
+    public PointFinderTree(double minLat, double minLon, double maxLat, double maxLon, int level) {
         super(minLat, minLon, maxLat, maxLon, level);
     }
 
@@ -16,15 +14,10 @@ public class ClosestPointFinderTree extends QuadTree{
         if (level != 0)
             return childrens.get(getChildIndex(point)).find(point);
         else{
-            double minDistance = Double.MAX_VALUE;
             GeographicPoint closestNode = null;
             for (GeographicPoint gPoint : nodes) {
-                double distance = calculatePointToPointDistance(gPoint, gPoint);
-                if (distance == 0) {
+                if (gPoint.getLat() == point.getLat() && gPoint.getLon() == point.getLon()) {
                     return gPoint;
-                } else if (distance < minDistance) {
-                    minDistance = distance;
-                    closestNode = gPoint;
                 }
             }
             return closestNode;
@@ -35,22 +28,22 @@ public class ClosestPointFinderTree extends QuadTree{
     protected void generateChildrens() {
         childrens = new ArrayList<>();
         nodes = null;
-        childrens.add(new ClosestPointFinderTree(
+        childrens.add(new PointFinderTree(
                 averageLat, minLon,
                 maxLat, averageLon,
                 level -1));
 
-        childrens.add(new ClosestPointFinderTree(
+        childrens.add(new PointFinderTree(
                 averageLat, averageLon,
                 maxLat, maxLon,
                 level - 1));
 
-        childrens.add(new ClosestPointFinderTree(
+        childrens.add(new PointFinderTree(
                 minLat, minLon,
                 averageLat, averageLon,
                 level -1));
 
-        childrens.add(new ClosestPointFinderTree(
+        childrens.add(new PointFinderTree(
                 minLat, averageLon,
                 averageLat, maxLon,
                 level - 1));

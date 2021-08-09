@@ -1,7 +1,7 @@
 package mapObjects.parseConfigurations;
 
-import algorithms.closestPointCalculator.PointFinderTree;
-import algorithms.closestPointCalculator.QuadTree;
+import algorithms.pointsFinders.PointFinderTree;
+import algorithms.pointsFinders.QuadTree;
 import mapObjects.GeographicPoint;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -9,10 +9,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 /**Класс выступает в качестве конфигураций к определению участка дороги как заблокированной*/
 public class BlockedPointConfiguration {

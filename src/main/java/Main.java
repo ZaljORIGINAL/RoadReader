@@ -1,4 +1,4 @@
-import algorithms.closestPointCalculator.ClosestPointFinderTree;
+import algorithms.pointsFinders.ClosestPointFinderTree;
 import mapObjects.*;
 import mapObjects.parseConfigurations.BlockedPointConfiguration;
 import mapObjects.parseConfigurations.SpeedConfiguration;
@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import algorithms.Graph;
-import algorithms.closestPointCalculator.QuadTree;
+import algorithms.pointsFinders.QuadTree;
 import algorithms.dijkstra.DijkstraAlgorithms;
 import algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 

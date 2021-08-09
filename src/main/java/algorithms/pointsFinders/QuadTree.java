@@ -1,13 +1,10 @@
-package algorithms.closestPointCalculator;
+package algorithms.pointsFinders;
 
 import mapObjects.GeographicPoint;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static algorithms.GeometryUtils.calculatePointToPointDistance;
 
 public abstract class QuadTree {
     protected static int pointsCount = 0;

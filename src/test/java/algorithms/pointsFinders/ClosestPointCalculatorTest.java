@@ -1,4 +1,4 @@
-package algorithms.closestPointCalculator;
+package algorithms.pointsFinders;
 
 public class ClosestPointCalculatorTest {
 
