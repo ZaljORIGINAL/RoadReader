@@ -21,7 +21,7 @@ public class BlockedPointConfiguration {
     }
 
     public BlockedPointConfiguration(Path configFile) throws ParserConfigurationException, IOException, SAXException {
-        tree = new PointFinderTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 6);
+        tree = new PointFinderTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 4);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(configFile.toFile());

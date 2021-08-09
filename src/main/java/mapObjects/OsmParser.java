@@ -33,6 +33,8 @@ public class OsmParser {
         blockedPointConfiguration = new BlockedPointConfiguration();
     }
 
+    /** Считает данные из документа.
+     * @return информацию по карте в виде объекта MapData*/
     public MapData extract(){
         MapDataBuilder builder = new MapDataBuilder();
         extractWays(builder);
@@ -40,8 +42,9 @@ public class OsmParser {
         return builder.build();
     }
 
-    /**Метод считает из документа все автомобильные дороги
-     * @return Map дорог, в качестве ключа id дороги, в качестве значения объект дороги.*/
+    /** Считает из документа данные по автомобильным дорогам.
+     * @param builder объект для помещения данных о дорогах
+     */
     public void extractWays(MapDataBuilder builder) {
         Set<Way> ways = new HashSet<>();
         int counter = 0;
@@ -108,6 +111,8 @@ public class OsmParser {
         builder.setWays(ways);
     }
 
+    /** Считать из документа все данные по точкам: Id дорожных точек, tower точки,
+     * объекты точек, заблокированные точки.*/
     public void extractNodes(MapDataBuilder builder) {
         Set<Long> waysNodesId = new HashSet<>();
         Set<Long> towerNodesId = new HashSet<>();
@@ -129,10 +134,10 @@ public class OsmParser {
         builder.setTowerNodesId(towerNodesId);
     }
 
-    /**Метод считает из документа параметры точек и вернет в качестве объекта точки
+    /** Метод считает из документа параметры точек и вернет в качестве объекта точки
      * @param nodesIds - список точек, по которым требуется получить их объекты
      * @return Map точек, в качестве ключа id точки, в качестве значения объект точки.*/
-    public Set<mapObjects.Node> getNodes(Set<Long> nodesIds, MapDataBuilder builder) {
+    private Set<mapObjects.Node> getNodes(Set<Long> nodesIds, MapDataBuilder builder) {
         Set<mapObjects.Node> nodesObjectsMap = new HashSet<>();
         Set<Long> blockedNodesId = new HashSet<>();
         NodeList nodesElements = document.getDocumentElement().getChildNodes();
