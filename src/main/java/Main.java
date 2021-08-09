@@ -1,3 +1,4 @@
+import algorithms.dijkstra.WeightTypes.TimeWeightCalculator;
 import algorithms.pointsFinders.ClosestPointFinderTree;
 import mapObjects.*;
 import mapObjects.parseConfigurations.BlockedPointConfiguration;
@@ -64,7 +65,7 @@ public class Main {
                 .forEach(quadTree::add);
 
         Route route = algorithm.calculatePath(
-                new LengthWeightCalculator(),
+                new TimeWeightCalculator(),
                 (Node) quadTree.find(start),
                 (Node) quadTree.find(finish));
 

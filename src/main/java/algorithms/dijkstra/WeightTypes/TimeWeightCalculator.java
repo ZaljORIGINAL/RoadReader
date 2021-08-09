@@ -9,6 +9,6 @@ public class TimeWeightCalculator extends WeightСalculator {
     /**Вернет время затрачиваемое на преодоление грани, как вес грани.*/
     @Override
     public double calculate(Edge edge) {
-        return edge.getSpeed();
+        return edge.getTime();
     }
 }
