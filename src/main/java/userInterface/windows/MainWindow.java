@@ -1,4 +1,4 @@
-package userInterface;
+package userInterface.windows;
 
 import javafx.fxml.Initializable;
 
