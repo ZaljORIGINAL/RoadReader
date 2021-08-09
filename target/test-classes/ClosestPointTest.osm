@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="osmconvert 0.8.10" timestamp="2021-07-25T20:21:28Z">
+	<node id="516328375" lat="55.7337441" lon="52.4003982" version="4" timestamp="2012-02-26T18:12:14Z" changeset="0"/>
+	<node id="1649106424" lat="55.7336941" lon="52.4000018" version="1" timestamp="2012-02-26T18:11:02Z" changeset="0"/>
+	<node id="523087424" lat="55.7336366" lon="52.3995685" version="4" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="523087094" lat="55.7334583" lon="52.3992241" version="3" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="610756344" lat="55.7322865" lon="52.397033" version="2" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="535212402" lat="55.7320535" lon="52.3966253" version="3" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="535212383" lat="55.7317973" lon="52.3961578" version="3" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="535212377" lat="55.7314723" lon="52.3955667" version="3" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="523086937" lat="55.7311784" lon="52.3950185" version="2" timestamp="2018-09-29T17:22:54Z" changeset="0"/>
+	<node id="523634955" lat="55.7309684" lon="52.3946377" version="3" timestamp="2018-10-17T11:14:29Z" changeset="0"/>
+	<node id="516328426" lat="55.7301349" lon="52.3931863" version="5" timestamp="2020-07-05T15:02:32Z" changeset="0"/>
+	<node id="523634909" lat="55.729996" lon="52.3930725" version="2" timestamp="2010-01-17T07:49:44Z" changeset="0"/>
+	<node id="516328674" lat="55.7296986" lon="52.3929554" version="2" timestamp="2011-08-04T05:11:48Z" changeset="0"/>
+
+	<way id="41817627" version="13" timestamp="2021-05-13T07:48:16Z" changeset="0">
+		<nd ref="516328375"/>
+		<nd ref="1649106424"/>
+		<nd ref="523087424"/>
+		<nd ref="523087094"/>
+		<nd ref="610756344"/>
+		<nd ref="535212402"/>
+		<nd ref="535212383"/>
+		<nd ref="535212377"/>
+		<nd ref="523086937"/>
+		<nd ref="523634955"/>
+		<nd ref="516328426"/>
+		<nd ref="523634909"/>
+		<nd ref="516328674"/>
+	</way>
+</osm>
