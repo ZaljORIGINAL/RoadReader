@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Маршрут">
+         <VBox.margin>
+            <Insets left="20.0" top="20.0" />
+         </VBox.margin>
+      </Text>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="66.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="134.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Длина: ">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Text>
+            <TextField fx:id="lenght" editable="false" GridPane.columnIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Время: " GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Text>
+            <TextField fx:id="time" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Путь: " GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </Text>
+            <TextField fx:id="path" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </GridPane>
+   </children>
+</VBox>
