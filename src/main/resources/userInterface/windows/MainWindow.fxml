@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterface.windows.MainWindow">
@@ -78,7 +79,59 @@
                   <VBox fx:id="routeBox" prefHeight="200.0" prefWidth="100.0" />
                </children>
             </VBox>
-            <VBox maxWidth="300.0" minHeight="-Infinity" minWidth="200.0" style="-fx-background-color: #E8E8E8;" />
+            <VBox maxWidth="300.0" minHeight="-Infinity" minWidth="200.0" style="-fx-background-color: #E8E8E8;">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Конфигурация">
+                     <VBox.margin>
+                        <Insets left="10.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <VBox fx:id="SpeedConfigItem" prefWidth="100.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Скорость на дорогах">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <TextField />
+                              <Button fx:id="speedConfigFileSelect" mnemonicParsing="false" text="browse" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+                  <VBox fx:id="BlockedPointItem" prefWidth="100.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Заблокированные точки">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Text>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <TextField />
+                              <Button fx:id="blockedPointFileConfigSelect" mnemonicParsing="false" text="browse" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+               </children></VBox>
          </children>
       </HBox>
    </children>
