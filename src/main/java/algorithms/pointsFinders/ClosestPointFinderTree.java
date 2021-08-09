@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import static algorithms.GeometryUtils.calculatePointToPointDistance;
 
-public class ClosestPointFinderTree extends QuadTree{
+public class ClosestPointFinderTree extends QuadTree<ClosestPointFinderTree>{
     public ClosestPointFinderTree(double minLat, double minLon, double maxLat, double maxLon, int level) {
         super(minLat, minLon, maxLat, maxLon, level);
     }
@@ -32,27 +32,7 @@ public class ClosestPointFinderTree extends QuadTree{
     }
 
     @Override
-    protected void generateChildrens() {
-        childrens = new ArrayList<>();
-        nodes = null;
-        childrens.add(new ClosestPointFinderTree(
-                averageLat, minLon,
-                maxLat, averageLon,
-                level -1));
-
-        childrens.add(new ClosestPointFinderTree(
-                averageLat, averageLon,
-                maxLat, maxLon,
-                level - 1));
-
-        childrens.add(new ClosestPointFinderTree(
-                minLat, minLon,
-                averageLat, averageLon,
-                level -1));
-
-        childrens.add(new ClosestPointFinderTree(
-                minLat, averageLon,
-                averageLat, maxLon,
-                level - 1));
+    protected ClosestPointFinderTree getChildren(double minLat, double minLon, double maxLat, double maxLon, int level) {
+        return new ClosestPointFinderTree(minLat, minLon, maxLat, maxLon, level);
     }
 }

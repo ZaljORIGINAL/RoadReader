@@ -1,4 +1,4 @@
-import algorithms.dijkstra.WeightTypes.TimeWeightCalculator;
+import algorithms.dijkstra.WeightTypes.TimeWeighting;
 import algorithms.pointsFinders.ClosestPointFinderTree;
 import mapObjects.*;
 import mapObjects.parseConfigurations.BlockedPointConfiguration;
@@ -9,7 +9,6 @@ import org.xml.sax.SAXException;
 import algorithms.Graph;
 import algorithms.pointsFinders.QuadTree;
 import algorithms.dijkstra.DijkstraAlgorithms;
-import algorithms.dijkstra.WeightTypes.LengthWeightCalculator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -65,7 +64,7 @@ public class Main {
                 .forEach(quadTree::add);
 
         Route route = algorithm.calculatePath(
-                new TimeWeightCalculator(),
+                new TimeWeighting(),
                 (Node) quadTree.find(start),
                 (Node) quadTree.find(finish));
 
