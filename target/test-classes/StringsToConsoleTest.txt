@@ -1,0 +1,8 @@
+        //Точка: 1822701199
+        GeographicPoint start = new GeographicPoint( 55.7424095, 52.3885373);
+        //Точка: 5663181804
+        GeographicPoint finish = new GeographicPoint( 55.7442759, 52.3763780);
+
+        URL urlToMap = Main.class.getResource("/toParse.osm");
+        URL urlToMaxSpeedConfig = Main.class.getResource("/SpeedConfig.xml");
+        URL urlToBlockedPointConfig = Main.class.getResource("/BlockedPointConfigurations.xml");

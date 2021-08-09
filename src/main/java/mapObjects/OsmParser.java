@@ -1,5 +1,6 @@
 package mapObjects;
 
+import algorithms.Graph;
 import mapObjects.parseConfigurations.BlockedPointConfiguration;
 import mapObjects.parseConfigurations.SpeedConfiguration;
 import org.slf4j.Logger;
@@ -35,17 +36,12 @@ public class OsmParser {
 
     /** Считает данные из документа.
      * @return информацию по карте в виде объекта MapData*/
-    public MapData extract(){
-        MapDataBuilder builder = new MapDataBuilder();
-        extractWays(builder);
-        extractNodes(builder);
-        return builder.build();
+    public Graph toGraph(){
+        Set<Way> ways = extractWays();
+        return extractNodes(ways);
     }
 
-    /** Считает из документа данные по автомобильным дорогам.
-     * @param builder объект для помещения данных о дорогах
-     */
-    public void extractWays(MapDataBuilder builder) {
+    public Set<Way> extractWays() {
         Set<Way> ways = new HashSet<>();
         int counter = 0;
         NodeList waysElements = document.getDocumentElement().getChildNodes();
@@ -108,15 +104,15 @@ public class OsmParser {
                 LOGGER.info("Обработано " + counter +" дорог");
         }
 
-        builder.setWays(ways);
+        return ways;
     }
 
     /** Считать из документа все данные по точкам: Id дорожных точек, tower точки,
      * объекты точек, заблокированные точки.*/
-    public void extractNodes(MapDataBuilder builder) {
+    public Graph extractNodes(Set<Way> ways) {
         Set<Long> waysNodesId = new HashSet<>();
         Set<Long> towerNodesId = new HashSet<>();
-        for (Way way : builder.getWays()) {
+        for (Way way : ways) {
             List<Long> nodes = way.getNodes();
             //Устанавливаем первую и последнюю точку как ключевые;
             waysNodesId.add(nodes.get(0));
@@ -130,16 +126,17 @@ public class OsmParser {
                     waysNodesId.add(nodeId);
             }
         }
-        builder.setNodes(getNodes(waysNodesId, builder));
-        builder.setTowerNodesId(towerNodesId);
+        return new Graph(
+                getNodes(waysNodesId),
+                towerNodesId,
+                ways);
     }
 
     /** Метод считает из документа параметры точек и вернет в качестве объекта точки
      * @param nodesIds - список точек, по которым требуется получить их объекты
      * @return Map точек, в качестве ключа id точки, в качестве значения объект точки.*/
-    private Set<mapObjects.Node> getNodes(Set<Long> nodesIds, MapDataBuilder builder) {
+    private Set<mapObjects.Node> getNodes(Set<Long> nodesIds) {
         Set<mapObjects.Node> nodesObjectsMap = new HashSet<>();
-        Set<Long> blockedNodesId = new HashSet<>();
         NodeList nodesElements = document.getDocumentElement().getChildNodes();
         int counter = 0;
         for (int nodeIndex = 0; nodeIndex < nodesElements.getLength(); nodeIndex++) {
@@ -167,18 +164,15 @@ public class OsmParser {
             lon = Double.parseDouble(attributes.getNamedItem(LON_ATTRIBUTE).getNodeValue());
             mapObjects.Node node = new mapObjects.Node(id, lat, lon);
             nodesObjectsMap.add(node);
-            if (blockedPointConfiguration.check(node))
-                blockedNodesId.add(node.getId());
             counter++;
             if (counter % 10_000 == 0 || counter == nodesIds.size())
                 LOGGER.info("Обработано " + counter +" из " + nodesIds.size());
         }
 
-        builder.setBlockedNodesId(blockedNodesId);
         return nodesObjectsMap;
     }
 
-    public void setMaxSpeedConfiguration(SpeedConfiguration configuration) {
+    public void setSpeedConfiguration(SpeedConfiguration configuration) {
         speedConfiguration = configuration;
     }
 

@@ -45,7 +45,8 @@ public class BlockedPointConfiguration {
         }
     }
 
-    public boolean check(mapObjects.Node node){
+    //Если будет найдена точка, то значит заблокирована
+    public boolean isBlocked(mapObjects.Node node){
         return tree.find(node) != null;
     }
 }

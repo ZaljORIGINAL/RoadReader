@@ -16,14 +16,19 @@ public class Graph {
     private final Map<Long, Edge> edgeMap;
     private final Map<Long, List<Long>> relations = new HashMap<>();
 
-    public Graph(Set<Node> allNodes, Set<Edge> edges){
+    public Graph(Set<Node> allNodes, Set<Long> towerNodesId, Set<Way> ways){
         nodeMap = allNodes.stream()
                 .collect(Collectors.toMap(Node::getId, node -> node));
-        edgeMap = edges.stream()
+        edgeMap = ways.stream()
+                .flatMap(way -> way.getEdges(nodeMap, towerNodesId).stream())
                 .collect(Collectors.toMap(Edge::getId, edge -> edge));
         logger.info("Количество граней: " + edgeMap.size());
         fillRelations(edgeMap.values());
         logger.info("Зависимости выстроены: " + relations.size());
+    }
+
+    public Set<Node> getNodes() {
+        return new HashSet<>(nodeMap.values());
     }
 
     public Node getNodeById(long nodeId) {
