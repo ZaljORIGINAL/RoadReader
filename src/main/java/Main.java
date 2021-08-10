@@ -21,31 +21,16 @@ public class Main {
         double maxLon = -1;
         Path speedConfigFile = null;
         for (String arg : args) {
-            String key = arg.substring(arg.indexOf(" "));
+            String key = arg.substring(0, arg.indexOf(" "));
             String param = arg.substring(
-                    arg.indexOf(" ") + 2,
-                    args.length);
+                    arg.indexOf(" ") + 1);
             switch (key) {
-                case "osm:" -> {
-                    try {
-                        osmFile = Paths.get(
-                                Objects.requireNonNull(Main.class.getResource(param)).toURI());
-                    } catch (URISyntaxException exception) {
-                        //Повторно запросить путь к osm
-                    }
-                }
+                case "osm:" -> osmFile = Paths.get(param);
                 case "minLat:" -> minLat = Double.parseDouble(param);
                 case "minLon:" -> minLon = Double.parseDouble(param);
-                case "maxLat" -> maxLat = Double.parseDouble(param);
-                case "maxLon" -> maxLon = Double.parseDouble(param);
-                case "speedConfig" -> {
-                    try {
-                        speedConfigFile = Paths.get(
-                                Objects.requireNonNull(Main.class.getResource(param)).toURI());
-                    } catch (URISyntaxException exception) {
-                        //Повторно запросить путь к osm
-                    }
-                }
+                case "maxLat:" -> maxLat = Double.parseDouble(param);
+                case "maxLon:" -> maxLon = Double.parseDouble(param);
+                case "speedConfig:" -> speedConfigFile = Paths.get(param);
             }
         }
 

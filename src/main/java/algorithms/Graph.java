@@ -31,6 +31,10 @@ public class Graph {
         return new HashSet<>(nodeMap.values());
     }
 
+    public Set<Node> getTowerNodes() {return relations.keySet().stream()
+            .map(nodeMap::get)
+            .collect(Collectors.toSet());}
+
     public Node getNodeById(long nodeId) {
         return nodeMap.get(nodeId);
     }

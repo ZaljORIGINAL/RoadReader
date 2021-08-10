@@ -1,6 +1,5 @@
 package mapObjects.parseConfigurations;
 
-import algorithms.pointsFinders.PointFinderTree;
 import algorithms.pointsFinders.QuadTree;
 import mapObjects.GeographicPoint;
 import org.w3c.dom.*;
@@ -11,17 +10,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 /**Класс выступает в качестве конфигураций к определению участка дороги как заблокированной*/
 public class BlockedPointConfiguration {
-    private final QuadTree tree;
+    private final Set<Long> blockedNodesId = new HashSet<>();
+    ;
 
-    public BlockedPointConfiguration(){
-        tree = new PointFinderTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 0);
+    public BlockedPointConfiguration() {
     }
 
-    public BlockedPointConfiguration(Path configFile) throws ParserConfigurationException, IOException, SAXException {
-        tree = new PointFinderTree(55.63213647883612, 52.201261423294824,55.81003367465946, 52.605008981888574, 4);
+    public BlockedPointConfiguration(Path configFile, QuadTree nodeTree) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(configFile.toFile());
@@ -41,12 +41,13 @@ public class BlockedPointConfiguration {
             lon = Double.parseDouble(paramAttributes.getNamedItem(ConfigFileParse.LON_ATTR)
                     .getNodeValue());
 
-            tree.add(new GeographicPoint(lat, lon));
+            mapObjects.Node node = nodeTree.findNode(new GeographicPoint(lat, lon));
+            if (node != null)
+                blockedNodesId.add(node.getId());
         }
     }
 
-    //Если будет найдена точка, то значит заблокирована
-    public boolean isBlocked(mapObjects.Node node){
-        return tree.find(node) != null;
+    public boolean isBlocked(long nodeId) {
+        return blockedNodesId.contains(nodeId);
     }
 }
