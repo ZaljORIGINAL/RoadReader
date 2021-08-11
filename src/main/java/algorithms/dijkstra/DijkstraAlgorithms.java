@@ -70,8 +70,7 @@ public class DijkstraAlgorithms {
             for (Edge edge : edges) {
                 //Проверка заблокирована ли грань
                 boolean isBlocked = false;
-                List<Node> nodes = edge.getNodes();
-                for (Node node : nodes) {
+                for (Node node : edge.getNodes()) {
                     if (blockedPoint.isBlocked(node.getId())) {
                         isBlocked = true;
                         break;

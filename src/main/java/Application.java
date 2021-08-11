@@ -120,7 +120,7 @@ public class Application {
     }
 
     private boolean repeatRequest(BufferedReader bufferedReader) throws IOException {
-        System.out.print("Завершить работу [Y/N]? ");
+        System.out.print("Продолжить работу [Y/N]? ");
         return bufferedReader.readLine().equals("Y");
     }
 

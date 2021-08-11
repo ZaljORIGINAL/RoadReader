@@ -26,6 +26,6 @@ public class GeographicPoint {
 
     @Override
     public String toString() {
-        return "Node(" + lat + ", " + lon + ")";
+        return "Node(" + lon + ", " + lat + ")";
     }
 }

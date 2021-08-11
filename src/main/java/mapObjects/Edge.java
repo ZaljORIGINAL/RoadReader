@@ -1,6 +1,7 @@
 package mapObjects;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static algorithms.GeometryUtils.calculatePointToPointDistance;
 
@@ -71,5 +72,17 @@ public class Edge {
         }
 
         return length;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("LINESTRING(");
+        String coordinates = nodes.stream()
+                .map(Node::toWktString)
+                .collect(Collectors.joining(","));
+        str.append(coordinates);
+        str.append(")");
+        return str.toString();
     }
 }
