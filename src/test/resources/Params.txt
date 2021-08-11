@@ -10,8 +10,8 @@ speedConfig: /home/nuriakhmetov_am/IdeaProjects/RoadReader/src/main/resources/Sp
 Id: 679018942
 startLat startLon: 55.7439189 52.4248362
 
-Id: 529157987
-finishLat finishLon: 55.7539902 52.4273847
+Id: 1608640953
+finishLat finishLon: 55.7513027 52.4241970
 
 Заблокированные точки: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\BlockedPointConfigurations.xml
 Заблокированные точки: /home/nuriakhmetov_am/IdeaProjects/RoadReader/src/main/resources/BlockedPointConfigurations.xml
