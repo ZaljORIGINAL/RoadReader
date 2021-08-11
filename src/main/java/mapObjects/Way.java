@@ -34,7 +34,7 @@ public class Way {
         return oneWay;
     }
 
-    public Set<Edge> getEdges(Map<Long, Node> nodeMap, Set<Long> towerNodesId, Set<Long> blockedNodes) {
+    public Set<Edge> getEdges(Map<Long, Node> nodeMap, Set<Long> towerNodesId) {
         Set<Edge> edgeToReturn = new HashSet<>();
 
         //Получаем объекты точек данной дороги для последующего вычисления длины дороги
@@ -53,23 +53,13 @@ public class Way {
             Node finishNode = nodes.get(index);
             if (towerNodesId.contains(finishNode.getId())){
                 List<Node> edgeNodes = new ArrayList<>(nodes.subList(indexOfStartNode, index + 1));
-                boolean isBlocked = false;
-                for (Node node : edgeNodes) {
-                    if (blockedNodes.contains(node.getId())){
-                        isBlocked = true;
-                        break;
-                    }
-                }
-
-                if (!isBlocked){
-                    idEdgeOfWay++;
-                    edgeToReturn.add(new Edge(
-                            id * 100 + idEdgeOfWay,
-                            edgeNodes,
-                            oneWay,
-                            speed
-                    ));
-                }
+                idEdgeOfWay++;
+                edgeToReturn.add(new Edge(
+                        id * 100 + idEdgeOfWay,
+                        edgeNodes,
+                        oneWay,
+                        speed
+                ));
 
                 indexOfStartNode = index;
             }

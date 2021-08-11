@@ -4,39 +4,48 @@ import mapObjects.Edge;
 import mapObjects.Node;
 import algorithms.Graph;
 import mapObjects.Route;
+import mapObjects.parseConfigurations.BlockedPointConfiguration;
 
 import java.util.*;
 
 /**Класс представляет алгоритм Дейкстры (https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры)*/
 public class DijkstraAlgorithms {
     private Graph graph;
+    private BlockedPointConfiguration blockedPoint;
 
     public DijkstraAlgorithms(Graph graph) {
         this.graph = graph;
+        blockedPoint = new BlockedPointConfiguration();
+    }
+
+    public void setBlockedPointConfiguration(BlockedPointConfiguration configuration) {
+        this.blockedPoint = configuration;
     }
 
     /**Вычисление маршрута в зависимости от ключевого параметра: длина, скорость, оптимальность.
      * @param weight - служит для определения ключевого параметра, относительно которого будет искаться оптимальный путь.
      * @param start - Стартовая точка.
      * @param finish - Конечная точка.*/
-    public Route calculatePath(WeightСalculator weight, Node start, Node finish) {
+    public Route calculateRoute(WeightСalculator weight, Node start, Node finish) {
         if (!graph.containsNode(start.getId()))
             return null;
 
         if (!graph.containsNode(finish.getId()))
             return null;
 
-/*
-        //Проверка: имеет ли стартовая точка исходящие пути
-        if (!graph.hasOutputEdge(start.getId()))
-            return null;
-        //Проверка: имеет ли конечная точка входящие пути
-        if (!graph.hasInputEdge(finish.getId()))
-            return null;
-*/
-
         //Старт алгоритма
         return search(weight, start, finish);
+    }
+
+    private Route buildRoute(ShortestPath shortestPath){
+        List<Edge> edges = new ArrayList<>();
+        do {
+            edges.add(graph.getEdgeById(shortestPath.getIncomingEdgeId()));
+            shortestPath = shortestPath.getShortestPath();
+        }while (shortestPath.getIncomingEdgeId() != -1);
+
+        Collections.reverse(edges);
+        return new Route(edges, shortestPath.getNodeId());
     }
 
     /** Алгоритм поиска*/
@@ -59,6 +68,19 @@ public class DijkstraAlgorithms {
             List<Edge> edges = graph.getEdgesByNodeId(currentPath.getNodeId());
 
             for (Edge edge : edges) {
+                //Проверка заблокирована ли грань
+                boolean isBlocked = false;
+                List<Node> nodes = edge.getNodes();
+                for (Node node : nodes) {
+                    if (blockedPoint.isBlocked(node.getId())) {
+                        isBlocked = true;
+                        break;
+                    }
+                }
+
+                if (isBlocked)
+                    continue;
+
                 double summaryWeight = weightСalculator.calculate(edge) + currentPath.getWeight();
                 if (summaryWeight > minWeightToEnd)
                     continue;
@@ -85,16 +107,5 @@ public class DijkstraAlgorithms {
         }
 
         return null;
-    }
-
-    private Route buildRoute(ShortestPath shortestPath){
-        List<Edge> edges = new ArrayList<>();
-        do {
-            edges.add(graph.getEdgeById(shortestPath.getIncomingEdgeId()));
-            shortestPath = shortestPath.getShortestPath();
-        }while (shortestPath.getIncomingEdgeId() != -1);
-
-        Collections.reverse(edges);
-        return new Route(edges, shortestPath.getNodeId());
     }
 }

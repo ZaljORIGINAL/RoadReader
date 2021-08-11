@@ -1,0 +1,14 @@
+osm: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\toParse.osm
+minLat: 55.63213647883612
+minLon: 52.201261423294824
+maxLat: 55.81003367465946
+maxLon: 52.605008981888574
+speedConfig: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\SpeedConfig.xml
+
+Id: 5273687477
+startLat startLon: 55.7436230 52.4241442
+
+Id: 1169681316
+finishLat finishLon: 55.7641177 52.4284727
+
+Заблокированные точки: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\BlockedPointConfigurations.xml
