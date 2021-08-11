@@ -1,6 +1,7 @@
 import algorithms.Graph;
 import algorithms.dijkstra.DijkstraAlgorithms;
 import algorithms.dijkstra.WeightTypes.DistanceWeighting;
+import algorithms.dijkstra.WeightTypes.OptimalWeighting;
 import algorithms.dijkstra.WeightTypes.TimeWeighting;
 import algorithms.dijkstra.WeightСalculator;
 import algorithms.pointsFinders.QuadTree;
@@ -97,9 +98,9 @@ public class Application {
                 return new TimeWeighting();
             }
 
-/*            case "optimal": {
-
-            }break;*/
+            case "optimal": {
+                return new OptimalWeighting();
+            }
 
             default: {
                 return new DistanceWeighting();
