@@ -1,14 +1,17 @@
 osm: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\toParse.osm
+osm: /home/nuriakhmetov_am/Downloads/toParse.osm
 minLat: 55.63213647883612
 minLon: 52.201261423294824
 maxLat: 55.81003367465946
 maxLon: 52.605008981888574
 speedConfig: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\SpeedConfig.xml
+speedConfig: /home/nuriakhmetov_am/IdeaProjects/RoadReader/src/main/resources/SpeedConfig.xml
 
-Id: 5273687477
-startLat startLon: 55.7436230 52.4241442
+Id: 679018942
+startLat startLon: 55.7439189 52.4248362
 
-Id: 1169681316
-finishLat finishLon: 55.7641177 52.4284727
+Id: 529157987
+finishLat finishLon: 55.7539902 52.4273847
 
 Заблокированные точки: D:\Программирование\Java\MAXIM technologies\Internship\Project1\src\main\resources\BlockedPointConfigurations.xml
+Заблокированные точки: /home/nuriakhmetov_am/IdeaProjects/RoadReader/src/main/resources/BlockedPointConfigurations.xml
